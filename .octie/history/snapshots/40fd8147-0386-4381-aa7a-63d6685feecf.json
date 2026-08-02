@@ -1,0 +1,2058 @@
+{
+  "$schema": "https://octie.dev/schemas/project-v1.json",
+  "version": "1.0.0",
+  "format": "octie-project",
+  "metadata": {
+    "project_name": "mrobots-hackathon-prep",
+    "version": "1.0.0",
+    "created_at": "2026-07-28T12:00:17.100Z",
+    "updated_at": "2026-08-01T11:14:28.940Z"
+  },
+  "tasks": {
+    "510a62ee-cf26-48f3-abad-1db295c723ab": {
+      "id": "510a62ee-cf26-48f3-abad-1db295c723ab",
+      "title": "向深开鸿申请 ROS/RViz 运行时与环境脚本",
+      "description": "邮件 M-RobotsOS@kaihong.com 并加入社区微信群，申请：含 ROS1(noetic)+ROS2(Jazzy) 运行时的 release.tar.gz、ros2_env.sh 脚本、含 RViz 的运行环境。官方文档明确这些不是开发板自带必须申请，等待外部响应周期不可控，需第一天就发出。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "dc2b4c8c-8d4c-43a8-a215-c4099a46e8d4",
+          "text": "申请邮件已发送（含 4 项申请内容清单）",
+          "completed": false
+        },
+        {
+          "id": "5161cebe-6f20-4fde-9aa1-db790050586d",
+          "text": "已加入 M-Robots 社区微信群或关注 GitCode Discussions",
+          "completed": false
+        },
+        {
+          "id": "05648ba1-f5a6-468d-8a5f-a119b8507421",
+          "text": "拿到含 ROS1+ROS2 的 release.tar.gz 与 ros2_env.sh",
+          "completed": false
+        },
+        {
+          "id": "82370e00-de5c-4955-ba9e-2e6746d6ea9b",
+          "text": "确认 RViz 在所获运行环境中可用",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "cba6e1b0-29e3-4235-a1b3-dc4370e87176",
+          "text": "prep/申请与回复记录.md（邮件原文与回复存档）",
+          "completed": false
+        },
+        {
+          "id": "686f17c6-126e-4484-b0e4-1788a1a59777",
+          "text": "prep/runtime/release.tar.gz（含 ROS1+ROS2 运行时）",
+          "completed": false
+        },
+        {
+          "id": "8eb1fed6-802f-461e-be62-3f101e951642",
+          "text": "prep/runtime/ros2_env.sh",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "最高优先级外部依赖，7月28日当天发出。参考踩坑库第 0 节\n\n认知更新：比赛板'已预装 M-Robots OS'，预装是否含 ROS/RViz/M-Claw 待老师确认(19f898e6)；若已包含，本任务降级为练手板备份方案",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:02:41.258Z",
+      "updated_at": "2026-08-01T11:14:27.686Z",
+      "completed_at": null,
+      "edges": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ]
+    },
+    "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4": {
+      "id": "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+      "title": "确认机器人本体与执行器控制方案",
+      "description": "官方 14 篇文档均未覆盖执行器控制（GPIO/PWM/CAN/电机），赛前最大未知项。需明确：黑客松机器人本体、电机/舵机接入方式（3588A 的 RS485？外加驱动板？USB？）、传感器清单（摄像头 /dev/video0、雷达等）、控制指令链路（哪个节点写什么设备文件/接口）。通过社区微信群/Discussions/邮件确认，形成书面方案。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "df1ab561-e354-4de7-ad3a-f808be0f07a3",
+          "text": "机器人本体型号与传感器清单确定",
+          "completed": false
+        },
+        {
+          "id": "5ba591ef-3be8-4490-8b51-8f0c8795b770",
+          "text": "执行器硬件接入方案确定（接口类型+驱动方式）",
+          "completed": false
+        },
+        {
+          "id": "7d4122e0-fc4e-4bb9-b17b-cf778f8bb2ba",
+          "text": "板上控制指令链路确定（节点→接口/设备文件）",
+          "completed": false
+        },
+        {
+          "id": "15d00adf-1d9c-4e10-a326-3a1879bfd245",
+          "text": "方案经社区或有经验者确认可行",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "e9288a8f-2973-49ba-b2f0-791e039766c6",
+          "text": "prep/机器人硬件方案.md（本体+传感器+执行器+接线图）",
+          "completed": false
+        },
+        {
+          "id": "4220e712-27ea-4e4d-ba1e-32f2fd00cd97",
+          "text": "prep/社区咨询记录.md",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "dependencies": "现场提供驭系列机器人与深度相机，执行器接口信息需等指导老师答复(19f898e6)后才能最终确定方案",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "阻塞端到端演练。若社区无答案，准备备选（如 USB 转串口驱动板）\n\n认知更新：比赛现场提供驭系列移动机器人+深度相机+3588S 板，本任务重点从'自研硬件接入'变为'确认官方设备的控制接口与驱动节点'",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:02:45.526Z",
+      "updated_at": "2026-08-01T11:14:25.218Z",
+      "completed_at": null,
+      "edges": [
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ]
+    },
+    "fac1fba4-acab-4859-ac64-50057e276e3e": {
+      "id": "fac1fba4-acab-4859-ac64-50057e276e3e",
+      "title": "采购开发板与全部配件",
+      "description": "按准备清单第 1 节采购：开发板（3588A 接口全/3588S 带 6TOPS NPU，若计划编译源码必须 3588A）、USB 公对公数据线（非充电线）、镊子、稳定电源适配器、HDMI 显示器、网线。开鸿商城有官方购买链接。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "b9319b4c-83ab-4b73-b111-2d1937b8f17d",
+          "text": "开发板下单并可于 7 月 31 日前到货",
+          "completed": false
+        },
+        {
+          "id": "a7d7c307-5215-403b-9558-b3d48000246a",
+          "text": "USB 数据线、镊子、电源、HDMI 显示器、网线全部到位",
+          "completed": false
+        },
+        {
+          "id": "193cd31b-06e3-4493-8b25-a13d5acc9c65",
+          "text": "收货时记录原机 SN（拍照存档）",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "747b64b4-521d-493a-8360-9b5b7fed8f76",
+          "text": "prep/采购清单与订单记录.md（订单截图链接与到货确认）",
+          "completed": false
+        },
+        {
+          "id": "3e03bb43-2f62-4dc7-ba2c-2a9a36866738",
+          "text": "prep/SN记录.md（原机 SN 照片与文字记录）",
+          "completed": false
+        },
+        {
+          "id": "3fa1b246-1ca8-4f7c-a3c7-99e4034189a3",
+          "text": "prep/配件核对表.md（数据线/镊子/电源/显示器/网线逐项打勾）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots硬件上手准备清单.md"
+      ],
+      "notes": "物流周期是硬约束，当天完成下单。选型见准备清单\n\n认知更新：比赛现场板为 KaihongBoard-3588S-SBC，自购练手板优先同型号 3588S 保持环境一致（只有打算编译源码才考虑 3588A）",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:03:20.161Z",
+      "updated_at": "2026-08-01T11:14:26.549Z",
+      "completed_at": null,
+      "edges": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ]
+    },
+    "c84ab5f2-3848-4a10-8eb0-83104562d5e4": {
+      "id": "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+      "title": "搭建 Windows 烧录与开发环境",
+      "description": "在 Windows 开发机安装：RKDevTool v2.84 + DriverAssistant v5.1.1 驱动、OpenHarmony SDK 的 HDC 并配 PATH、VSCode 及插件（Python/Pylance/debugpy/rust-analyzer/C++/Remote-SSH）、RealVNC 或 TigerVNC 客户端。全部用准备清单第 2/3/4 节官方链接。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "af7a881c-c8d8-4e5f-9b0b-097629acfa69",
+          "text": "命令行执行 hdc version 输出版本号",
+          "completed": false
+        },
+        {
+          "id": "3d022183-04f8-4888-8c89-0223946034dc",
+          "text": "RKDevTool 可打开且 DriverAssistant 驱动安装完成",
+          "completed": false
+        },
+        {
+          "id": "6abda56d-32b8-451b-a4c4-42e45abe0477",
+          "text": "VSCode 五个插件全部安装",
+          "completed": false
+        },
+        {
+          "id": "7b526b36-b17c-43dd-a138-9f48bc42b0d2",
+          "text": "VNC 客户端可启动",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "56e9fa35-c46c-4a3d-b23d-bbbd834cdf5c",
+          "text": "prep/环境验证.md（hdc version 等 4 项验证输出记录）",
+          "completed": false
+        },
+        {
+          "id": "03c5da27-0152-42be-8848-327c1382217d",
+          "text": "prep/安装包清单.md（各工具版本与安装路径记录）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots硬件上手准备清单.md"
+      ],
+      "notes": "当天可完成，与采购并行",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:03:23.036Z",
+      "updated_at": "2026-07-28T12:03:23.036Z",
+      "completed_at": null,
+      "edges": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ]
+    },
+    "54b337e1-d333-41e0-abaf-72021cecada7": {
+      "id": "54b337e1-d333-41e0-abaf-72021cecada7",
+      "title": "下载固件并完成烧录与 HDC 验证",
+      "description": "从 M-Robots_release 仓库下载与板型号匹配的固件（git clone 必须 git lfs pull，或网页下载 zip），RKDevTool 烧录（镊子短接 GND+LOADER 上电松开，USB 接 OTG 口，升级固件页选 .img），烧录前已备份 SN。烧录后 hdc list targets 验证，并完成 run echo / run python3 --version / run dora up / run roscore 四项板上验证。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "9ef99416-ad39-4788-83e3-d0e424944a55",
+          "text": "RKDevTool 显示下载固件成功且板子自动重启",
+          "completed": false
+        },
+        {
+          "id": "96aaf8f4-e495-47dd-a607-495c9e0e402e",
+          "text": "hdc list targets 能看到设备",
+          "completed": false
+        },
+        {
+          "id": "0af65a73-a136-4a9a-a037-bbcc325bf207",
+          "text": "run python3 --version 输出 3.11.x",
+          "completed": false
+        },
+        {
+          "id": "bbdeab6a-d5f9-44b1-9a1c-9436ebac4e88",
+          "text": "run dora up 和 run roscore 均正常启动",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "7048cff7-7483-43c2-9857-2a782e9f6bee",
+          "text": "prep/烧录记录.md（固件版本、烧录过程、验证输出）",
+          "completed": false
+        },
+        {
+          "id": "eec6586b-0d1b-45d8-b9b1-95423602b711",
+          "text": "prep/runtime/固件.zip（下载的固件存档）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "dependencies": "需要开发板实物(fac1fba4)和已装好的 RKDevTool/HDC 环境(c84ab5f2)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots硬件上手准备清单.md",
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "充电线不识别、需接 OTG 口；失败先烧 Loader 再烧固件（踩坑库第 6/9 节）",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:03:51.749Z",
+      "updated_at": "2026-07-28T12:03:51.749Z",
+      "completed_at": null,
+      "edges": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ]
+    },
+    "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32": {
+      "id": "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+      "title": "配置开发板 WiFi 与网络连接",
+      "description": "sta_test 配网：选网卡 0 → 1 EnableWifi → 4 Scan → 5 GetScanResults → 15 ConnectToDevice（WPA-PSK 选 3，DHCP 选 0）→ 20 GetIpInfo 拿 IP。然后验证 hdc tconn <板子IP>:5555 网络连接可用（机器人动起来后必须脱离 USB 线）。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "23a76cde-310a-4461-8bce-895afd686697",
+          "text": "sta_test 显示 CONNECTED 且 GetIpInfo 有 IP",
+          "completed": false
+        },
+        {
+          "id": "a6153b7c-b196-43cc-bf34-13162738fdd5",
+          "text": "hdc tconn <IP>:5555 连接成功",
+          "completed": false
+        },
+        {
+          "id": "9e1a730b-f251-4274-8101-ca976788f41a",
+          "text": "拔 USB 后 hdc shell 仍可用",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "bad4e0ac-83b8-4442-8da8-3ea964d14e34",
+          "text": "prep/网络配置记录.md（IP、连接命令、验证输出）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dependencies": "需要已完成烧录验证的板子(54b337e1)",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "扫不到 WiFi 先确认路由器 2.4GHz；现场比赛网络未知，同时验证手机热点可用",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:04:35.023Z",
+      "updated_at": "2026-07-28T12:04:35.023Z",
+      "completed_at": null,
+      "edges": [
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ]
+    },
+    "8cbdb193-5f61-4803-913b-6ce904f81f29": {
+      "id": "8cbdb193-5f61-4803-913b-6ce904f81f29",
+      "title": "部署 ROS 运行时与 ros2_env.sh 到开发板",
+      "description": "将申请到的 release.tar.gz 部署到开发板 /data/local/，ros2_env.sh 推送 /data/local/ 并 chmod +x。验证：run rosversion -d 输出 noetic；source ros2_env.sh 后 echo $ROS_DISTRO=jazzy、python3 -c \"import rclpy\" 通过、ros2 doctor 三项检查通过。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "88859f3d-11a4-4be3-a953-06e5e55d9a44",
+          "text": "run rosversion -d 输出 noetic",
+          "completed": false
+        },
+        {
+          "id": "b6612594-9d37-4e31-a8ad-73371f00639f",
+          "text": "source ros2_env.sh 后 import rclpy 成功",
+          "completed": false
+        },
+        {
+          "id": "a483c74b-fa60-47d8-b3b5-34cff2d22716",
+          "text": "ros2 doctor 输出 All 3 checks passed",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "cc05b32e-6826-4537-83f4-7cf3a0f7d609",
+          "text": "prep/运行时部署记录.md（部署路径与验证输出）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dependencies": "需要申请到的运行时包(510a62ee)和已烧录验证的板子(54b337e1)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "dlclose/Signal 6 等退出日志可忽略（踩坑库第 3 节）；板上部署步骤参考 03-安装M-Robots环境.md 验证安装一节",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:04:37.848Z",
+      "updated_at": "2026-07-28T12:04:37.848Z",
+      "completed_at": null,
+      "edges": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ]
+    },
+    "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb": {
+      "id": "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+      "title": "跑通 Dora 双节点数据流 Demo",
+      "description": "按 3-DORA开发/01-节点开发样例.md 跑通样例一（定时器 Hello World）和样例二（sensor 5Hz 采集 + filter 移动平均）。流程：hdc file send 三文件到 /data/local/robot/ → run dora up → run dora start dataflow.yml → 观察输出 → run dora list/stop。同时验证 RUST_LOG=debug 详细日志和 run dora logs。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "be336488-0630-4850-969f-a4889154d9b8",
+          "text": "样例一每秒输出 Hello M-Robots 且 count 递增",
+          "completed": false
+        },
+        {
+          "id": "b5d34586-4f1c-4449-96dc-66a6273f05f8",
+          "text": "样例二 sensor/filter 两端均有输出且滤波值收敛",
+          "completed": false
+        },
+        {
+          "id": "edfee107-bf7f-4036-bbc4-20a588d6d359",
+          "text": "run dora list/check/logs/stop 命令全部用过且正常",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "39d7cb49-8d85-4e58-8122-c8ffbd82acdc",
+          "text": "prep/demo记录/dora样例记录.md（运行输出截图/日志）",
+          "completed": false
+        },
+        {
+          "id": "d05985be-1bf8-4a7f-9122-48cd550bd36a",
+          "text": "prep/demo代码/（hello_node.py、sensor_node.py、filter_node.py、dataflow.yml 本地副本）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dependencies": "需要已烧录验证的板子(54b337e1)，Dora 运行时随固件自带",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "Dora 是 M-Robots 核心框架，黑客松数据流骨架就靠它；固件自带无需申请",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:04:40.746Z",
+      "updated_at": "2026-07-28T12:04:40.746Z",
+      "completed_at": null,
+      "edges": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ]
+    },
+    "83318389-1aa4-4242-b3b2-06a495229ed8": {
+      "id": "83318389-1aa4-4242-b3b2-06a495229ed8",
+      "title": "跑通 ROS1 talker/listener Demo",
+      "description": "按 2-ROS开发/01-ROS1快速入门.md：写 talker.py/listener.py（rospy）→ hdc file send 到 /data/local/robot/ → 三终端分别 run roscore、run python3 talker、run python3 listener → 验证消息收发 → run rosnode list/kill -a。进阶：把两个节点塞进 dataflow.yml 由 Dora 统一管理。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "3925c59c-8602-4391-b5b5-40a43835bf4c",
+          "text": "listener 终端持续打印 receive:Hello M-Robots",
+          "completed": false
+        },
+        {
+          "id": "745463ae-9dfc-4eed-b37d-d7c74a30e579",
+          "text": "run rosnode list 显示 /talker 和 /listener",
+          "completed": false
+        },
+        {
+          "id": "564e9edc-b15f-4211-bf2d-749661e9bfbd",
+          "text": "Dora 管理 ROS 节点的进阶方式也跑通一次",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "1bb7f66e-e43e-4f19-886f-d554697242a7",
+          "text": "prep/demo记录/ros1样例记录.md",
+          "completed": false
+        },
+        {
+          "id": "b8f8d68b-618e-4058-ad4e-fa8cd80b7a99",
+          "text": "prep/demo代码/（talker.py、listener.py ROS1 版本）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dependencies": "需要 ROS1 运行时已部署验证(8cbdb193)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "停止用 Ctrl+Z 或 rosnode kill -a；与 ROS2 脚本不要混用（rospy vs rclpy）",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:33.108Z",
+      "updated_at": "2026-07-28T12:05:33.108Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "408b5848-f541-4ab4-9c74-10fecbf105ed": {
+      "id": "408b5848-f541-4ab4-9c74-10fecbf105ed",
+      "title": "跑通 ROS2 talker/listener Demo",
+      "description": "按 2-ROS开发/02-ROS2快速入门.md：写 rclpy 版 talker.py/listener.py → 推送 /data/local/ → 每个终端 cd /data/local && . ./ros2_env.sh 后运行（无需 roscore）→ 验证收发。日志一律英文防乱码。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "1e67d69d-4d8a-45e5-8836-b2512614a108",
+          "text": "listener 终端持续打印 Received: Hello M-Robots ROS2",
+          "completed": false
+        },
+        {
+          "id": "b8752a96-7aff-4e5a-8c99-b21d7a046c29",
+          "text": "两个新终端各自 source ros2_env.sh 后节点自动互相发现",
+          "completed": false
+        },
+        {
+          "id": "72952f8f-783e-4201-977f-e87c11f94706",
+          "text": "rcl_shutdown/dlclose 等退出日志能识别并忽略",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "4a6da358-b065-4cb6-8ea8-a1cbc2e31a00",
+          "text": "prep/demo记录/ros2样例记录.md",
+          "completed": false
+        },
+        {
+          "id": "0a038cc1-61c0-4ce5-8cf9-48fea60253ec",
+          "text": "prep/demo代码/（talker.py、listener.py ROS2 rclpy 版本）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dependencies": "需要 ROS2 运行时与 ros2_env.sh 已部署验证(8cbdb193)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "每个新 shell 必须重新 source ros2_env.sh，这是最易踩的坑",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:35.862Z",
+      "updated_at": "2026-07-28T12:05:35.862Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "f7e13922-874e-4600-bde2-ace626a98608": {
+      "id": "f7e13922-874e-4600-bde2-ace626a98608",
+      "title": "跑通 RViz X11+VNC 可视化",
+      "description": "验证可视化链路：hdc shell → startxvfb → run x11vnc & → run roscore & → DISPLAY=:0 run rviz；开发机 hdc fport tcp:5900 tcp:5900 后 VNC 客户端连 localhost:5900 看到 RViz 界面。同时试 rqt_graph。含黑屏/连不上排障（pgrep -x Xvfb、netstat 5900）。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "0c141029-3b15-4d6d-b6a8-070dc51be572",
+          "text": "VNC 客户端能看到 RViz 界面",
+          "completed": false
+        },
+        {
+          "id": "ce92df8d-aa40-42bf-b8c6-630f62deb741",
+          "text": "rqt_graph 能显示节点关系图",
+          "completed": false
+        },
+        {
+          "id": "5075a0c3-f4c3-4909-bb6a-c73a40b98fdb",
+          "text": "黑屏/拒绝连接两种故障都演练过排查",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "f5ef7b06-888f-46e9-aa29-3be5775adfac",
+          "text": "prep/demo记录/rviz记录.md（截图与排障记录）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dependencies": "需要含 RViz 的运行时已部署(8cbdb193)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "RViz 需要申请到的运行时中包含；画面卡顿走有线网+降画质",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:38.613Z",
+      "updated_at": "2026-07-28T12:05:38.613Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8": {
+      "id": "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+      "title": "演练部署-调试完整工作流",
+      "description": "把黑客松现场要重复几百次的循环练熟：①debugpy 远程断点（板上 run pip3 install debugpy，launch.json attach，Dora 节点代码内 debugpy.listen 方式也试）②hilog -b d -p off 过滤日志（注意另开干净 shell，与 ros2_env 冲突）③人为制造一次节点崩溃，查 /data/log/faultlog/ 并理解 Dora 自动重启行为 ④run top + hiperf record/report 做一次性能采样 ⑤RUST_LOG=debug 排查一次 dataflow。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "708228fc-f16b-4534-a7c5-09ff321ea6bf",
+          "text": "VSCode 断点命中板上 Python 节点并可单步",
+          "completed": false
+        },
+        {
+          "id": "871bf53c-79f4-4e6e-b973-1866f0b04928",
+          "text": "hilog 过滤到自己节点的 print 输出",
+          "completed": false
+        },
+        {
+          "id": "7a94c273-a5a3-4259-a4c7-d0a033d6e745",
+          "text": "找到并读懂一份真实 cppcrash 日志",
+          "completed": false
+        },
+        {
+          "id": "90d5c8d6-e652-4081-99d6-256e97d674a1",
+          "text": "hiperf 出一份热点报告",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "2979d81c-7489-4cd5-a5da-fc9d57f20c81",
+          "text": "prep/调试演练记录.md（5 项演练的操作与输出）",
+          "completed": false
+        },
+        {
+          "id": "42e4d81f-656b-43b3-b4b1-5d1360f67ce1",
+          "text": "prep/demo代码/.vscode/launch.json（调好的远程调试配置）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "dependencies": "需要 Dora Demo 已在板上运行(8e21f7fb)作为调试对象",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "这是现场开发速度的决定因素，至少完整演练两遍",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:41.220Z",
+      "updated_at": "2026-07-28T12:05:41.220Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "dee7614b-5898-4722-9702-6ff1b7ade5af": {
+      "id": "dee7614b-5898-4722-9702-6ff1b7ade5af",
+      "title": "演练自启服务配置（上电即跑）",
+      "description": "写 /etc/init/robot.cfg（JSON services：run dora up && run dora start dataflow.yml，once:0）→ hdc file send 到 /etc/init/ → chmod 644 → reboot 验证上电自动跑通 dataflow。演练 SELinux 拦截排查（setenforce 0 验证法）。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "6ae8e494-6d9d-4d23-a0c3-f34b2c3b1592",
+          "text": "reboot 后无任何手动操作 dataflow 自动运行",
+          "completed": false
+        },
+        {
+          "id": "b8cf2117-fdb1-460b-801e-af5b998d279c",
+          "text": "节点崩溃后能自动重启（once:0 生效）",
+          "completed": false
+        },
+        {
+          "id": "a639dc4f-7738-4727-9f0c-388b560e9d30",
+          "text": "SELinux 导致服务不启动的排查方法演练过",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "444ac8c4-656d-4ffa-a27e-0b169234da17",
+          "text": "prep/demo代码/robot.cfg（验证过的自启配置）",
+          "completed": false
+        },
+        {
+          "id": "3a5f9174-833d-48df-a017-d2cf39927e10",
+          "text": "prep/自启演练记录.md",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "dependencies": "需要已有可运行的 dataflow(8e21f7fb)作为自启对象",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "答辩演示时插电即跑的关键；importance 慎设 1（崩溃会重启整机）\n\n优先级提升：其交付物 robot.cfg 是现场工具包的打包内容，且答辩演示上电即跑依赖此配置",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:06:20.385Z",
+      "updated_at": "2026-07-28T12:12:17.707Z",
+      "completed_at": null,
+      "edges": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ]
+    },
+    "660145e7-d66d-4d11-abb9-39014e944078": {
+      "id": "660145e7-d66d-4d11-abb9-39014e944078",
+      "title": "端到端 mini 集成演练（传感器到控制指令）",
+      "description": "按确认的机器人硬件方案，跑通一次玩具级全流程：传感器数据采集节点（摄像头 /dev/video0 或模拟数据）→ 感知/滤波节点 → 决策状态机节点 → 控制指令节点 → 实际下发到执行器接口（或先打日志验证链路）。用 Dora dataflow 串联，全程网络连接（hdc tconn）不拖 USB 线。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "966e5f2f-807c-49dc-9ad4-c09460d2d744",
+          "text": "dataflow 中至少 3 个节点串联且数据逐段流动（dora logs 可见）",
+          "completed": false
+        },
+        {
+          "id": "e213ad69-cdf5-4d1d-acba-7b876f848d3f",
+          "text": "控制指令到达执行器接口层（真实动作或接口日志）",
+          "completed": false
+        },
+        {
+          "id": "8c982d87-748d-46d9-95ef-b66856371633",
+          "text": "全流程在 WiFi 网络连接下运行（无 USB  tether）",
+          "completed": false
+        },
+        {
+          "id": "9f9ea269-a6bd-4a7a-822f-428b6b651dc1",
+          "text": "从冷启动到任务跑通用时 < 10 分钟",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "6c9c80b5-d359-4ada-889a-8246b33c6cde",
+          "text": "prep/demo代码/mini-pipeline/（各节点 .py + dataflow.yml）",
+          "completed": false
+        },
+        {
+          "id": "b560947e-52ee-4ef5-b262-04f3a102f2b7",
+          "text": "prep/端到端演练记录.md（含问题清单与解决记录）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "dependencies": "需要 Dora 部署链路熟练(8e21f7fb)和已确认的执行器接入方案(fd0eacbf)\n端到端验收标准要求全流程在 WiFi 网络下运行（无 USB tether），需要配网任务(126b10ac)产出的网络环境与 IP 记录",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "这是黑客松赛题的通用骨架，赛题公布后可在此骨架上换算法",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:06:23.153Z",
+      "updated_at": "2026-07-28T12:11:45.793Z",
+      "completed_at": null,
+      "edges": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "b254342b-dad0-4c58-9ab8-17f61355c201"
+      ]
+    },
+    "f43eb18e-7961-40f7-8e21-97225d08c8f2": {
+      "id": "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+      "title": "打包黑客松现场工具包",
+      "description": "赛前最后一步，把现场要用的东西做成离线包：固件 zip、release.tar.gz、ros2_env.sh、RKDevTool+驱动+HDC 安装包、VSCode 安装包与插件 vsix、demo 代码副本、robot.cfg、两份 md 手册、现场应急 checklist（烧录失败/连不上板/无网环境应对）。现场网络不可控，一切按离线可用准备。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "c75ef93a-ff96-4a77-8f27-1d47bb3e4d3f",
+          "text": "U盘含全部安装包与固件（断网可重装环境）",
+          "completed": false
+        },
+        {
+          "id": "1cd17586-97c5-45f3-8a4b-cbf76ba94ac4",
+          "text": "demo 代码与配置文件副本齐（可直接 push 上板）",
+          "completed": false
+        },
+        {
+          "id": "b8e15fa4-8b11-4b4e-b0cb-06f810746251",
+          "text": "应急 checklist 覆盖烧录失败/连接失败/无网三场景",
+          "completed": false
+        },
+        {
+          "id": "b2969b07-c285-45e0-b35d-d564dac6c2e3",
+          "text": "两份手册打印或离线可读",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "97f1ae9b-2101-4680-ac29-1d2f9fb04431",
+          "text": "prep/现场应急checklist.md",
+          "completed": false
+        },
+        {
+          "id": "5609962a-7f7c-4506-ae72-19126a1a6bad",
+          "text": "prep/工具包内容清单.md（U盘目录结构与逐项核对表）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "660145e7-d66d-4d11-abb9-39014e944078",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "dependencies": "需要端到端演练完成(660145e7)后，把验证过的所有产物定版打包\n现场工具包需打包验证过的 robot.cfg 自启配置，该文件是自启服务演练(dee7614b)的交付物",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "8月2日晚出发前最后核对；假设现场只有不稳定 WiFi\n\n认知更新：工具包需增加——GitHub 仓库离线可用（提前 clone 到本地）、路演 PPT 模板与视频工具、五卡打印件、降级演示预案",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:07:06.873Z",
+      "updated_at": "2026-08-01T11:14:28.940Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "0df5a6c7-44ab-4996-b7f2-bdadc76b4783": {
+      "id": "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+      "title": "选题预研：产出 2-3 个候选方案",
+      "description": "赛题为开放命题（现场自主搭建场景），评分 20 分在场景价值。从 8 个参考方向（巡检/清洁识别/仓储点检/实验室安全/导览交互/应急搜寻/科普演示/自定义）中选 2-3 个贴合现场物料（障碍物、点位标识、目标物、二维码、深度相机）的候选，每个完成：一句话方案（用XX帮XX解决XX）、目标用户与场景假设、MVP 三档切分（必做/有了更好/别做）、M-Claw 与软总线的结合点。用官方问题定义卡+跨域视角卡方法。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "e29df243-193e-44f9-a7a3-493265d86b97",
+          "text": "2-3 个候选方案各有一句话定位和目标用户",
+          "completed": false
+        },
+        {
+          "id": "5ae946dc-1c7e-470b-a2d6-97d6092a92a9",
+          "text": "每个方案有 MVP 三档切分清单",
+          "completed": false
+        },
+        {
+          "id": "4cdef749-26b2-419a-9674-413195984805",
+          "text": "每个方案标明 M-Claw 和软总线的结合点（对应 25 分评分项）",
+          "completed": false
+        },
+        {
+          "id": "ee13a3a1-718a-4d90-af2f-86116772b34e",
+          "text": "团队 5 人对候选方案评审并排序",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "d7457471-30bb-4db5-a420-d761095ae6a3",
+          "text": "prep/选题/候选方案.md（2-3 个方案的一句话定位+MVP切分+能力结合点）",
+          "completed": false
+        },
+        {
+          "id": "d408660b-f74b-411f-b5fc-4cf0b3ecdba1",
+          "text": "prep/选题/问题定义卡.md（按官方卡片格式填写首选方案）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "AIY比赛认知.md"
+      ],
+      "notes": "8月3日前完成；最终选题留弹性，现场根据实际物料调整。方法见 AIY文件/markdown/开发1/开发2",
+      "c7_verified": [],
+      "created_at": "2026-08-01T11:12:48.416Z",
+      "updated_at": "2026-08-01T11:12:48.416Z",
+      "completed_at": null,
+      "edges": [
+        "d446aec8-4832-4713-855b-e51a35017c3e",
+        "b254342b-dad0-4c58-9ab8-17f61355c201"
+      ]
+    },
+    "19f898e6-cb08-496e-afab-963c4e9688b4": {
+      "id": "19f898e6-cb08-496e-afab-963c4e9688b4",
+      "title": "向指导老师确认 Top 10 技术问题",
+      "description": "把 Top 10 问题清单发给赛事指导老师确认：①比赛板预装内容（ROS1/ROS2/RViz/M-Claw 运行时、ros2_env.sh）②M-Claw 调用方式/文档/离线可用性 ③驭系列机器人控制接口与驱动节点 ④深度相机型号与数据接入 ⑤软总线组网与可用设备数量 ⑥可选传感器清单 ⑦现场网络与开发机安排 ⑧板子权限与恢复镜像 ⑨NPU 可用性 ⑩ GitHub 提交通道形式。附：Docker 角色。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "536e096e-6d61-46e3-902a-1be15fdd85e6",
+          "text": "问题清单已发送给指导老师",
+          "completed": false
+        },
+        {
+          "id": "fdc22de6-2c85-46f6-b0e3-b9f63583948f",
+          "text": "Top 3 关键问题（预装内容/M-Claw/机器人接口）获得明确答复",
+          "completed": false
+        },
+        {
+          "id": "6ca48f7c-220b-43e6-9841-4eba569b9b9e",
+          "text": "全部答复整理归档",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "a83ea9fb-5a0f-4739-a81d-1ed8c633b8df",
+          "text": "prep/老师确认记录.md（问题清单与逐项答复）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "AIY比赛认知.md"
+      ],
+      "notes": "阻塞执行器方案任务；优先问①②③。问题清单详见对话记录与 AIY比赛认知.md 第 10 节",
+      "c7_verified": [],
+      "created_at": "2026-08-01T11:12:49.854Z",
+      "updated_at": "2026-08-01T11:12:49.854Z",
+      "completed_at": null,
+      "edges": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ]
+    },
+    "5c18397c-ab19-468c-8945-8ef45add64f2": {
+      "id": "5c18397c-ab19-468c-8945-8ef45add64f2",
+      "title": "准备 GitHub 仓库与 git 协作流程",
+      "description": "规则要求作品代码上传指定 GitHub 仓库。赛前准备：注册/确认全员 GitHub 账号、建比赛仓库（或确认组织分配）、定分支与提交策略（main 保护+功能分支+PR）、全员演练 clone/commit/push/PR 全流程一次、配置 .gitignore 与 README 骨架。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "7f15109d-f6bb-44a9-825a-9c3f3f82119b",
+          "text": "比赛仓库建立且 5 名组员均有提交权限",
+          "completed": false
+        },
+        {
+          "id": "5204a32f-bd6b-4870-8680-e881efbabc83",
+          "text": "全员各自成功完成一次 push 或 PR",
+          "completed": false
+        },
+        {
+          "id": "1996ad57-cdf2-481f-8489-f027bc25cc06",
+          "text": "README 骨架与 .gitignore 就位",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "b3180c93-2d4f-4daa-8b99-74f901814aa4",
+          "text": "GitHub 比赛仓库（含 README 骨架与 .gitignore）",
+          "completed": false
+        },
+        {
+          "id": "f346bc37-7735-40f1-aee7-782f0c06e54d",
+          "text": "prep/git协作约定.md（分支策略与提交规范）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "36 小时内没有时间现场学 git，必须赛前全员过关",
+      "c7_verified": [],
+      "created_at": "2026-08-01T11:12:51.393Z",
+      "updated_at": "2026-08-01T11:12:51.393Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "d446aec8-4832-4713-855b-e51a35017c3e": {
+      "id": "d446aec8-4832-4713-855b-e51a35017c3e",
+      "title": "准备交付物模板与路演素材",
+      "description": "评分中演示效果 20 分+文档营销 15 分。赛前备好：①路演 PPT 模板（三问：为谁做/什么场景/解决什么问题 + AI 环节说明 + 输入→AI处理→输出闭环 + 系统架构页）②产品说明文档模板（功能/技术架构/使用方式）③演示视频录制工具链（录屏软件+剪辑流程，≤3 分钟）④路演排练计划（10 分钟四件事：为什么做/演示/怎么做/亮点 + 5 分钟答辩 Q&A 预演）。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "8c4ca263-7fc3-42df-9d2d-77f15b4d2e86",
+          "text": "PPT 模板完成且三问与 AI 环节页齐全",
+          "completed": false
+        },
+        {
+          "id": "2e337363-a472-485a-aa25-88208e117544",
+          "text": "产品说明文档模板完成",
+          "completed": false
+        },
+        {
+          "id": "70901303-614b-420d-8aa0-94a36634fe88",
+          "text": "录制一段 1 分钟测试视频验证工具链",
+          "completed": false
+        },
+        {
+          "id": "85cb6581-8786-460a-bdba-cc45e7849f34",
+          "text": "Q&A 预判问题清单 ≥ 10 条",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "a7a8ab0c-da0d-4756-a625-ca9a399de0e0",
+          "text": "prep/路演/PPT模板.pptx",
+          "completed": false
+        },
+        {
+          "id": "448defad-bac4-4686-89fa-f14338e1ce19",
+          "text": "prep/路演/产品说明文档模板.md",
+          "completed": false
+        },
+        {
+          "id": "4e0f6e16-07d2-4fe9-8b54-3ca1837e8d4b",
+          "text": "prep/路演/QA预判清单.md",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783"
+      ],
+      "dependencies": "PPT 和视频内容需要选题方向(0df5a6c7)确定后才有针对性",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "周三 17:00-19:00 是官方路演材料时间，模板赛前做完现场只填内容",
+      "c7_verified": [],
+      "created_at": "2026-08-01T11:13:33.775Z",
+      "updated_at": "2026-08-01T11:13:33.775Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "b254342b-dad0-4c58-9ab8-17f61355c201": {
+      "id": "b254342b-dad0-4c58-9ab8-17f61355c201",
+      "title": "设计降级演示预案（三档备份）",
+      "description": "官方明确允许模拟/降级演示。为核心链路每个环节设计三档：真跑（正常演示）→ 模拟（脚本造数据/录屏播放）→ 兜底（演示视频+设计思路讲解）。逐环节列出失效触发条件与切换 SOP，确保任何单点故障（板子挂、网络断、传感器失灵）都不至于演示崩盘。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "b60ee13a-a8e6-43b6-8dac-58f24c1cca43",
+          "text": "核心链路每个环节都有三档预案",
+          "completed": false
+        },
+        {
+          "id": "d5353ba7-32be-46d7-9718-b0fd7e110e2b",
+          "text": "每档的切换触发条件和操作步骤明确",
+          "completed": false
+        },
+        {
+          "id": "4f148ba7-f0b5-4051-bac9-78c7744cf280",
+          "text": "兜底演示视频脚本完成（现场录制后 10 分钟内可出片）",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "cdff721c-334b-475d-acd9-49a9807e3093",
+          "text": "prep/降级演示预案.md（分环节三档表+切换SOP）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "dependencies": "预案要基于选定方案(0df5a6c7)和端到端演练(660145e7)中暴露的真实故障点来设计",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "评审看的是逻辑成立+说服力，不是必须全真跑；预案本身就是系统设计能力的体现",
+      "c7_verified": [],
+      "created_at": "2026-08-01T11:13:35.382Z",
+      "updated_at": "2026-08-01T11:13:35.382Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "54ddefdd-a81e-4255-9747-835d42ca2cc6": {
+      "id": "54ddefdd-a81e-4255-9747-835d42ca2cc6",
+      "title": "学习官方五卡方法论并打印备现场",
+      "description": "过一遍 AIY 官方开发五卡（AIY文件/markdown/ 开发1-5）：问题定义卡（Day1 用）、跨域视角卡、用户体验路径卡（路演演示脚本）、协作分工卡（5 人分工对齐）、迭代反思卡（Day1/Day2 晚各一次微反思）。打印空白卡片带现场，全队统一使用节奏。",
+      "status": "ready",
+      "priority": "later",
+      "success_criteria": [
+        {
+          "id": "59a78107-66e0-4cd4-a873-65c33e6a02cf",
+          "text": "全员知晓五卡各自的使用时机",
+          "completed": false
+        },
+        {
+          "id": "13e3fcb9-b4e4-48e7-8ec3-0d979f89bc7e",
+          "text": "空白卡片打印装袋（每类至少 2 份）",
+          "completed": false
+        },
+        {
+          "id": "49fb9efe-cb76-40bf-8e97-ae6b7cd922a5",
+          "text": "协作分工卡预填一版（与 octie 分工一致）",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "d4fb457d-7736-4438-951e-9b61ec09b447",
+          "text": "prep/协作分工卡预填版.md",
+          "completed": false
+        },
+        {
+          "id": "7bab5e5a-b594-4329-b07c-4d15cd2d3ae9",
+          "text": "prep/五卡使用节奏说明.md（哪张卡在哪个时间点用）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "AIY比赛认知.md"
+      ],
+      "notes": "成本低收益高；分工卡正好落地 5 人分工方案",
+      "c7_verified": [],
+      "created_at": "2026-08-01T11:13:55.042Z",
+      "updated_at": "2026-08-01T11:13:55.042Z",
+      "completed_at": null,
+      "edges": []
+    }
+  },
+  "indexes": {
+    "byStatus": {
+      "ready": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "19f898e6-cb08-496e-afab-963c4e9688b4",
+        "5c18397c-ab19-468c-8945-8ef45add64f2",
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ],
+      "in_progress": [],
+      "in_review": [],
+      "completed": [],
+      "blocked": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "660145e7-d66d-4d11-abb9-39014e944078",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "d446aec8-4832-4713-855b-e51a35017c3e",
+        "b254342b-dad0-4c58-9ab8-17f61355c201"
+      ]
+    },
+    "byPriority": {
+      "top": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "19f898e6-cb08-496e-afab-963c4e9688b4",
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "second": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "660145e7-d66d-4d11-abb9-39014e944078",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "d446aec8-4832-4713-855b-e51a35017c3e",
+        "b254342b-dad0-4c58-9ab8-17f61355c201"
+      ],
+      "later": [
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ]
+    },
+    "rootTasks": [
+      "510a62ee-cf26-48f3-abad-1db295c723ab",
+      "fac1fba4-acab-4859-ac64-50057e276e3e",
+      "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+      "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+      "19f898e6-cb08-496e-afab-963c4e9688b4",
+      "5c18397c-ab19-468c-8945-8ef45add64f2",
+      "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+    ],
+    "orphanTasks": [
+      "5c18397c-ab19-468c-8945-8ef45add64f2",
+      "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+    ],
+    "searchText": {
+      "0": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "1": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ],
+      "2": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783"
+      ],
+      "3": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "4": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "5": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "d446aec8-4832-4713-855b-e51a35017c3e",
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ],
+      "6": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "7": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "8": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783"
+      ],
+      "9": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "10": [
+        "19f898e6-cb08-496e-afab-963c4e9688b4",
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "14": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "15": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "17": [
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "19": [
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "20": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "28": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "36": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "84": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "644": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "5555": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "5900": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "ros": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "rviz": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "m": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "robotsos": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "kaihong": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "com": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "ros1": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "noetic": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "ros2": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "jazzy": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "release": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "tar": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "gz": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "ros2_env": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "sh": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "robots": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "os": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "claw": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "19f898e6": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "gpio": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "pwm": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "can": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "3588a": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "rs485": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "usb": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "dev": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "video0": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "discussions": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "3588s": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "6tops": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "npu": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "hdmi": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "kaihongboard": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "sbc": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "windows": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "rkdevtool": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "v2": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "driverassistant": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "v5": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "openharmony": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "sdk": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "hdc": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "660145e7-d66d-4d11-abb9-39014e944078",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "path": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "vscode": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "python": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "pylance": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "debugpy": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "rust": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "analyzer": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "c": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "remote": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "ssh": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "realvnc": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "tigervnc": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "robots_release": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "git": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "clone": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "lfs": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "pull": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "zip": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "gnd": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "loader": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "otg": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "img": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "sn": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "list": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "targets": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "run": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "echo": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "python3": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "version": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dora": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "up": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "roscore": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "wifi": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "sta_test": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "enablewifi": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "scan": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "getscanresults": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "connecttodevice": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "wpa": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "psk": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "dhcp": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "getipinfo": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "ip": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "tconn": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "4ghz": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "data": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "local": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "chmod": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "x": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "rosversion": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "d": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "source": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "ros_distro": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "import": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "rclpy": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "doctor": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dlclose": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "signal": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "03": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "md": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "demo": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "01": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "hello": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "world": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "sensor": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "5hz": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "filter": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "file": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "send": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "robot": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "start": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "dataflow": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "yml": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "stop": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "rust_log": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "debug": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "logs": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "talker": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "listener": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "py": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "rospy": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "rosnode": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "kill": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "a": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "ctrl": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "z": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "vs": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "02": [
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "cd": [
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "shell": [
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "x11": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "vnc": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "startxvfb": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "x11vnc": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "display": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "fport": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "tcp": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "localhost": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "rqt_graph": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "pgrep": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "xvfb": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "netstat": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "pip3": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "install": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "launch": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "json": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "attach": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "listen": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "hilog": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "b": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "p": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "off": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "log": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "faultlog": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "top": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "hiperf": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "record": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "report": [
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8"
+      ],
+      "etc": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "init": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "cfg": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af",
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "services": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "once": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "reboot": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "selinux": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "setenforce": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "importance": [
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "mini": [
+        "660145e7-d66d-4d11-abb9-39014e944078"
+      ],
+      "vsix": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "checklist": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2"
+      ],
+      "github": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "19f898e6-cb08-496e-afab-963c4e9688b4",
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "ppt": [
+        "f43eb18e-7961-40f7-8e21-97225d08c8f2",
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "xx": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783"
+      ],
+      "mvp": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783"
+      ],
+      "aiy": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "19f898e6-cb08-496e-afab-963c4e9688b4",
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ],
+      "markdown": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ],
+      "docker": [
+        "19f898e6-cb08-496e-afab-963c4e9688b4"
+      ],
+      "main": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "pr": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "commit": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "push": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "gitignore": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "readme": [
+        "5c18397c-ab19-468c-8945-8ef45add64f2"
+      ],
+      "ai": [
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "q": [
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "00": [
+        "d446aec8-4832-4713-855b-e51a35017c3e"
+      ],
+      "sop": [
+        "b254342b-dad0-4c58-9ab8-17f61355c201"
+      ],
+      "day1": [
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ],
+      "day2": [
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ]
+    },
+    "files": {
+      "M-Robots开发踩坑与参考库.md": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608",
+        "2f09d10b-7e14-4ec4-872d-3d6a43c5c6a8",
+        "dee7614b-5898-4722-9702-6ff1b7ade5af"
+      ],
+      "M-Robots硬件上手准备清单.md": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "AIY比赛认知.md": [
+        "0df5a6c7-44ab-4996-b7f2-bdadc76b4783",
+        "19f898e6-cb08-496e-afab-963c4e9688b4",
+        "54ddefdd-a81e-4255-9747-835d42ca2cc6"
+      ]
+    }
+  }
+}

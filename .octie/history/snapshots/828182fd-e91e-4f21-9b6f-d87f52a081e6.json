@@ -1,0 +1,30 @@
+{
+  "$schema": "https://octie.dev/schemas/project-v1.json",
+  "version": "1.0.0",
+  "format": "octie-project",
+  "metadata": {
+    "project_name": "mrobots-hackathon-prep",
+    "version": "1.0.0",
+    "created_at": "2026-07-28T12:00:17.100Z",
+    "updated_at": "2026-07-28T12:00:17.101Z"
+  },
+  "tasks": {},
+  "indexes": {
+    "byStatus": {
+      "ready": [],
+      "in_progress": [],
+      "in_review": [],
+      "completed": [],
+      "blocked": []
+    },
+    "byPriority": {
+      "top": [],
+      "second": [],
+      "later": []
+    },
+    "rootTasks": [],
+    "orphanTasks": [],
+    "searchText": {},
+    "files": {}
+  }
+}

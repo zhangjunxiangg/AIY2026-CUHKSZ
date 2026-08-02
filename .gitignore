@@ -1,0 +1,12 @@
+# 环境与缓存（不入库）
+.venv/
+_audit-cache/
+.codegraph/
+guizang-ppt-skill/
+ppt/
+node_modules/
+
+# 大文件原件（>3MB，按需决定是否入库）
+AIY黑客松x深开鸿赛题宣讲.pptx
+AIY黑客松x深开鸿赛题宣讲.pdf
+AIY黑客松x深开鸿赛题宣讲.log

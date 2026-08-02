@@ -1,0 +1,1224 @@
+{
+  "$schema": "https://octie.dev/schemas/project-v1.json",
+  "version": "1.0.0",
+  "format": "octie-project",
+  "metadata": {
+    "project_name": "mrobots-hackathon-prep",
+    "version": "1.0.0",
+    "created_at": "2026-07-28T12:00:17.100Z",
+    "updated_at": "2026-07-28T12:05:38.616Z"
+  },
+  "tasks": {
+    "510a62ee-cf26-48f3-abad-1db295c723ab": {
+      "id": "510a62ee-cf26-48f3-abad-1db295c723ab",
+      "title": "向深开鸿申请 ROS/RViz 运行时与环境脚本",
+      "description": "邮件 M-RobotsOS@kaihong.com 并加入社区微信群，申请：含 ROS1(noetic)+ROS2(Jazzy) 运行时的 release.tar.gz、ros2_env.sh 脚本、含 RViz 的运行环境。官方文档明确这些不是开发板自带必须申请，等待外部响应周期不可控，需第一天就发出。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "dc2b4c8c-8d4c-43a8-a215-c4099a46e8d4",
+          "text": "申请邮件已发送（含 4 项申请内容清单）",
+          "completed": false
+        },
+        {
+          "id": "5161cebe-6f20-4fde-9aa1-db790050586d",
+          "text": "已加入 M-Robots 社区微信群或关注 GitCode Discussions",
+          "completed": false
+        },
+        {
+          "id": "05648ba1-f5a6-468d-8a5f-a119b8507421",
+          "text": "拿到含 ROS1+ROS2 的 release.tar.gz 与 ros2_env.sh",
+          "completed": false
+        },
+        {
+          "id": "82370e00-de5c-4955-ba9e-2e6746d6ea9b",
+          "text": "确认 RViz 在所获运行环境中可用",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "cba6e1b0-29e3-4235-a1b3-dc4370e87176",
+          "text": "prep/申请与回复记录.md（邮件原文与回复存档）",
+          "completed": false
+        },
+        {
+          "id": "686f17c6-126e-4484-b0e4-1788a1a59777",
+          "text": "prep/runtime/release.tar.gz（含 ROS1+ROS2 运行时）",
+          "completed": false
+        },
+        {
+          "id": "8eb1fed6-802f-461e-be62-3f101e951642",
+          "text": "prep/runtime/ros2_env.sh",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "最高优先级外部依赖，7月28日当天发出。参考踩坑库第 0 节",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:02:41.258Z",
+      "updated_at": "2026-07-28T12:02:41.258Z",
+      "completed_at": null,
+      "edges": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ]
+    },
+    "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4": {
+      "id": "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+      "title": "确认机器人本体与执行器控制方案",
+      "description": "官方 14 篇文档均未覆盖执行器控制（GPIO/PWM/CAN/电机），赛前最大未知项。需明确：黑客松机器人本体、电机/舵机接入方式（3588A 的 RS485？外加驱动板？USB？）、传感器清单（摄像头 /dev/video0、雷达等）、控制指令链路（哪个节点写什么设备文件/接口）。通过社区微信群/Discussions/邮件确认，形成书面方案。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "df1ab561-e354-4de7-ad3a-f808be0f07a3",
+          "text": "机器人本体型号与传感器清单确定",
+          "completed": false
+        },
+        {
+          "id": "5ba591ef-3be8-4490-8b51-8f0c8795b770",
+          "text": "执行器硬件接入方案确定（接口类型+驱动方式）",
+          "completed": false
+        },
+        {
+          "id": "7d4122e0-fc4e-4bb9-b17b-cf778f8bb2ba",
+          "text": "板上控制指令链路确定（节点→接口/设备文件）",
+          "completed": false
+        },
+        {
+          "id": "15d00adf-1d9c-4e10-a326-3a1879bfd245",
+          "text": "方案经社区或有经验者确认可行",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "e9288a8f-2973-49ba-b2f0-791e039766c6",
+          "text": "prep/机器人硬件方案.md（本体+传感器+执行器+接线图）",
+          "completed": false
+        },
+        {
+          "id": "4220e712-27ea-4e4d-ba1e-32f2fd00cd97",
+          "text": "prep/社区咨询记录.md",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "阻塞端到端演练。若社区无答案，准备备选（如 USB 转串口驱动板）",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:02:45.526Z",
+      "updated_at": "2026-07-28T12:02:45.526Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "fac1fba4-acab-4859-ac64-50057e276e3e": {
+      "id": "fac1fba4-acab-4859-ac64-50057e276e3e",
+      "title": "采购开发板与全部配件",
+      "description": "按准备清单第 1 节采购：开发板（3588A 接口全/3588S 带 6TOPS NPU，若计划编译源码必须 3588A）、USB 公对公数据线（非充电线）、镊子、稳定电源适配器、HDMI 显示器、网线。开鸿商城有官方购买链接。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "b9319b4c-83ab-4b73-b111-2d1937b8f17d",
+          "text": "开发板下单并可于 7 月 31 日前到货",
+          "completed": false
+        },
+        {
+          "id": "a7d7c307-5215-403b-9558-b3d48000246a",
+          "text": "USB 数据线、镊子、电源、HDMI 显示器、网线全部到位",
+          "completed": false
+        },
+        {
+          "id": "193cd31b-06e3-4493-8b25-a13d5acc9c65",
+          "text": "收货时记录原机 SN（拍照存档）",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "747b64b4-521d-493a-8360-9b5b7fed8f76",
+          "text": "prep/采购清单与订单记录.md（订单截图链接与到货确认）",
+          "completed": false
+        },
+        {
+          "id": "3e03bb43-2f62-4dc7-ba2c-2a9a36866738",
+          "text": "prep/SN记录.md（原机 SN 照片与文字记录）",
+          "completed": false
+        },
+        {
+          "id": "3fa1b246-1ca8-4f7c-a3c7-99e4034189a3",
+          "text": "prep/配件核对表.md（数据线/镊子/电源/显示器/网线逐项打勾）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots硬件上手准备清单.md"
+      ],
+      "notes": "物流周期是硬约束，当天完成下单。选型见准备清单",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:03:20.161Z",
+      "updated_at": "2026-07-28T12:03:20.161Z",
+      "completed_at": null,
+      "edges": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ]
+    },
+    "c84ab5f2-3848-4a10-8eb0-83104562d5e4": {
+      "id": "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+      "title": "搭建 Windows 烧录与开发环境",
+      "description": "在 Windows 开发机安装：RKDevTool v2.84 + DriverAssistant v5.1.1 驱动、OpenHarmony SDK 的 HDC 并配 PATH、VSCode 及插件（Python/Pylance/debugpy/rust-analyzer/C++/Remote-SSH）、RealVNC 或 TigerVNC 客户端。全部用准备清单第 2/3/4 节官方链接。",
+      "status": "ready",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "af7a881c-c8d8-4e5f-9b0b-097629acfa69",
+          "text": "命令行执行 hdc version 输出版本号",
+          "completed": false
+        },
+        {
+          "id": "3d022183-04f8-4888-8c89-0223946034dc",
+          "text": "RKDevTool 可打开且 DriverAssistant 驱动安装完成",
+          "completed": false
+        },
+        {
+          "id": "6abda56d-32b8-451b-a4c4-42e45abe0477",
+          "text": "VSCode 五个插件全部安装",
+          "completed": false
+        },
+        {
+          "id": "7b526b36-b17c-43dd-a138-9f48bc42b0d2",
+          "text": "VNC 客户端可启动",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "56e9fa35-c46c-4a3d-b23d-bbbd834cdf5c",
+          "text": "prep/环境验证.md（hdc version 等 4 项验证输出记录）",
+          "completed": false
+        },
+        {
+          "id": "03c5da27-0152-42be-8848-327c1382217d",
+          "text": "prep/安装包清单.md（各工具版本与安装路径记录）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [],
+      "dependencies": "",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots硬件上手准备清单.md"
+      ],
+      "notes": "当天可完成，与采购并行",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:03:23.036Z",
+      "updated_at": "2026-07-28T12:03:23.036Z",
+      "completed_at": null,
+      "edges": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ]
+    },
+    "54b337e1-d333-41e0-abaf-72021cecada7": {
+      "id": "54b337e1-d333-41e0-abaf-72021cecada7",
+      "title": "下载固件并完成烧录与 HDC 验证",
+      "description": "从 M-Robots_release 仓库下载与板型号匹配的固件（git clone 必须 git lfs pull，或网页下载 zip），RKDevTool 烧录（镊子短接 GND+LOADER 上电松开，USB 接 OTG 口，升级固件页选 .img），烧录前已备份 SN。烧录后 hdc list targets 验证，并完成 run echo / run python3 --version / run dora up / run roscore 四项板上验证。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "9ef99416-ad39-4788-83e3-d0e424944a55",
+          "text": "RKDevTool 显示下载固件成功且板子自动重启",
+          "completed": false
+        },
+        {
+          "id": "96aaf8f4-e495-47dd-a607-495c9e0e402e",
+          "text": "hdc list targets 能看到设备",
+          "completed": false
+        },
+        {
+          "id": "0af65a73-a136-4a9a-a037-bbcc325bf207",
+          "text": "run python3 --version 输出 3.11.x",
+          "completed": false
+        },
+        {
+          "id": "bbdeab6a-d5f9-44b1-9a1c-9436ebac4e88",
+          "text": "run dora up 和 run roscore 均正常启动",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "7048cff7-7483-43c2-9857-2a782e9f6bee",
+          "text": "prep/烧录记录.md（固件版本、烧录过程、验证输出）",
+          "completed": false
+        },
+        {
+          "id": "eec6586b-0d1b-45d8-b9b1-95423602b711",
+          "text": "prep/runtime/固件.zip（下载的固件存档）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "dependencies": "需要开发板实物(fac1fba4)和已装好的 RKDevTool/HDC 环境(c84ab5f2)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots硬件上手准备清单.md",
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "充电线不识别、需接 OTG 口；失败先烧 Loader 再烧固件（踩坑库第 6/9 节）",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:03:51.749Z",
+      "updated_at": "2026-07-28T12:03:51.749Z",
+      "completed_at": null,
+      "edges": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ]
+    },
+    "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32": {
+      "id": "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+      "title": "配置开发板 WiFi 与网络连接",
+      "description": "sta_test 配网：选网卡 0 → 1 EnableWifi → 4 Scan → 5 GetScanResults → 15 ConnectToDevice（WPA-PSK 选 3，DHCP 选 0）→ 20 GetIpInfo 拿 IP。然后验证 hdc tconn <板子IP>:5555 网络连接可用（机器人动起来后必须脱离 USB 线）。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "23a76cde-310a-4461-8bce-895afd686697",
+          "text": "sta_test 显示 CONNECTED 且 GetIpInfo 有 IP",
+          "completed": false
+        },
+        {
+          "id": "a6153b7c-b196-43cc-bf34-13162738fdd5",
+          "text": "hdc tconn <IP>:5555 连接成功",
+          "completed": false
+        },
+        {
+          "id": "9e1a730b-f251-4274-8101-ca976788f41a",
+          "text": "拔 USB 后 hdc shell 仍可用",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "bad4e0ac-83b8-4442-8da8-3ea964d14e34",
+          "text": "prep/网络配置记录.md（IP、连接命令、验证输出）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dependencies": "需要已完成烧录验证的板子(54b337e1)",
+      "sub_items": [],
+      "related_files": [],
+      "notes": "扫不到 WiFi 先确认路由器 2.4GHz；现场比赛网络未知，同时验证手机热点可用",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:04:35.023Z",
+      "updated_at": "2026-07-28T12:04:35.023Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "8cbdb193-5f61-4803-913b-6ce904f81f29": {
+      "id": "8cbdb193-5f61-4803-913b-6ce904f81f29",
+      "title": "部署 ROS 运行时与 ros2_env.sh 到开发板",
+      "description": "将申请到的 release.tar.gz 部署到开发板 /data/local/，ros2_env.sh 推送 /data/local/ 并 chmod +x。验证：run rosversion -d 输出 noetic；source ros2_env.sh 后 echo $ROS_DISTRO=jazzy、python3 -c \"import rclpy\" 通过、ros2 doctor 三项检查通过。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "88859f3d-11a4-4be3-a953-06e5e55d9a44",
+          "text": "run rosversion -d 输出 noetic",
+          "completed": false
+        },
+        {
+          "id": "b6612594-9d37-4e31-a8ad-73371f00639f",
+          "text": "source ros2_env.sh 后 import rclpy 成功",
+          "completed": false
+        },
+        {
+          "id": "a483c74b-fa60-47d8-b3b5-34cff2d22716",
+          "text": "ros2 doctor 输出 All 3 checks passed",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "cc05b32e-6826-4537-83f4-7cf3a0f7d609",
+          "text": "prep/运行时部署记录.md（部署路径与验证输出）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dependencies": "需要申请到的运行时包(510a62ee)和已烧录验证的板子(54b337e1)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "dlclose/Signal 6 等退出日志可忽略（踩坑库第 3 节）；板上部署步骤参考 03-安装M-Robots环境.md 验证安装一节",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:04:37.848Z",
+      "updated_at": "2026-07-28T12:04:37.848Z",
+      "completed_at": null,
+      "edges": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ]
+    },
+    "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb": {
+      "id": "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+      "title": "跑通 Dora 双节点数据流 Demo",
+      "description": "按 3-DORA开发/01-节点开发样例.md 跑通样例一（定时器 Hello World）和样例二（sensor 5Hz 采集 + filter 移动平均）。流程：hdc file send 三文件到 /data/local/robot/ → run dora up → run dora start dataflow.yml → 观察输出 → run dora list/stop。同时验证 RUST_LOG=debug 详细日志和 run dora logs。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "be336488-0630-4850-969f-a4889154d9b8",
+          "text": "样例一每秒输出 Hello M-Robots 且 count 递增",
+          "completed": false
+        },
+        {
+          "id": "b5d34586-4f1c-4449-96dc-66a6273f05f8",
+          "text": "样例二 sensor/filter 两端均有输出且滤波值收敛",
+          "completed": false
+        },
+        {
+          "id": "edfee107-bf7f-4036-bbc4-20a588d6d359",
+          "text": "run dora list/check/logs/stop 命令全部用过且正常",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "39d7cb49-8d85-4e58-8122-c8ffbd82acdc",
+          "text": "prep/demo记录/dora样例记录.md（运行输出截图/日志）",
+          "completed": false
+        },
+        {
+          "id": "d05985be-1bf8-4a7f-9122-48cd550bd36a",
+          "text": "prep/demo代码/（hello_node.py、sensor_node.py、filter_node.py、dataflow.yml 本地副本）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dependencies": "需要已烧录验证的板子(54b337e1)，Dora 运行时随固件自带",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "Dora 是 M-Robots 核心框架，黑客松数据流骨架就靠它；固件自带无需申请",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:04:40.746Z",
+      "updated_at": "2026-07-28T12:04:40.746Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "83318389-1aa4-4242-b3b2-06a495229ed8": {
+      "id": "83318389-1aa4-4242-b3b2-06a495229ed8",
+      "title": "跑通 ROS1 talker/listener Demo",
+      "description": "按 2-ROS开发/01-ROS1快速入门.md：写 talker.py/listener.py（rospy）→ hdc file send 到 /data/local/robot/ → 三终端分别 run roscore、run python3 talker、run python3 listener → 验证消息收发 → run rosnode list/kill -a。进阶：把两个节点塞进 dataflow.yml 由 Dora 统一管理。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "3925c59c-8602-4391-b5b5-40a43835bf4c",
+          "text": "listener 终端持续打印 receive:Hello M-Robots",
+          "completed": false
+        },
+        {
+          "id": "745463ae-9dfc-4eed-b37d-d7c74a30e579",
+          "text": "run rosnode list 显示 /talker 和 /listener",
+          "completed": false
+        },
+        {
+          "id": "564e9edc-b15f-4211-bf2d-749661e9bfbd",
+          "text": "Dora 管理 ROS 节点的进阶方式也跑通一次",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "1bb7f66e-e43e-4f19-886f-d554697242a7",
+          "text": "prep/demo记录/ros1样例记录.md",
+          "completed": false
+        },
+        {
+          "id": "b8f8d68b-618e-4058-ad4e-fa8cd80b7a99",
+          "text": "prep/demo代码/（talker.py、listener.py ROS1 版本）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dependencies": "需要 ROS1 运行时已部署验证(8cbdb193)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "停止用 Ctrl+Z 或 rosnode kill -a；与 ROS2 脚本不要混用（rospy vs rclpy）",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:33.108Z",
+      "updated_at": "2026-07-28T12:05:33.108Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "408b5848-f541-4ab4-9c74-10fecbf105ed": {
+      "id": "408b5848-f541-4ab4-9c74-10fecbf105ed",
+      "title": "跑通 ROS2 talker/listener Demo",
+      "description": "按 2-ROS开发/02-ROS2快速入门.md：写 rclpy 版 talker.py/listener.py → 推送 /data/local/ → 每个终端 cd /data/local && . ./ros2_env.sh 后运行（无需 roscore）→ 验证收发。日志一律英文防乱码。",
+      "status": "blocked",
+      "priority": "top",
+      "success_criteria": [
+        {
+          "id": "1e67d69d-4d8a-45e5-8836-b2512614a108",
+          "text": "listener 终端持续打印 Received: Hello M-Robots ROS2",
+          "completed": false
+        },
+        {
+          "id": "b8752a96-7aff-4e5a-8c99-b21d7a046c29",
+          "text": "两个新终端各自 source ros2_env.sh 后节点自动互相发现",
+          "completed": false
+        },
+        {
+          "id": "72952f8f-783e-4201-977f-e87c11f94706",
+          "text": "rcl_shutdown/dlclose 等退出日志能识别并忽略",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "4a6da358-b065-4cb6-8ea8-a1cbc2e31a00",
+          "text": "prep/demo记录/ros2样例记录.md",
+          "completed": false
+        },
+        {
+          "id": "0a038cc1-61c0-4ce5-8cf9-48fea60253ec",
+          "text": "prep/demo代码/（talker.py、listener.py ROS2 rclpy 版本）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dependencies": "需要 ROS2 运行时与 ros2_env.sh 已部署验证(8cbdb193)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "每个新 shell 必须重新 source ros2_env.sh，这是最易踩的坑",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:35.862Z",
+      "updated_at": "2026-07-28T12:05:35.862Z",
+      "completed_at": null,
+      "edges": []
+    },
+    "f7e13922-874e-4600-bde2-ace626a98608": {
+      "id": "f7e13922-874e-4600-bde2-ace626a98608",
+      "title": "跑通 RViz X11+VNC 可视化",
+      "description": "验证可视化链路：hdc shell → startxvfb → run x11vnc & → run roscore & → DISPLAY=:0 run rviz；开发机 hdc fport tcp:5900 tcp:5900 后 VNC 客户端连 localhost:5900 看到 RViz 界面。同时试 rqt_graph。含黑屏/连不上排障（pgrep -x Xvfb、netstat 5900）。",
+      "status": "blocked",
+      "priority": "second",
+      "success_criteria": [
+        {
+          "id": "0c141029-3b15-4d6d-b6a8-070dc51be572",
+          "text": "VNC 客户端能看到 RViz 界面",
+          "completed": false
+        },
+        {
+          "id": "ce92df8d-aa40-42bf-b8c6-630f62deb741",
+          "text": "rqt_graph 能显示节点关系图",
+          "completed": false
+        },
+        {
+          "id": "5075a0c3-f4c3-4909-bb6a-c73a40b98fdb",
+          "text": "黑屏/拒绝连接两种故障都演练过排查",
+          "completed": false
+        }
+      ],
+      "deliverables": [
+        {
+          "id": "f5ef7b06-888f-46e9-aa29-3be5775adfac",
+          "text": "prep/demo记录/rviz记录.md（截图与排障记录）",
+          "completed": false
+        }
+      ],
+      "need_fix": [],
+      "assignee": null,
+      "blockers": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dependencies": "需要含 RViz 的运行时已部署(8cbdb193)",
+      "sub_items": [],
+      "related_files": [
+        "M-Robots开发踩坑与参考库.md"
+      ],
+      "notes": "RViz 需要申请到的运行时中包含；画面卡顿走有线网+降画质",
+      "c7_verified": [],
+      "created_at": "2026-07-28T12:05:38.613Z",
+      "updated_at": "2026-07-28T12:05:38.613Z",
+      "completed_at": null,
+      "edges": []
+    }
+  },
+  "indexes": {
+    "byStatus": {
+      "ready": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "in_progress": [],
+      "in_review": [],
+      "completed": [],
+      "blocked": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ]
+    },
+    "byPriority": {
+      "top": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "second": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "later": []
+    },
+    "rootTasks": [
+      "510a62ee-cf26-48f3-abad-1db295c723ab",
+      "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+      "fac1fba4-acab-4859-ac64-50057e276e3e",
+      "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+    ],
+    "orphanTasks": [
+      "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+    ],
+    "searchText": {
+      "0": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "1": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "2": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "3": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "4": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "5": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "6": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "7": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "9": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "14": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "15": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "20": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "28": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "84": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "5555": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "5900": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "ros": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "rviz": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "m": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "robotsos": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "kaihong": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "com": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab"
+      ],
+      "ros1": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "noetic": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "ros2": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "jazzy": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "release": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "tar": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "gz": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "ros2_env": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "sh": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "gpio": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "pwm": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "can": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "3588a": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "rs485": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "usb": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "dev": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "video0": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "discussions": [
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4"
+      ],
+      "3588s": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "6tops": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "npu": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "hdmi": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e"
+      ],
+      "windows": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "rkdevtool": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "v2": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "driverassistant": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "v5": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "openharmony": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "sdk": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "hdc": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "path": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "vscode": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "python": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "pylance": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "debugpy": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "rust": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "analyzer": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "c": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "remote": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "ssh": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "realvnc": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "tigervnc": [
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4"
+      ],
+      "robots_release": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "git": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "clone": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "lfs": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "pull": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "zip": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "gnd": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "loader": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "otg": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "img": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "sn": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "list": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "targets": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "run": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "echo": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "python3": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "version": [
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ],
+      "dora": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "up": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "roscore": [
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "wifi": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "sta_test": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "enablewifi": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "scan": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "getscanresults": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "connecttodevice": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "wpa": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "psk": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "dhcp": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "getipinfo": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "ip": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "tconn": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "4ghz": [
+        "126b10ac-c6ef-452d-8fb3-7c9a3ddb6b32"
+      ],
+      "data": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "local": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "chmod": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "x": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "rosversion": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "d": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "source": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "ros_distro": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "import": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "rclpy": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "doctor": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "dlclose": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "signal": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "03": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29"
+      ],
+      "robots": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "md": [
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "demo": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "01": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "hello": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "world": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "sensor": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "5hz": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "filter": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "file": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "send": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "robot": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "start": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "dataflow": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "yml": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "stop": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "rust_log": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "debug": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "logs": [
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb"
+      ],
+      "talker": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "listener": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "py": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "rospy": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "rosnode": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "kill": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "a": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "ctrl": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "z": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "vs": [
+        "83318389-1aa4-4242-b3b2-06a495229ed8"
+      ],
+      "02": [
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "cd": [
+        "408b5848-f541-4ab4-9c74-10fecbf105ed"
+      ],
+      "shell": [
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "x11": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "vnc": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "startxvfb": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "x11vnc": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "display": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "fport": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "tcp": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "localhost": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "rqt_graph": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "pgrep": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "xvfb": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "netstat": [
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ]
+    },
+    "files": {
+      "M-Robots开发踩坑与参考库.md": [
+        "510a62ee-cf26-48f3-abad-1db295c723ab",
+        "fd0eacbf-d30c-4c8a-8de3-ed604aae8ab4",
+        "54b337e1-d333-41e0-abaf-72021cecada7",
+        "8cbdb193-5f61-4803-913b-6ce904f81f29",
+        "8e21f7fb-aecc-40ea-b3e6-993332c4fcdb",
+        "83318389-1aa4-4242-b3b2-06a495229ed8",
+        "408b5848-f541-4ab4-9c74-10fecbf105ed",
+        "f7e13922-874e-4600-bde2-ace626a98608"
+      ],
+      "M-Robots硬件上手准备清单.md": [
+        "fac1fba4-acab-4859-ac64-50057e276e3e",
+        "c84ab5f2-3848-4a10-8eb0-83104562d5e4",
+        "54b337e1-d333-41e0-abaf-72021cecada7"
+      ]
+    }
+  }
+}
