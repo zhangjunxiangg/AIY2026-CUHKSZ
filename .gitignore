@@ -6,6 +6,12 @@ guizang-ppt-skill/
 ppt/
 node_modules/
 
+# 个人任务系统（不共享）
+.octie/
+
+# PPT 工程（不入库）
+0802-meeting-ppt/
+
 # 大文件原件（>3MB，按需决定是否入库）
 AIY黑客松x深开鸿赛题宣讲.pptx
 AIY黑客松x深开鸿赛题宣讲.pdf
