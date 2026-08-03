@@ -1,0 +1,11 @@
+wheelbase: 0.216
+track_width: 0.195
+wheel_diameter: 0.100
+max_linear: 0.20
+max_angular: 0.50
+max_motor_rps: 1.50
+cmd_timeout: 0.50
+publish_rate: 20.0
+deadband: 0.001
+cmd_vel_topic: /cmd_vel
+motor_topic: /ros_robot_controller/set_motor
