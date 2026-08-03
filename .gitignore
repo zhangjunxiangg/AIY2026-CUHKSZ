@@ -1,5 +1,6 @@
 # 环境与缓存（不入库）
 .venv/
+.DS_Store
 _audit-cache/
 .codegraph/
 guizang-ppt-skill/
