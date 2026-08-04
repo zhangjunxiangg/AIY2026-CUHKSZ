@@ -258,6 +258,9 @@ class RosBackendMotionTests(unittest.TestCase):
         facade.subscriber_nodes["/measured_cmd"] = ["/chassis_controller"]
         configuration = StopConfiguration("jx_stop", "/measured_cmd", 2, 0.01, 0.5)
         backend = RosStopBackend(facade, configuration)
+        status = backend.status()
+        self.assertEqual("missing", status.configuration_kind)
+        self.assertEqual("zero_only", status.details["configuration_scope"])
         result = MotionController(
             backend,
             zero_message_count=configuration.zero_message_count,

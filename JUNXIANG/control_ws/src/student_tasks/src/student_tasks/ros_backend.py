@@ -429,10 +429,11 @@ class RosStopBackend:
             not reasons,
             "ros",
             True,
-            "zero_only",
+            "missing",
             tuple(reasons),
             {
                 "verification": VERIFICATION_LABEL.value,
+                "configuration_scope": "zero_only",
                 "initialization_error": self._initialization_error,
                 "master": {"available": master_available},
                 "subscribers": {
