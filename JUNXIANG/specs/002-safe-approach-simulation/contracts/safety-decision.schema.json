@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "robot-control/safety-decision/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "allowed", "code", "required_sectors", "sectors", "latched", "latch_reason", "scan_age_s"],
+  "properties": {
+    "schema": {"const": "robot-control/safety-decision/v1"},
+    "allowed": {"type": "boolean"},
+    "code": {"type": "string", "minLength": 1},
+    "required_sectors": {"type": "array", "items": {"enum": ["front", "rear", "left", "right"]}, "uniqueItems": true},
+    "sectors": {"type": "array", "items": {"type": "object"}},
+    "latched": {"type": "boolean"},
+    "latch_reason": {"type": ["string", "null"]},
+    "scan_age_s": {"type": ["number", "null"]}
+  }
+}
