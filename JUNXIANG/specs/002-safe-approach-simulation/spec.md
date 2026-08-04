@@ -2,7 +2,7 @@
 
 **Feature Branch**: `junxiang`  
 **Created**: 2026-08-05  
-**Status**: Draft  
+**Status**: `OFFLINE_VERIFIED` (physical/HIL validation pending)
 **Input**: Direction-aware lidar gating, latched emergency stop, validated target adapters, and a closed-loop visual approach workflow that remains offline-testable.
 
 ## User Scenarios & Testing *(mandatory)*

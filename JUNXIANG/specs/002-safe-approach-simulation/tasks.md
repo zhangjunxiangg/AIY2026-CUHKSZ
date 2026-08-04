@@ -86,8 +86,8 @@ description: "Dependency-ordered tasks for offline lidar safety and visual appro
 ## Phase 7: Polish and Verification
 
 - [x] T020 [P] OFFLINE: Export only stable safety, perception, and approach APIs and document coordinate units in `control_ws/src/student_tasks/src/student_tasks/__init__.py`
-- [ ] T021 OFFLINE: Run performance and full offline quickstart scenarios and record evidence in `specs/002-safe-approach-simulation/verification.md`
-- [ ] T022 OFFLINE: Audit FR-001 through FR-015 against automated tests, run the full suite, and update completion boxes in `specs/002-safe-approach-simulation/tasks.md`
+- [x] T021 OFFLINE: Run performance and full offline quickstart scenarios and record evidence in `specs/002-safe-approach-simulation/verification.md`
+- [x] T022 OFFLINE: Audit FR-001 through FR-015 against automated tests, run the full suite, and update completion boxes in `specs/002-safe-approach-simulation/tasks.md`
 
 ---
 
