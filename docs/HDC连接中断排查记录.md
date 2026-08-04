@@ -68,8 +68,89 @@ hdc start && sleep 2 && hdc list targets
    Get-PnpDevice -Class USB | Where-Object {$_.FriendlyName -match "ADB|OpenHarmony|Android|Kaihong"}
    ```
 
-## 6. 状态
+## 6. 进一步诊断（2026-08-04 16:42）
 
-- HDC 客户端：正常（Ver: 3.1.0e）。
-- 板端枚举：**当前不可见**。
-- 下一步：按第 5 节进行物理层排查，恢复后再继续 end-to-end mini 集成测试。
+### 6.1 `hdc list targets -v` 输出
+
+```bash
+hdc list targets -v
+COM20		UART	Ready	unknown...	hdc
+COM21		UART	Ready	unknown...	hdc
+COM3		UART	Ready	unknown...	hdc
+COM4		UART	Ready	unknown...	hdc
+```
+
+说明 HDC 服务在扫描 UART 端口，但**没有 USB 目标**。
+
+### 6.2 Windows 设备管理器发现 HDC Device，但驱动异常
+
+```powershell
+Get-PnpDevice | Where-Object {$_.FriendlyName -like '*HDC*'}
+```
+
+输出：
+
+```
+Status  FriendlyName Class     InstanceId
+------  ------------ -----     ----------
+Unknown "HDC Device" USBDevice USB\VID_2207&PID_5000\EC29004133314D38433031A523403C00
+```
+
+- 设备序列号 `EC29004133314D38433031A523403C00` 与之前一致，说明 USB 线物理连接是通的。
+- 但状态为 `Unknown`，说明 **Windows 没有正确加载 HDC 设备的 USB 驱动**。
+
+### 6.3 根本原因判断
+
+`hdc list targets` 之前能连上，现在连不上，最可能的原因：
+
+1. **Windows 端 HDC USB 驱动丢失/被重置**：
+   - 可能换过 USB 口，Windows 对新端口重新枚举后没有正确绑定驱动；
+   - 或某些安全/清理软件把驱动状态清掉了；
+   - 或之前驱动只是临时生效（例如通过 `DriverAssistant` 安装但本次没启动/没生效）。
+
+2. **板端 USB 调试模式未变，但 PC 端驱动未就绪**：
+   - 板子本身没有重启，序列号还在；
+   - 问题在 PC 端驱动层，不在板子端。
+
+> 不是 `hdc start/kill/list` 这些命令导致的；这些命令只操作本机 HDC 服务，不会卸载 USB 驱动。
+
+## 7. 解决方案：安装/修复 HDC USB 驱动
+
+### 7.1 已下载工具
+
+已把 Zadig 放到：
+
+```
+D:\AIY-Hackathon\tools\zadig\zadig.exe
+```
+
+Zadig 用于给 USB 设备安装通用 WinUSB 驱动，解决设备被识别但驱动未加载的问题。
+
+### 7.2 操作步骤
+
+1. 保持板子通过 USB 公对公线连着电脑。
+2. 双击打开 `D:\AIY-Hackathon\tools\zadig\zadig.exe`。
+3. 菜单栏点击 **Options → List All Devices**。
+4. 下拉框里找到 **"HDC Device"**（如果看不到，确认板子亮着、USB 线插好）。
+5. Driver 那一行选择 **WinUSB**（默认就是它）。
+6. 点击 **Replace Driver**（或 Install Driver）。
+7. 等进度条跑完，关闭 Zadig。
+8. 回到命令行执行：
+   ```bash
+   hdc kill
+   hdc start
+   hdc list targets
+   ```
+
+### 7.3 备选方案
+
+如果 Zadig 装不上或提示签名问题：
+
+- 重启电脑，按 F8 进入“禁用驱动程序签名强制”模式，再运行 Zadig；
+- 或者去华为开发者官网下载 **Command Line Tools for HMOS**（老师给的链接），里面通常带 `DriverAssistant`，用官方驱动助手重新安装一遍 USB 驱动。
+
+## 8. 当前状态
+
+- 物理连接：USB 已通，设备管理器能看到 `HDC Device`。
+- 驱动状态：**未加载（Unknown）**。
+- 下一步：用 Zadig 安装 WinUSB 驱动，然后重新 `hdc list targets`。
