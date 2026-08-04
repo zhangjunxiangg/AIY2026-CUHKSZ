@@ -32,10 +32,10 @@ description: "Dependency-ordered tasks for offline lidar safety and visual appro
 
 **Independent Test**: Synthetic scans cover all single directions, diagonals, rotation, boundary angles, stale/future metadata, invalid ranges, insufficient samples, and obstacles.
 
-- [ ] T007 [US1] OFFLINE: Write failing scan metadata, range filtering, wrap-around sector, and sample-sufficiency tests for FR-001/FR-003 in `control_ws/src/student_tasks/test/test_safety.py`
-- [ ] T008 [US1] OFFLINE: Write failing direction-selection, diagonal-union, full-rotation, zero-velocity, and structured-evidence tests for FR-002/FR-004/FR-006 in `control_ws/src/student_tasks/test/test_safety.py`
-- [ ] T009 [US1] OFFLINE: Implement scan validation, normalized angular sectors, conservative clearance, and evidence models for FR-001/FR-003 in `control_ws/src/student_tasks/src/student_tasks/safety.py`
-- [ ] T010 [US1] OFFLINE: Implement velocity-to-sector selection and fail-closed decision evaluation for FR-002/FR-004/FR-006 in `control_ws/src/student_tasks/src/student_tasks/safety.py`
+- [x] T007 [US1] OFFLINE: Write failing scan metadata, range filtering, wrap-around sector, and sample-sufficiency tests for FR-001/FR-003 in `control_ws/src/student_tasks/test/test_safety.py`
+- [x] T008 [US1] OFFLINE: Write failing direction-selection, diagonal-union, full-rotation, zero-velocity, and structured-evidence tests for FR-002/FR-004/FR-006 in `control_ws/src/student_tasks/test/test_safety.py`
+- [x] T009 [US1] OFFLINE: Implement scan validation, normalized angular sectors, conservative clearance, and evidence models for FR-001/FR-003 in `control_ws/src/student_tasks/src/student_tasks/safety.py`
+- [x] T010 [US1] OFFLINE: Implement velocity-to-sector selection and fail-closed decision evaluation for FR-002/FR-004/FR-006 in `control_ws/src/student_tasks/src/student_tasks/safety.py`
 
 **Checkpoint**: No non-zero direction is allowed without fresh sufficient clearance in every required sector.
 
@@ -47,8 +47,8 @@ description: "Dependency-ordered tasks for offline lidar safety and visual appro
 
 **Independent Test**: Alternating clear/blocked/stale sequences prove latch persistence and exact reset-counter behavior.
 
-- [ ] T011 [US2] OFFLINE: Add failing latch trigger, clear-without-reset, reset request, counter reset, and exact stable-threshold tests for FR-004/FR-005/FR-006 in `control_ws/src/student_tasks/test/test_safety.py`
-- [ ] T012 [US2] OFFLINE: Implement latch state transitions, reason preservation, explicit reset, and consecutive clear-frame accounting for FR-004/FR-005/FR-006 in `control_ws/src/student_tasks/src/student_tasks/safety.py`
+- [x] T011 [US2] OFFLINE: Add failing latch trigger, clear-without-reset, reset request, counter reset, and exact stable-threshold tests for FR-004/FR-005/FR-006 in `control_ws/src/student_tasks/test/test_safety.py`
+- [x] T012 [US2] OFFLINE: Implement latch state transitions, reason preservation, explicit reset, and consecutive clear-frame accounting for FR-004/FR-005/FR-006 in `control_ws/src/student_tasks/src/student_tasks/safety.py`
 
 **Checkpoint**: Clear scans alone never resume non-zero motion.
 
