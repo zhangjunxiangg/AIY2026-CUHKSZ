@@ -149,8 +149,77 @@ Zadig 用于给 USB 设备安装通用 WinUSB 驱动，解决设备被识别但�
 - 重启电脑，按 F8 进入“禁用驱动程序签名强制”模式，再运行 Zadig；
 - 或者去华为开发者官网下载 **Command Line Tools for HMOS**（老师给的链接），里面通常带 `DriverAssistant`，用官方驱动助手重新安装一遍 USB 驱动。
 
-## 8. 当前状态
+## 8. 真正原因与最终解决（2026-08-04 17:30 后）
 
-- 物理连接：USB 已通，设备管理器能看到 `HDC Device`。
-- 驱动状态：**未加载（Unknown）**。
-- 下一步：用 Zadig 安装 WinUSB 驱动，然后重新 `hdc list targets`。
+> 关键发现：**板端 HDC 守护进程的运行模式被设成了 TCP/网络模式**，导致 USB 模式下 `hdc list targets` 一直返回 `[Empty]`。
+>
+> 之前所有 PC 端驱动、Zadig 安装都是对的，但板子根本没在 USB 上监听 HDC 连接。
+
+### 8.1 验证当前模式
+
+在已连接的状态下（无论无线还是有线），进板子执行：
+
+```bash
+hdc shell
+param get persist.hdc.mode
+```
+
+输出：
+
+```text
+usb
+```
+
+正常 USB 模式应该返回 `usb`。如果返回 `tcp` 或空，说明板子当前只监听网络 HDC。
+
+### 8.2 切换 HDC 模式的方法
+
+如果你只能通过无线/串口连上板子，而想让 USB HDC 也工作：
+
+```bash
+hdc tconn <板子IP>:5555          # 先用无线连进去
+hdc shell param set persist.hdc.mode usb
+hdc shell reboot                 # 必须重启才会生效
+```
+
+或者直接：
+
+```bash
+hdc shell hdc tmode usb          # 部分系统支持，可能直接重启 HDC 守护进程
+```
+
+重启后，把 USB 线重新插到电脑，PC 端执行：
+
+```bash
+hdc kill
+hdc start
+hdc list targets
+```
+
+### 8.3 为什么 Zadig 装完驱动还是不行
+
+- Zadig 把 WinUSB 驱动装好后，Windows 确实能识别 `HDC Device` 了；
+- 但板端 `hdcd` 当时运行在 **TCP 模式**，没有在 USB 接口上响应；
+- 所以 HDC 服务只能枚举到 COM 串口，看不到 USB 目标；
+- 把板端模式切回 `usb` 并重新枚举后，USB HDC 才恢复。
+
+## 9. 当前状态
+
+- 物理连接：USB 已通。
+- PC 端驱动：WinUSB 已安装（`winusb.inf`）。
+- 板端 HDC 模式：`persist.hdc.mode = usb`。
+- `hdc list targets` 已能正常显示设备序列号：
+  ```text
+  ec29004133314d38433031a523403c00
+  ```
+- `hdc shell` 已验证可进入板端。
+
+## 10. 经验总结
+
+下次遇到 `hdc list targets` 返回 `[Empty]` 时，排查顺序：
+
+1. 确认 USB 线/口/电源物理正常。
+2. 确认 Windows 设备管理器里有 `HDC Device` 且驱动正确。
+3. **确认板端 `persist.hdc.mode` 为 `usb`**（这是本次最容易忽略的点）。
+4. 如果板端是 `tcp` 模式，先通过无线/串口连进去改成 `usb`，再重启。
+5. 最后才考虑重新烧录镜像。
