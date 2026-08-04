@@ -16,3 +16,12 @@ node_modules/
 AIY黑客松x深开鸿赛题宣讲.pptx
 AIY黑客松x深开鸿赛题宣讲.pdf
 AIY黑客松x深开鸿赛题宣讲.log
+
+# 研究论文与原始资料（体积大，本地参考）
+papers/
+
+# Office 临时文件
+~$*.pptx
+~$*.ppt
+~$*.docx
+~$*.doc
