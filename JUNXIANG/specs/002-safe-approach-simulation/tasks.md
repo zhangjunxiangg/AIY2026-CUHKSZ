@@ -74,10 +74,10 @@ description: "Dependency-ordered tasks for offline lidar safety and visual appro
 
 **Independent Test**: Scripted providers and fake backend cover convergent success plus every documented terminal failure and stop path.
 
-- [ ] T016 [US4] OFFLINE: Write failing state ordering, direct-core invocation, rotate sign, positive-x translation, too-close refusal, and per-step re-observation tests for FR-010/FR-011/FR-012 in `control_ws/src/student_tasks/test/test_approach.py`
-- [ ] T017 [US4] OFFLINE: Write failing stable visual verification, odometry-exclusion, target-loss, estop, cancellation, timeout, iteration, motion-failure, and stop-failure tests for FR-013/FR-014 in `control_ws/src/student_tasks/test/test_approach.py`
-- [ ] T018 [US4] OFFLINE: Implement approach configuration, providers, state/result models, and bounded state machine for FR-010/FR-011/FR-012/FR-013 in `control_ws/src/student_tasks/src/student_tasks/approach.py`
-- [ ] T019 [US4] OFFLINE: Implement terminal stop convergence, state history, safety evidence, and stable error precedence for FR-014 in `control_ws/src/student_tasks/src/student_tasks/approach.py`
+- [x] T016 [US4] OFFLINE: Write failing state ordering, direct-core invocation, rotate sign, positive-x translation, too-close refusal, and per-step re-observation tests for FR-010/FR-011/FR-012 in `control_ws/src/student_tasks/test/test_approach.py`
+- [x] T017 [US4] OFFLINE: Write failing stable visual verification, odometry-exclusion, target-loss, estop, cancellation, timeout, iteration, motion-failure, and stop-failure tests for FR-013/FR-014 in `control_ws/src/student_tasks/test/test_approach.py`
+- [x] T018 [US4] OFFLINE: Implement approach configuration, providers, state/result models, and bounded state machine for FR-010/FR-011/FR-012/FR-013 in `control_ws/src/student_tasks/src/student_tasks/approach.py`
+- [x] T019 [US4] OFFLINE: Implement terminal stop convergence, state history, safety evidence, and stable error precedence for FR-014 in `control_ws/src/student_tasks/src/student_tasks/approach.py`
 
 **Checkpoint**: Approach succeeds only from stable fresh vision and always terminates with an explicit shared-core stop.
 
