@@ -36,10 +36,10 @@ description: "Dependency-ordered implementation tasks for the shared motion doma
 
 **Independent Test**: Deterministic fake events show bounded velocity events followed by the required zero sequence for success, cancellation, timeout, backend failure, and stop failure.
 
-- [ ] T009 [P] [US1] OFFLINE: Write failing deterministic clock, ordered-event, and no-I/O fake-backend tests for FR-006/FR-011 in `control_ws/src/student_tasks/test/test_fake_backend.py`
-- [ ] T010 [US1] OFFLINE: Write failing success, validation rejection, cancellation, timeout, backend exception, and stop-failure tests for FR-003/FR-004/FR-005 in `control_ws/src/student_tasks/test/test_core.py`
-- [ ] T011 [US1] OFFLINE: Implement the virtual clock, injectable failures, ordered event log, and ownership behavior for FR-006 in `control_ws/src/student_tasks/src/student_tasks/fake_backend.py`
-- [ ] T012 [US1] OFFLINE: Implement shared bounded movement, readiness/configuration gates, cancellation, timing, and final stop precedence for FR-003/FR-004/FR-005/FR-010 in `control_ws/src/student_tasks/src/student_tasks/core.py`
+- [x] T009 [P] [US1] OFFLINE: Write failing deterministic clock, ordered-event, and no-I/O fake-backend tests for FR-006/FR-011 in `control_ws/src/student_tasks/test/test_fake_backend.py`
+- [x] T010 [US1] OFFLINE: Write failing success, validation rejection, cancellation, timeout, backend exception, and stop-failure tests for FR-003/FR-004/FR-005 in `control_ws/src/student_tasks/test/test_core.py`
+- [x] T011 [US1] OFFLINE: Implement the virtual clock, injectable failures, ordered event log, and ownership behavior for FR-006 in `control_ws/src/student_tasks/src/student_tasks/fake_backend.py`
+- [x] T012 [US1] OFFLINE: Implement shared bounded movement, readiness/configuration gates, cancellation, timing, and final stop precedence for FR-003/FR-004/FR-005/FR-010 in `control_ws/src/student_tasks/src/student_tasks/core.py`
 
 **Checkpoint**: User Story 1 passes independently with no real sleeps, ROS imports, or network calls.
 
@@ -51,8 +51,8 @@ description: "Dependency-ordered implementation tasks for the shared motion doma
 
 **Independent Test**: Status records no velocity event; repeated stop records only zero-velocity events and returns confirmed or failed stop evidence.
 
-- [ ] T013 [US2] OFFLINE: Add failing read-only status, unavailable status, repeated stop, and stop-failure tests for FR-007 in `control_ws/src/student_tasks/test/test_core.py`
-- [ ] T014 [US2] OFFLINE: Implement structured status and idempotent stop paths for FR-007/FR-009 in `control_ws/src/student_tasks/src/student_tasks/core.py`
+- [x] T013 [US2] OFFLINE: Add failing read-only status, unavailable status, repeated stop, and stop-failure tests for FR-007 in `control_ws/src/student_tasks/test/test_core.py`
+- [x] T014 [US2] OFFLINE: Implement structured status and idempotent stop paths for FR-007/FR-009 in `control_ws/src/student_tasks/src/student_tasks/core.py`
 
 **Checkpoint**: Status and stop are independently usable without enabling non-zero movement.
 
