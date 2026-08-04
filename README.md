@@ -39,10 +39,13 @@
 
 ## 当前状态
 
-- 开发板：KaihongBoard-3588S-SBC 已拿到，HDC 连接曾因重启中断，待重新识别。
-- 传感器：激光雷达、里程计、IMU、电池、舵机状态、相机内参已 dry-run 并写入 `docs/传感器数据规格手册.md`。
-- 运行时：ROS1 兼容运行时、Python 3.12.7、Dora 0.3.12 已预装；运行 Python 节点需 `LD_PRELOAD=/data/local/release/usr/lib/libpython3.12.so.1.0`。
-- Demo：Dora Hello World + 5Hz sensor/filter 节点已就绪（`prep/demo代码/`），待板子恢复连接后上板验证。
+- 开发板：KaihongBoard-3588S-SBC 已拿到，镜像已预制 ROS/Python/Dora/M-Claw；当前正从网络 HDC 切回 USB HDC（板子需物理接入 USB 线并通电）。
+- 传感器：激光雷达、Astra 深度相机、里程计、IMU、电池、舵机状态、相机内参已上板实测并写入 `docs/传感器数据规格手册.md`。
+- 运行时：ROS1 兼容运行时、Python 3.12.7、Dora 0.3.12 已预装可用；运行 Python 节点需 `LD_PRELOAD=/data/local/release/usr/lib/libpython3.12.so.1.0`。
+- Demo：Dora Hello World + 5Hz sensor/filter 节点（`prep/demo代码/`）与 ROS1 talker/listener 均已在板端跑通，记录分别见 `prep/demo记录/dora样例记录.md` 和 `prep/demo记录/ros1样例记录.md`。
+- 执行器方案：底盘 `/cmd_vel`、机械臂与夹爪 `FollowJointTrajectoryAction`、M-Claw `robot_ops.py` 高层 JSON 命令链路已确认，见 `prep/机器人硬件方案.md`。
+- 选题与答疑：`prep/选题/候选方案.md` 与 `prep/老师确认记录.md` 已就位；最终选题待现场根据物料收敛。
+- 备份机制：`prep/deploy.sh` 一键推送脚本已验证可用；换板恢复 SOP 待补。
 
 ## 现场支持
 
