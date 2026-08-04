@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kaihong 4.1 Robot Control"
+  short_description: "Unified chassis, arm, sensor, interface, and demo control"
+  default_prompt: "Use $kaihong-robot-operations to inspect Kaihong 4.1 or perform one explicitly requested bounded operation."
