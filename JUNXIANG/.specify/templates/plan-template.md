@@ -40,7 +40,19 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] All files are scoped to `JUNXIANG/` and no secret path is accessed.
+- [ ] Vendor interfaces and hard motion limits are preserved.
+- [ ] CLI and automatic control share one testable control core.
+- [ ] Every terminal path has an explicit zero-velocity assertion.
+- [ ] Missing production evidence fails closed instead of using guessed values.
+- [ ] Offline, source-verified, and HIL evidence are reported separately.
+- [ ] HIL tasks retain the operator's explicit physical-motion gate.
+- [ ] Tests precede implementation and every requirement maps to a task.
+
+## Verification Boundary
+
+[State which outcomes can be verified offline, which are source-verified only,
+and which require deferred supervised HIL. Name the evidence for each outcome.]
 
 ## Project Structure
 

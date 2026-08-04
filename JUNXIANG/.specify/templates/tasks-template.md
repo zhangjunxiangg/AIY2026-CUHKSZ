@@ -9,9 +9,15 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: This project requires tests before implementation. Each functional
+task MUST have a preceding automated test or a clearly deferred HIL acceptance
+task.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
+
+**Verification labels**: Begin each task description with `OFFLINE:`, `SOURCE:`,
+or `HIL:`. HIL tasks MUST remain unchecked until supervised physical execution.
+Synthetic or mocked evidence MUST NOT complete an HIL task.
 
 ## Format: `[ID] [P?] [Story] Description`
 

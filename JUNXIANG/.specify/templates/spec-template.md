@@ -129,3 +129,10 @@
 - [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
 - [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
 - [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+
+## Verification Boundary *(mandatory)*
+
+- **Offline-verifiable**: [Behaviors that deterministic tests can prove]
+- **Source-verifiable**: [Integration assumptions checked against authoritative source]
+- **HIL-required**: [Physical outcomes that remain explicitly deferred]
+- **Forbidden substitutions**: [Evidence that may not be used in place of HIL]
