@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="freq"              default="100"/>
+    <arg name="imu_link"          default="imu_link"/>
+    <arg name="device"            default="/dev/ttyCH343USB0"/>
+    <arg name="baudrate"          default="1000000"/>
+    <arg name="cmd_timeout"       default="0.5"/>
+    <arg name="motor_type"        default="2"/>
+    <arg name="battery_level"     default="6900"/>
+    <node name="ros_robot_controller" pkg="ros_robot_controller" type="ros_robot_controller_node.py" required="true" output="screen">
+        <param name="freq"        value="$(arg freq)"/>
+        <param name="imu_frame"   value="$(arg imu_link)"/>
+        <param name="device"      value="$(arg device)"/>
+        <param name="baudrate"    value="$(arg baudrate)"/>
+        <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
+        <param name="init_pwm_servo" value="false"/>
+        <param name="configure_controller" value="true"/>
+        <param name="motor_type" value="$(arg motor_type)"/>
+        <param name="battery_level" value="$(arg battery_level)"/>
+    </node>
+</launch>
