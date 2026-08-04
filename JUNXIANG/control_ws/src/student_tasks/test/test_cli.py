@@ -356,6 +356,33 @@ class CliContractTests(unittest.TestCase):
             self.assertEqual("CANCELLED", payload["error"]["code"])
             self.assertTrue(payload["zero_velocity_confirmed"])
 
+    def test_ros_stop_uses_explicit_zero_fields_when_full_configuration_is_invalid(self) -> None:
+        from student_tasks import cli
+        from student_tasks.production_config import StopConfiguration, StopConfigurationValidation
+
+        facade = FakeRosFacade(wall_time=NOW)
+        facade.subscriber_nodes["/measured_cmd"] = ["/chassis_controller"]
+        zero_config = StopConfiguration("jx_stop", "/measured_cmd", 2, 0.01, 0.5)
+        output = StringIO()
+        with mock.patch.object(
+            cli,
+            "load_stop_configuration",
+            return_value=StopConfigurationValidation((), zero_config),
+        ), mock.patch.object(cli, "load_ros_facade", return_value=facade), mock.patch.object(
+            cli,
+            "load_production_config",
+            side_effect=AssertionError("stop must not require the full configuration"),
+        ):
+            exit_code = cli.main(
+                ["--backend", "ros", "--config", "partially-invalid.json", "stop"],
+                stdout=output,
+                wall_clock=lambda: NOW,
+            )
+        payload = json.loads(output.getvalue())
+        self.assertEqual(0, exit_code)
+        self.assertTrue(payload["zero_velocity_confirmed"])
+        self.assertEqual(2, len(facade.created_publishers[0].messages))
+
 
 if __name__ == "__main__":
     unittest.main()

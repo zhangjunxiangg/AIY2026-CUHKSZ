@@ -105,6 +105,15 @@ class ProductionConfiguration:
 
 
 @dataclass(frozen=True)
+class StopConfiguration:
+    node_name_prefix: str
+    cmd_vel_topic: str
+    zero_message_count: int
+    zero_interval_s: float
+    watchdog_timeout_s: float
+
+
+@dataclass(frozen=True)
 class ConfigurationValidation:
     findings: tuple[ConfigurationFinding, ...]
     configuration: ProductionConfiguration | None = None
@@ -119,6 +128,23 @@ class ConfigurationValidation:
             "configuration_kind": (
                 "missing" if self.configuration is None else self.configuration.provenance.kind
             ),
+            "findings": [finding.to_dict() for finding in self.findings],
+        }
+
+
+@dataclass(frozen=True)
+class StopConfigurationValidation:
+    findings: tuple[ConfigurationFinding, ...]
+    configuration: StopConfiguration | None = None
+
+    @property
+    def valid(self) -> bool:
+        return not self.findings and self.configuration is not None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "valid": self.valid,
+            "configuration_kind": "zero_only" if self.valid else "missing",
             "findings": [finding.to_dict() for finding in self.findings],
         }
 
@@ -213,6 +239,66 @@ def _sequence_of_numbers(value: object, size: int) -> tuple[float, ...] | None:
             return None
         result.append(float(item))
     return tuple(result)
+
+
+def validate_stop_configuration(document: object) -> StopConfigurationValidation:
+    """Extract only explicit fields required to attempt a zero-velocity sequence."""
+
+    validator = _Validator(0.0)
+    if not isinstance(document, dict):
+        return StopConfigurationValidation(
+            (ConfigurationFinding("$", "CONFIG_INVALID", "root must be an object"),)
+        )
+    if document.get("schema") != CONFIG_SCHEMA:
+        validator.add("schema", "SCHEMA_INVALID", "production configuration schema is not supported")
+
+    ros_data = validator.group(document, "ros")
+    node_prefix = validator.string(ros_data, "node_name_prefix", "ros.node_name_prefix")
+    if node_prefix is not None and re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", node_prefix) is None:
+        validator.add("ros.node_name_prefix", "NODE_NAME_INVALID", "node prefix must be a ROS-safe basename")
+    cmd_vel_topic = _topic(validator, ros_data, "cmd_vel_topic")
+
+    motion_data = validator.group(document, "motion")
+    zero_count = validator.integer(
+        motion_data,
+        "zero_message_count",
+        "motion.zero_message_count",
+        minimum=1,
+    )
+    zero_interval = validator.number(
+        motion_data,
+        "zero_interval_s",
+        "motion.zero_interval_s",
+        minimum=0.0,
+    )
+    watchdog_timeout = validator.number(
+        motion_data,
+        "watchdog_timeout_s",
+        "motion.watchdog_timeout_s",
+        minimum=0.0,
+        strict_minimum=True,
+    )
+    if zero_interval is not None and watchdog_timeout is not None and zero_interval >= watchdog_timeout:
+        validator.add(
+            "motion.zero_interval_s",
+            "CROSS_FIELD_INVALID",
+            "zero interval must be shorter than watchdog timeout",
+        )
+
+    if validator.findings:
+        return StopConfigurationValidation(tuple(validator.findings))
+    assert node_prefix is not None and cmd_vel_topic is not None
+    assert zero_count is not None and zero_interval is not None and watchdog_timeout is not None
+    return StopConfigurationValidation(
+        (),
+        StopConfiguration(
+            node_prefix,
+            cmd_vel_topic,
+            zero_count,
+            zero_interval,
+            watchdog_timeout,
+        ),
+    )
 
 
 def validate_production_config(document: object, *, now: float) -> ConfigurationValidation:
@@ -462,3 +548,19 @@ def load_production_config(path: str | Path, *, now: float) -> ConfigurationVali
             (ConfigurationFinding("$", "CONFIG_UNREADABLE", "configuration cannot be read: %s" % exc),)
         )
     return validate_production_config(document, now=now)
+
+
+def load_stop_configuration(path: str | Path) -> StopConfigurationValidation:
+    """Load only explicit zero-delivery fields without production-motion defaults."""
+
+    try:
+        document = json.loads(Path(path).read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return StopConfigurationValidation(
+            (ConfigurationFinding("$", "CONFIG_JSON_INVALID", "configuration JSON is invalid: %s" % exc),)
+        )
+    except OSError as exc:
+        return StopConfigurationValidation(
+            (ConfigurationFinding("$", "CONFIG_UNREADABLE", "configuration cannot be read: %s" % exc),)
+        )
+    return validate_stop_configuration(document)

@@ -8,7 +8,11 @@ from pathlib import Path
 
 import support  # noqa: F401
 
-from student_tasks.production_config import load_production_config, validate_production_config
+from student_tasks.production_config import (
+    load_production_config,
+    validate_production_config,
+    validate_stop_configuration,
+)
 
 
 NOW = 1_000.0
@@ -199,6 +203,34 @@ class ProductionConfigurationTests(unittest.TestCase):
             path.write_text("{bad", encoding="utf-8")
             malformed = load_production_config(path, now=NOW)
         self.assertIn("CONFIG_JSON_INVALID", codes(malformed))
+
+    def test_zero_only_configuration_ignores_unrelated_invalid_motion_fields(self) -> None:
+        document = valid_document()
+        document["calibration"]["source"] = None
+        document["safety"]["sectors"] = []
+        document["motion"]["linear_x_sign"] = None
+        full = validate_production_config(document, now=NOW)
+        stop = validate_stop_configuration(document)
+        self.assertFalse(full.valid)
+        self.assertTrue(stop.valid, stop.findings)
+        assert stop.configuration is not None
+        self.assertEqual("/cmd_vel", stop.configuration.cmd_vel_topic)
+        self.assertEqual(3, stop.configuration.zero_message_count)
+        self.assertEqual(0.02, stop.configuration.zero_interval_s)
+
+    def test_zero_only_configuration_never_guesses_critical_fields(self) -> None:
+        document = valid_document()
+        document["ros"]["cmd_vel_topic"] = None
+        document["motion"]["zero_message_count"] = None
+        document["motion"]["zero_interval_s"] = 0.5
+        document["motion"]["watchdog_timeout_s"] = 0.5
+        result = validate_stop_configuration(document)
+        self.assertFalse(result.valid)
+        self.assertIsNone(result.configuration)
+        self.assertTrue(
+            {"NULL_OR_MISSING", "CROSS_FIELD_INVALID"}.issubset(codes(result)),
+            result.findings,
+        )
 
 
 if __name__ == "__main__":

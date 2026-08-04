@@ -12,7 +12,7 @@ from .errors import failure
 from .estop_store import EstopRecord, EstopStore
 from .models import BackendStatus, Velocity, VerificationLevel
 from .process_lock import LockResult, MotionLock
-from .production_config import ProductionConfiguration
+from .production_config import ProductionConfiguration, StopConfiguration
 from .ros_facade import RosFacade
 from .safety import LaserScanSnapshot, SafetyDecision, SafetyMonitor
 
@@ -383,3 +383,98 @@ class RosMotionBackend:
             now=self.facade.source_time(),
             safety_digest=digest,
         )
+
+
+class RosStopBackend:
+    """Zero-only ROS adapter available when unrelated production fields are invalid."""
+
+    def __init__(self, facade: RosFacade, configuration: StopConfiguration) -> None:
+        self.facade = facade
+        self.configuration = configuration
+        self._publisher: object | None = None
+        self._initialization_error: str | None = None
+        try:
+            facade.initialize(configuration.node_name_prefix)
+        except Exception as exc:
+            self._initialization_error = "ROS node initialization failed: %s" % exc
+
+    @property
+    def backend_name(self) -> str:
+        return "ros"
+
+    @property
+    def verification_level(self) -> VerificationLevel:
+        return VERIFICATION_LABEL
+
+    def status(self) -> BackendStatus:
+        reasons: list[str] = []
+        if self._initialization_error is not None:
+            reasons.append("ROS_INITIALIZATION_FAILED")
+        try:
+            master_available = bool(self.facade.master_available())
+        except Exception:
+            master_available = False
+        if not master_available:
+            reasons.append("ROS_MASTER_UNAVAILABLE")
+        try:
+            subscribers = tuple(sorted(set(self.facade.subscribers(self.configuration.cmd_vel_topic))))
+            subscriber_error = None
+        except Exception as exc:
+            subscribers = ()
+            subscriber_error = str(exc)
+            reasons.append("ROS_GRAPH_UNAVAILABLE")
+        if not subscribers:
+            reasons.append("CMD_VEL_SUBSCRIBER_MISSING")
+        return BackendStatus(
+            not reasons,
+            "ros",
+            True,
+            "zero_only",
+            tuple(reasons),
+            {
+                "verification": VERIFICATION_LABEL.value,
+                "initialization_error": self._initialization_error,
+                "master": {"available": master_available},
+                "subscribers": {
+                    "topic": self.configuration.cmd_vel_topic,
+                    "nodes": list(subscribers),
+                    "count": len(subscribers),
+                    "error": subscriber_error,
+                },
+            },
+        )
+
+    def acquire(self, operation_id: str) -> None:
+        raise failure("INVALID_INPUT", "zero-only backend cannot acquire motion ownership")
+
+    def release(self) -> None:
+        return None
+
+    def publish_velocity(self, velocity: Velocity) -> None:
+        if not isinstance(velocity, Velocity) or not velocity.is_zero:
+            raise failure("INVALID_INPUT", "zero-only backend accepts zero velocity only")
+        if self._publisher is None:
+            try:
+                self._publisher = self.facade.create_publisher(self.configuration.cmd_vel_topic)
+            except Exception as exc:
+                raise failure("BACKEND_FAILURE", "cmd_vel publisher creation failed: %s" % exc) from exc
+        message = self.facade.make_twist(0.0, 0.0, 0.0)
+        try:
+            self._publisher.publish(message)
+        except Exception as exc:
+            raise failure("BACKEND_FAILURE", "cmd_vel publish failure: %s" % exc) from exc
+        try:
+            subscribers = tuple(self.facade.subscribers(self.configuration.cmd_vel_topic))
+        except Exception as exc:
+            raise failure("BACKEND_UNAVAILABLE", "ROS graph inspection failed after zero publish: %s" % exc) from exc
+        if not subscribers:
+            raise failure(
+                "BACKEND_UNAVAILABLE",
+                "CMD_VEL_SUBSCRIBER_MISSING: zero velocity published without a subscriber",
+            )
+
+    def monotonic(self) -> float:
+        return float(self.facade.monotonic())
+
+    def sleep(self, duration_s: float) -> None:
+        self.facade.sleep(duration_s)

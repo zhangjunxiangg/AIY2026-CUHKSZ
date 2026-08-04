@@ -13,8 +13,8 @@ from student_tasks.core import MotionController
 from student_tasks.estop_store import EstopStore
 from student_tasks.models import MotionRequest, Velocity, VerificationLevel
 from student_tasks.process_lock import MotionLock
-from student_tasks.production_config import ProductionConfiguration, validate_production_config
-from student_tasks.ros_backend import RosMotionBackend
+from student_tasks.production_config import StopConfiguration, ProductionConfiguration, validate_production_config
+from student_tasks.ros_backend import RosMotionBackend, RosStopBackend
 from student_tasks.safety import LaserScanSnapshot
 from test_production_config import NOW, valid_document
 
@@ -252,6 +252,21 @@ class RosBackendMotionTests(unittest.TestCase):
             failed = MotionController(backend, zero_message_count=1).stop()
             self.assertFalse(failed.ok)
             self.assertIn("publish failure", failed.data["stop_failures"][0])
+
+    def test_zero_only_backend_attempts_configured_stop_and_rejects_nonzero(self) -> None:
+        facade = FakeRosFacade(master_up=False, wall_time=NOW)
+        facade.subscriber_nodes["/measured_cmd"] = ["/chassis_controller"]
+        configuration = StopConfiguration("jx_stop", "/measured_cmd", 2, 0.01, 0.5)
+        backend = RosStopBackend(facade, configuration)
+        result = MotionController(
+            backend,
+            zero_message_count=configuration.zero_message_count,
+            zero_interval_s=configuration.zero_interval_s,
+        ).stop()
+        self.assertTrue(result.ok, result.to_dict())
+        self.assertEqual(2, len(facade.created_publishers[0].messages))
+        with self.assertRaisesRegex(Exception, "zero velocity only"):
+            backend.publish_velocity(Velocity(0.01, 0.0, 0.0))
 
 
 if __name__ == "__main__":

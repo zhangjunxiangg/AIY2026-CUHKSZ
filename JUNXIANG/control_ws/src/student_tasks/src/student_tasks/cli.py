@@ -21,8 +21,8 @@ from .fake_backend import FakeBackend
 from .geometry import CameraIntrinsics, RigidTransform, Vector3
 from .models import MotionRequest, MotionResult, Velocity, VerificationLevel
 from .perception import CameraCalibration, TargetPolicy
-from .production_config import ProductionConfiguration, load_production_config
-from .ros_backend import RosMotionBackend
+from .production_config import ProductionConfiguration, load_production_config, load_stop_configuration
+from .ros_backend import RosMotionBackend, RosStopBackend
 from .ros_facade import RosFacadeUnavailable, load_ros_facade
 from .ros_providers import RosScanProvider, RosTargetProvider
 from .safety import SafetyDecision, SafetyMonitor
@@ -220,14 +220,14 @@ def _run_ros(
     *,
     wall_clock: Callable[[], float],
 ) -> MotionResult:
+    if arguments.command == "stop":
+        return _run_ros_stop(arguments)
     selected = _build_ros_runtime(arguments, wall_clock=wall_clock)
     if isinstance(selected, MotionResult):
         return selected
     runtime = selected
     if arguments.command == "status":
         return runtime.controller.status()
-    if arguments.command == "stop":
-        return runtime.controller.stop()
     if arguments.command == "move":
         if arguments.publish_rate is not None and not math.isclose(
             arguments.publish_rate,
@@ -254,6 +254,46 @@ def _run_ros(
     if arguments.command == "estop-reset":
         return _run_estop_reset(runtime, cancellation)
     return _failure_result("status", "ros", control_error("INVALID_INPUT", "unknown ROS command"))
+
+
+def _run_ros_stop(arguments: argparse.Namespace) -> MotionResult:
+    if not arguments.config:
+        return _failure_result(
+            "stop",
+            "ros",
+            control_error("PRODUCTION_CONFIG_REQUIRED", "--config is required for ROS selection"),
+            data={"fallback_used": False, "configuration_findings": []},
+        )
+    validation = load_stop_configuration(arguments.config)
+    if not validation.valid or validation.configuration is None:
+        return _failure_result(
+            "stop",
+            "ros",
+            control_error("PRODUCTION_CONFIG_REQUIRED", "explicit zero-delivery configuration is invalid"),
+            data={
+                "fallback_used": False,
+                "config": arguments.config,
+                "configuration_scope": "zero_only",
+                "configuration_findings": [finding.to_dict() for finding in validation.findings],
+            },
+        )
+    try:
+        facade = load_ros_facade()
+    except RosFacadeUnavailable as exc:
+        return _failure_result(
+            "stop",
+            "ros",
+            control_error("BACKEND_UNAVAILABLE", str(exc)),
+            data={"fallback_used": False, "config": arguments.config},
+        )
+    configuration = validation.configuration
+    backend = RosStopBackend(facade, configuration)
+    controller = MotionController(
+        backend,
+        zero_message_count=configuration.zero_message_count,
+        zero_interval_s=configuration.zero_interval_s,
+    )
+    return controller.stop()
 
 
 def _run_approach(
