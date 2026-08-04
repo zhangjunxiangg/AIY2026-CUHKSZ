@@ -1,0 +1,10 @@
+nodes:
+  - id: hello
+    path: /data/local/robot/hello_node.py
+    inputs:
+      tick: dora/timer/millis/1000
+    outputs:
+      - message
+    env:
+      LD_PRELOAD: /data/local/release/usr/lib/libpython3.12.so.1.0
+      PYTHONUNBUFFERED: "1"
