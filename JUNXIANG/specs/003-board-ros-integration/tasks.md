@@ -21,12 +21,12 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 
 ## Phase 2: Foundational Ownership, Estop, and Signals
 
-- [ ] T005 [P] OFFLINE: Write failing non-blocking contention, descriptor lifetime, owner metadata, stale record, and safe release tests for FR-005 in `control_ws/src/student_tasks/test/test_process_lock.py`
-- [ ] T006 OFFLINE: Implement advisory `fcntl` ownership with bounded metadata and identity-safe release for FR-005 in `control_ws/src/student_tasks/src/student_tasks/process_lock.py`
-- [ ] T007 [P] OFFLINE: Write failing missing-state latch, latch persistence, atomic replacement, mode, corruption, and reset-state tests for FR-019 in `control_ws/src/student_tasks/test/test_estop_store.py`
-- [ ] T008 OFFLINE: Implement versioned atomic mode-0600 emergency-stop persistence and corrupt-state fail-closed recovery for FR-019 in `control_ws/src/student_tasks/src/student_tasks/estop_store.py`
-- [ ] T009 [P] OFFLINE: Write failing handler-installation, first-signal, SIGINT/SIGTERM/SIGHUP, cancellation-only handler, and restoration tests for FR-009 in `control_ws/src/student_tasks/test/test_signals.py`
-- [ ] T010 OFFLINE: Implement thread-safe cancellation state and scoped signal handler restoration for FR-009 in `control_ws/src/student_tasks/src/student_tasks/signals.py`
+- [x] T005 [P] OFFLINE: Write failing non-blocking contention, descriptor lifetime, owner metadata, stale record, and safe release tests for FR-005 in `control_ws/src/student_tasks/test/test_process_lock.py`
+- [x] T006 OFFLINE: Implement advisory `fcntl` ownership with bounded metadata and identity-safe release for FR-005 in `control_ws/src/student_tasks/src/student_tasks/process_lock.py`
+- [x] T007 [P] OFFLINE: Write failing missing-state latch, latch persistence, atomic replacement, mode, corruption, and reset-state tests for FR-019 in `control_ws/src/student_tasks/test/test_estop_store.py`
+- [x] T008 OFFLINE: Implement versioned atomic mode-0600 emergency-stop persistence and corrupt-state fail-closed recovery for FR-019 in `control_ws/src/student_tasks/src/student_tasks/estop_store.py`
+- [x] T009 [P] OFFLINE: Write failing handler-installation, first-signal, SIGINT/SIGTERM/SIGHUP, cancellation-only handler, and restoration tests for FR-009 in `control_ws/src/student_tasks/test/test_signals.py`
+- [x] T010 OFFLINE: Implement thread-safe cancellation state and scoped signal handler restoration for FR-009 in `control_ws/src/student_tasks/src/student_tasks/signals.py`
 
 **Checkpoint**: Production state and ownership primitives work without ROS or network access.
 
