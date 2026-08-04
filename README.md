@@ -14,6 +14,10 @@
 │   ├── 0802会议材料-系统分层与场景定义.md
 │   ├── 项目启动全员必备知识文档.md
 │   └── ...
+├── scripts/           # 运维脚本（健康检查、控制就绪检查）
+│   ├── healthcheck.sh         # 全链路健康检查
+│   ├── check-control-ready.sh # 控制前就绪检查
+│   └── README.md              # 控制前必须运行的脚本文档
 ├── prep/              # 赛前准备交付物（环境、工具包、选题、演练记录）
 │   ├── 环境验证.md
 │   ├── 工具使用简介.md
@@ -32,6 +36,7 @@
 - [M-Robots 开发踩坑与参考库](docs/板端开发参考/M-Robots开发踩坑与参考库.md)
 - [HDC 连接中断排查记录](docs/板端开发参考/HDC连接中断排查记录.md)
 - [机器人健康检查脚本](scripts/healthcheck.sh)
+- [控制前必须运行的脚本](scripts/README.md)
 
 ## 技术栈
 
@@ -49,7 +54,8 @@
 - Demo：Dora Hello World + 5Hz sensor/filter 节点（`prep/demo代码/`）与 ROS1 talker/listener 均已在板端跑通，记录分别见 `prep/demo记录/dora样例记录.md` 和 `prep/demo记录/ros1样例记录.md`。
 - 执行器方案：底盘 `/cmd_vel`、机械臂与夹爪 `FollowJointTrajectoryAction`、M-Claw `robot_ops.py` 高层 JSON 命令链路已确认，见 `prep/机器人硬件方案.md`。
 - 选题与答疑：`prep/选题/候选方案.md` 与 `prep/老师确认记录.md` 已就位；最终选题待现场根据物料收敛。
-- 备份机制：`prep/deploy.sh` 一键推送脚本已验证可用；换板恢复 SOP 待补。
+- 备份机制：`prep/deploy.sh` 一键推送脚本已验证可用；换板恢复简化为插拔换板。
+- 运维脚本：`scripts/healthcheck.sh` 全链路健康检查、`scripts/check-control-ready.sh` 控制前就绪检查，详见 `scripts/README.md`。
 
 ## 现场支持
 

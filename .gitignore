@@ -32,6 +32,9 @@ papers/
 # 部署临时扁平目录
 prep/demo_flat/
 
+# 每日复盘文档（本地参考，不入库）
+docs/daily_review/
+
 # 相机截图与运行产物
 prep/demo记录/captures/
 captures/

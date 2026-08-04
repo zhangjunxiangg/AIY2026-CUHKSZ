@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "received_unix_s": 1785754396.0798485,
+  "receiver": "localhost",
+  "ros_master_uri": "http://172.70.2.229:11311",
+  "color_topic": "/aux_camera/color/image_raw/compressed",
+  "depth_topic": "/aux_camera/depth/image_raw",
+  "color_format": "jpeg",
+  "color_bytes": 35550,
+  "color_shape": [
+    480,
+    640,
+    3
+  ],
+  "depth_encoding": "16UC1",
+  "depth_shape": [
+    480,
+    640
+  ],
+  "depth_frame_id": "aux_camera_color_optical_frame",
+  "valid_depth_pixels": 218249,
+  "valid_depth_ratio": 0.7104459635416667,
+  "center_depth_mm_median": 1987.0,
+  "color_path": "/data/robot-host/student/output/aux-camera-latest-color.jpg",
+  "depth_path": "/data/robot-host/student/output/aux-camera-latest-depth.png",
+  "depth_preview_path": "/data/robot-host/student/output/aux-camera-latest-depth-preview.pgm"
+}
