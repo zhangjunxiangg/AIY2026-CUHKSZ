@@ -2,7 +2,7 @@
 
 **Feature Branch**: `junxiang`  
 **Created**: 2026-08-05  
-**Status**: Draft  
+**Status**: OFFLINE_VERIFIED
 **Input**: A shared, hardware-independent motion-control core with bounded movement, explicit stopping, deterministic simulation, and a machine-readable command interface.
 
 ## User Scenarios & Testing *(mandatory)*

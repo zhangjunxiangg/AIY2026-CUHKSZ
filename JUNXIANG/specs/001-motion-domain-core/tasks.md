@@ -64,9 +64,9 @@ description: "Dependency-ordered implementation tasks for the shared motion doma
 
 **Independent Test**: Subprocess tests parse exactly one stdout object for success and every exit class while stderr remains separate.
 
-- [ ] T015 [US3] OFFLINE: Write failing subprocess contract tests for commands, output cardinality, schema fields, exit classes, and production fail-closed behavior for FR-008/FR-010 in `control_ws/src/student_tasks/test/test_cli.py`
-- [ ] T016 [US3] OFFLINE: Implement parser, fake-backend selection, JSON result output, and stable exit mapping for FR-008/FR-009/FR-010 in `control_ws/src/student_tasks/src/student_tasks/cli.py`
-- [ ] T017 [US3] OFFLINE: Add the thin executable entry point that imports the shared CLI for FR-003/FR-008 in `control_ws/src/student_tasks/scripts/robot_control_cli.py`
+- [x] T015 [US3] OFFLINE: Write failing subprocess contract tests for commands, output cardinality, schema fields, exit classes, and production fail-closed behavior for FR-008/FR-010 in `control_ws/src/student_tasks/test/test_cli.py`
+- [x] T016 [US3] OFFLINE: Implement parser, fake-backend selection, JSON result output, and stable exit mapping for FR-008/FR-009/FR-010 in `control_ws/src/student_tasks/src/student_tasks/cli.py`
+- [x] T017 [US3] OFFLINE: Add the thin executable entry point that imports the shared CLI for FR-003/FR-008 in `control_ws/src/student_tasks/scripts/robot_control_cli.py`
 
 **Checkpoint**: User Story 3 passes from a clean subprocess and never silently selects production transport.
 
@@ -74,9 +74,9 @@ description: "Dependency-ordered implementation tasks for the shared motion doma
 
 ## Phase 6: Polish and Verification
 
-- [ ] T018 [P] OFFLINE: Add public API docstrings and export only stable domain/core symbols in `control_ws/src/student_tasks/src/student_tasks/__init__.py`
-- [ ] T019 OFFLINE: Run all commands in `specs/001-motion-domain-core/quickstart.md` and record the offline evidence in `specs/001-motion-domain-core/verification.md`
-- [ ] T020 OFFLINE: Run the full package test suite and requirement-to-task audit, then update completed boxes in `specs/001-motion-domain-core/tasks.md`
+- [x] T018 [P] OFFLINE: Add public API docstrings and export only stable domain/core symbols in `control_ws/src/student_tasks/src/student_tasks/__init__.py`
+- [x] T019 OFFLINE: Run all commands in `specs/001-motion-domain-core/quickstart.md` and record the offline evidence in `specs/001-motion-domain-core/verification.md`
+- [x] T020 OFFLINE: Run the full package test suite and requirement-to-task audit, then update completed boxes in `specs/001-motion-domain-core/tasks.md`
 
 ---
 
