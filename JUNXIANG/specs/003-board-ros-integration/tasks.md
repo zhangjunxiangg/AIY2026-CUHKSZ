@@ -97,8 +97,8 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 ## Phase 7: Polish and Source Verification
 
 - [x] T029 [P] SOURCE: Document ROS CLI examples, measured configuration workflow, and explicit HIL boundary in `control_ws/src/student_tasks/README.md`
-- [ ] T030 SOURCE: Execute `specs/003-board-ros-integration/quickstart.md` with ROS/network unavailable and record results in `specs/003-board-ros-integration/verification.md`
-- [ ] T031 SOURCE: Audit FR-001 through FR-019 against tests/tasks, run full regression and source scans, and update completion boxes in `specs/003-board-ros-integration/tasks.md`
+- [x] T030 SOURCE: Execute `specs/003-board-ros-integration/quickstart.md` with ROS/network unavailable and record results in `specs/003-board-ros-integration/verification.md`
+- [x] T031 SOURCE: Audit FR-001 through FR-019 against tests/tasks, run full regression and source scans, and update completion boxes in `specs/003-board-ros-integration/tasks.md`
 
 ---
 

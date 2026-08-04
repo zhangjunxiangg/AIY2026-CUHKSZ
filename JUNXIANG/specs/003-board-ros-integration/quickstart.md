@@ -34,4 +34,4 @@ Expected: all commands exit zero after implementation. This does not execute the
 
 ## Verification Label
 
-The highest permitted result tonight is `SOURCE_VERIFIED_HIL_PENDING`. Continue with `specs/004-hil-validation-and-handoff/` only when the user is physically beside the robot and authorizes each movement.
+The highest permitted result tonight is `SOURCE_VERIFIED_HIL_PENDING`. Continue with `specs/004-hil-validation-handoff/` only when the user is physically beside the robot and authorizes each movement.

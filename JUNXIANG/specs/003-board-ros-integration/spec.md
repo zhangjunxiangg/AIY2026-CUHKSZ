@@ -2,7 +2,7 @@
 
 **Feature Branch**: `junxiang`  
 **Created**: 2026-08-05  
-**Status**: Draft  
+**Status**: `SOURCE_VERIFIED_HIL_PENDING`
 **Input**: A production ROS1 backend and deployment-ready CLI that adapt the offline-verified control core without requiring board access during implementation.
 
 ## User Scenarios & Testing *(mandatory)*
