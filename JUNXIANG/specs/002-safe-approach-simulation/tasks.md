@@ -60,9 +60,9 @@ description: "Dependency-ordered tasks for offline lidar safety and visual appro
 
 **Independent Test**: Known coordinate fixtures pass within `1e-6 m`; all freshness, validity, frame, confidence, depth, and calibration failures return stable errors.
 
-- [ ] T013 [US3] OFFLINE: Write failing base-target validation and geometry tests for FR-007/FR-009 in `control_ws/src/student_tasks/test/test_perception.py`
-- [ ] T014 [US3] OFFLINE: Write failing pixel-depth, camera-frame, intrinsics, transform freshness, and provenance tests for FR-008/FR-015 in `control_ws/src/student_tasks/test/test_perception.py`
-- [ ] T015 [US3] OFFLINE: Implement base target, pixel-depth target, calibration, normalized target, and stable rejection models for FR-007/FR-008/FR-009/FR-015 in `control_ws/src/student_tasks/src/student_tasks/perception.py`
+- [x] T013 [US3] OFFLINE: Write failing base-target validation and geometry tests for FR-007/FR-009 in `control_ws/src/student_tasks/test/test_perception.py`
+- [x] T014 [US3] OFFLINE: Write failing pixel-depth, camera-frame, intrinsics, transform freshness, and provenance tests for FR-008/FR-015 in `control_ws/src/student_tasks/test/test_perception.py`
+- [x] T015 [US3] OFFLINE: Implement base target, pixel-depth target, calibration, normalized target, and stable rejection models for FR-007/FR-008/FR-009/FR-015 in `control_ws/src/student_tasks/src/student_tasks/perception.py`
 
 **Checkpoint**: Every accepted target is fresh, valid, confidence-qualified, and explicitly in `base_link`.
 
