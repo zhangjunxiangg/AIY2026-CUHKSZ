@@ -83,12 +83,12 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 
 **Independent Test**: Manifest coverage, paths, modes, wrapper syntax, template rejection, smoke AST behavior, and forbidden/secret exclusions pass locally.
 
-- [ ] T023 [US4] OFFLINE: Write failing read-only smoke behavior and AST no-nonzero-request tests for FR-017 in `control_ws/src/student_tasks/test/test_deployment.py`
-- [ ] T024 [US4] SOURCE: Implement JSON-only read-only graph/config/provider smoke reporting for FR-017/FR-018 in `control_ws/src/student_tasks/scripts/board_smoke_test.py`
-- [ ] T025 [US4] OFFLINE: Write failing manifest completeness, target-root, wrapper `/bin/run`, shell syntax, template rejection, secret exclusion, and verification-label tests for FR-016/FR-018 in `control_ws/src/student_tasks/test/test_deployment.py`
-- [ ] T026 [US4] SOURCE: Add ROS runtime dependencies and install entries without auto-start behavior for FR-016 in `control_ws/src/student_tasks/CMakeLists.txt` and `control_ws/src/student_tasks/package.xml`
-- [ ] T027 [US4] SOURCE: Create the non-executing board manifest, self-contained wrapper, and deployment instructions for FR-016 in `control_ws/src/student_tasks/deploy/board-manifest.json`, `control_ws/src/student_tasks/deploy/robot-control`, and `control_ws/src/student_tasks/deploy/README.md`
-- [ ] T028 [US4] SOURCE: Add official-topic/type/run-path/watchdog checks and executable forbidden-interface scans for FR-003/FR-018 in `control_ws/src/student_tasks/test/test_source_contracts.py`
+- [x] T023 [US4] OFFLINE: Write failing read-only smoke behavior and AST no-nonzero-request tests for FR-017 in `control_ws/src/student_tasks/test/test_deployment.py`
+- [x] T024 [US4] SOURCE: Implement JSON-only read-only graph/config/provider smoke reporting for FR-017/FR-018 in `control_ws/src/student_tasks/scripts/board_smoke_test.py`
+- [x] T025 [US4] OFFLINE: Write failing manifest completeness, target-root, wrapper `/bin/run`, shell syntax, template rejection, secret exclusion, and verification-label tests for FR-016/FR-018 in `control_ws/src/student_tasks/test/test_deployment.py`
+- [x] T026 [US4] SOURCE: Add ROS runtime dependencies and install entries without auto-start behavior for FR-016 in `control_ws/src/student_tasks/CMakeLists.txt` and `control_ws/src/student_tasks/package.xml`
+- [x] T027 [US4] SOURCE: Create the non-executing board manifest, self-contained wrapper, and deployment instructions for FR-016 in `control_ws/src/student_tasks/deploy/board-manifest.json`, `control_ws/src/student_tasks/deploy/robot-control`, and `control_ws/src/student_tasks/deploy/README.md`
+- [x] T028 [US4] SOURCE: Add official-topic/type/run-path/watchdog checks and executable forbidden-interface scans for FR-003/FR-018 in `control_ws/src/student_tasks/test/test_source_contracts.py`
 
 **Checkpoint**: Bundle validation succeeds locally but no board operation has occurred.
 
