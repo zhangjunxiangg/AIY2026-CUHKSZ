@@ -118,7 +118,7 @@ class MotionResult:
     schema: str = RESULT_SCHEMA
 
     def __post_init__(self) -> None:
-        if self.operation not in {"status", "move", "stop"}:
+        if self.operation not in {"status", "move", "stop", "approach", "estop-reset"}:
             raise ValueError("Unknown motion operation")
         if self.operation_id is not None:
             object.__setattr__(self, "operation_id", validate_operation_id(self.operation_id))

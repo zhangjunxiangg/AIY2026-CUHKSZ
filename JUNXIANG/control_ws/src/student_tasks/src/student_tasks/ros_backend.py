@@ -65,6 +65,7 @@ class RosMotionBackend:
         self.operator_confirmed = operator_confirmed
         self._publisher: object | None = None
         self._initialization_error: str | None = None
+        self._session_owned = False
         self._motion_lock = motion_lock
         self._estop_store = estop_store
         if configuration is not None:
@@ -147,8 +148,21 @@ class RosMotionBackend:
 
         scan_code = self._scan_readiness_code()
         details["scan"] = {"code": scan_code}
+        diagnostics = getattr(self.scan_provider, "diagnostics", None)
+        if callable(diagnostics):
+            try:
+                details["scan"] = diagnostics(self.facade.monotonic())
+            except Exception as exc:
+                details["scan"] = {"code": scan_code, "diagnostic_error": str(exc)}
         if scan_code != "SCAN_READY":
             reasons.append(scan_code)
+
+        target_diagnostics = getattr(getattr(self, "target_provider", None), "diagnostics", None)
+        if callable(target_diagnostics):
+            try:
+                details["target"] = target_diagnostics(self.facade.monotonic())
+            except Exception as exc:
+                details["target"] = {"code": "TARGET_DIAGNOSTIC_FAILED", "detail": str(exc)}
 
         return BackendStatus(not reasons, "ros", True, "measured", tuple(reasons), details)
 
@@ -157,6 +171,10 @@ class RosMotionBackend:
             raise failure("PRODUCTION_CONFIG_REQUIRED", "production configuration is unavailable")
         if not self.operator_confirmed:
             raise failure("BACKEND_UNAVAILABLE", "operator confirmation is required for non-zero motion")
+        if self._session_owned:
+            if not self._motion_lock.assert_held():
+                raise failure("MOTION_BUSY", "approach session lost motion lock ownership")
+            return
         result = self._motion_lock.try_acquire(operation_id)
         if not result.acquired:
             raise failure(
@@ -166,6 +184,19 @@ class RosMotionBackend:
             )
 
     def release(self) -> None:
+        if self._motion_lock is not None and not self._session_owned:
+            self._motion_lock.release()
+
+    def begin_session(self, operation_id: str) -> None:
+        if self._session_owned:
+            raise failure("MOTION_BUSY", "approach session already owns motion")
+        self.acquire(operation_id)
+        self._session_owned = True
+
+    def end_session(self) -> None:
+        if not self._session_owned:
+            return
+        self._session_owned = False
         if self._motion_lock is not None:
             self._motion_lock.release()
 
@@ -205,7 +236,7 @@ class RosMotionBackend:
             raise failure("BACKEND_UNAVAILABLE", "persistent emergency stop is latched: %s" % estop.trigger_code)
         decision = self._directional_safety(velocity)
         if not decision.allowed:
-            self._latch_safety(decision)
+            self.latch_safety(decision)
             raise failure("BACKEND_UNAVAILABLE", "directional scan rejected motion: %s" % decision.code)
 
         publisher = self._ensure_publisher()
@@ -312,7 +343,10 @@ class RosMotionBackend:
         )
         if any(isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(float(value)) for value in values):
             return "SCAN_INVALID"
-        age = self.facade.source_time() - float(scan.observed_at)
+        try:
+            age = self.facade.source_time() - float(scan.observed_at)
+        except Exception:
+            return "SCAN_TIME_INVALID"
         if age < -config.safety.future_tolerance_s:
             return "SCAN_FUTURE"
         if age > config.safety.max_scan_age_s:
@@ -338,7 +372,7 @@ class RosMotionBackend:
         monitor = SafetyMonitor(config.safety)
         return monitor.evaluate(velocity, self._scan_snapshot(), now=self.facade.source_time())
 
-    def _latch_safety(self, decision: SafetyDecision) -> None:
+    def latch_safety(self, decision: SafetyDecision) -> None:
         if self._estop_store is None:
             return
         serialized = json.dumps(decision.to_dict(), ensure_ascii=True, separators=(",", ":"), sort_keys=True)

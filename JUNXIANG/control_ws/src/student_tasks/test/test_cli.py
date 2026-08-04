@@ -1,12 +1,62 @@
 from __future__ import annotations
 
 import json
+import math
 import os
+import signal
 import subprocess
 import sys
+import tempfile
 import unittest
+from dataclasses import replace
+from io import StringIO
+from unittest import mock
 
 import support
+
+from fake_ros import FakeBool, FakeRosFacade, FakeString
+from student_tasks.estop_store import EstopStore
+from student_tasks.process_lock import MotionLock
+from student_tasks.production_config import ConfigurationValidation
+from student_tasks.ros_facade import RosFacadeUnavailable
+from student_tasks.signals import SignalCancellationGuard
+from test_production_config import NOW
+from test_ros_backend import clear_estop, measured_config
+from test_ros_providers import base_payload, scan_message
+
+
+class SeededRosFacade(FakeRosFacade):
+    def __init__(self, *, scan_messages: list[object] | None = None, target: bool = False) -> None:
+        super().__init__(wall_time=NOW)
+        self.scan_messages = list(scan_messages or [clear_scan_message()])
+        self.target = target
+        self.lock_observations: list[bool] = []
+        self.observed_lock_path: str | None = None
+
+    def subscribe(self, topic: str, callback: object, message_kind: str = "string") -> object:
+        subscription = super().subscribe(topic, callback, message_kind)
+        if message_kind == "laser_scan" and self.scan_messages:
+            callback(self.scan_messages.pop(0))
+        elif message_kind == "bool" and self.target:
+            callback(FakeBool(True))
+        elif message_kind == "string" and self.target:
+            callback(FakeString(json.dumps(base_payload(x=0.45, y=0.0))))
+        return subscription
+
+    def sleep(self, duration_s: float) -> None:
+        super().sleep(duration_s)
+        if self.observed_lock_path is not None:
+            self.lock_observations.append(MotionLock(self.observed_lock_path).probe().acquired)
+        if self.scan_messages:
+            self.emit("/scan", self.scan_messages.pop(0))
+
+
+def clear_scan_message(*, source_time: float = NOW) -> object:
+    return replace(
+        scan_message(source_time=source_time),
+        angle_increment=math.pi / 36.0,
+        ranges=(1.0,) * 73,
+    )
 
 
 class CliContractTests(unittest.TestCase):
@@ -109,8 +159,202 @@ class CliContractTests(unittest.TestCase):
         self.assertEqual(3, completed.returncode)
         self.assertFalse(payload["ok"])
         self.assertEqual("ros", payload["backend"])
-        self.assertEqual("BACKEND_UNAVAILABLE", payload["error"]["code"])
+        self.assertEqual("PRODUCTION_CONFIG_REQUIRED", payload["error"]["code"])
         self.assertNotEqual("fake", payload["backend"])
+
+    def run_ros_main(
+        self,
+        arguments: list[str],
+        *,
+        config: object,
+        facade: FakeRosFacade | None,
+        cancellation: object | None = None,
+        loader_error: Exception | None = None,
+    ) -> tuple[int, dict[str, object], str]:
+        from student_tasks import cli
+
+        output = StringIO()
+        diagnostics = StringIO()
+        validation = ConfigurationValidation((), config)
+        if loader_error is None:
+            facade_loader = mock.Mock(return_value=facade)
+        else:
+            facade_loader = mock.Mock(side_effect=loader_error)
+        with mock.patch.object(cli, "load_production_config", return_value=validation), mock.patch.object(
+            cli, "load_ros_facade", facade_loader
+        ):
+            exit_code = cli.main(
+                arguments,
+                stdout=output,
+                stderr=diagnostics,
+                cancellation=cancellation,
+                wall_clock=lambda: NOW,
+            )
+        lines = output.getvalue().strip().splitlines()
+        self.assertEqual(1, len(lines), output.getvalue())
+        return exit_code, json.loads(lines[0]), diagnostics.getvalue()
+
+    def test_ros_status_uses_injected_facade_and_source_verification_without_motion(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            clear_estop(config)
+            facade = SeededRosFacade()
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            exit_code, payload, _ = self.run_ros_main(
+                ["--backend", "ros", "--config", "measured.json", "status"],
+                config=config,
+                facade=facade,
+            )
+            self.assertEqual(0, exit_code)
+            self.assertEqual("SOURCE_VERIFIED_HIL_PENDING", payload["verification"])
+            self.assertFalse(payload["zero_velocity_attempted"])
+            self.assertEqual([], facade.created_publishers)
+
+    def test_valid_ros_selection_never_falls_back_when_explicit_loader_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            exit_code, payload, _ = self.run_ros_main(
+                ["--backend", "ros", "--config", "measured.json", "status"],
+                config=config,
+                facade=None,
+                loader_error=RosFacadeUnavailable("ROS unavailable for test"),
+            )
+            self.assertEqual(3, exit_code)
+            self.assertEqual("ros", payload["backend"])
+            self.assertFalse(payload["data"]["fallback_used"])
+
+    def test_ros_move_requires_authorization_and_authorized_move_uses_shared_core(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            clear_estop(config)
+            facade = SeededRosFacade()
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            arguments = [
+                "--backend", "ros", "--config", "measured.json", "move",
+                "--linear-x", "0.1", "--linear-y", "0", "--angular-z", "0", "--duration", "0.1",
+            ]
+            denied_code, denied, _ = self.run_ros_main(arguments, config=config, facade=facade)
+            self.assertEqual(3, denied_code)
+            self.assertFalse(denied["ok"])
+            self.assertEqual([], facade.created_publishers)
+
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            clear_estop(config)
+            facade = SeededRosFacade()
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            # The confirmation flag is global and therefore precedes the command.
+            authorized = [
+                "--backend", "ros", "--config", "measured.json", "--operator-confirmed", "move", *arguments[5:]
+            ]
+            ok_code, result, _ = self.run_ros_main(authorized, config=config, facade=facade)
+            self.assertEqual(0, ok_code)
+            self.assertTrue(result["ok"])
+            self.assertTrue(result["zero_velocity_confirmed"])
+
+    def test_ros_approach_is_in_process_and_holds_lock_through_final_stop(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            clear_estop(config)
+            facade = SeededRosFacade(target=True)
+            facade.observed_lock_path = config.ownership.lock_path
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            guard = SignalCancellationGuard()
+            with mock.patch.object(subprocess, "run", side_effect=AssertionError("approach subprocess")):
+                code, payload, _ = self.run_ros_main(
+                    [
+                        "--backend", "ros", "--config", "measured.json", "--operator-confirmed",
+                        "approach", "--operation-id", "cli-approach",
+                    ],
+                    config=config,
+                    facade=facade,
+                    cancellation=guard,
+                )
+            self.assertEqual(0, code)
+            self.assertTrue(payload["data"]["approach_result"]["ok"])
+            self.assertTrue(facade.lock_observations)
+            self.assertTrue(all(available is False for available in facade.lock_observations))
+            self.assertTrue(MotionLock(config.ownership.lock_path).probe().acquired)
+
+    def test_ros_approach_safety_rejection_persists_estop(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            clear_estop(config)
+            blocked = replace(clear_scan_message(), ranges=(0.1,) * 73)
+            facade = SeededRosFacade(scan_messages=[blocked], target=True)
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            # Force a forward correction rather than an already-arrived target.
+            facade.target = False
+            original_subscribe = facade.subscribe
+
+            def subscribe(topic: str, callback: object, message_kind: str = "string") -> object:
+                subscription = original_subscribe(topic, callback, message_kind)
+                if message_kind == "bool":
+                    callback(FakeBool(True))
+                elif message_kind == "string":
+                    callback(FakeString(json.dumps(base_payload(x=0.8, y=0.0))))
+                return subscription
+
+            facade.subscribe = subscribe
+            code, payload, _ = self.run_ros_main(
+                [
+                    "--backend", "ros", "--config", "measured.json", "--operator-confirmed",
+                    "approach", "--operation-id", "blocked-approach",
+                ],
+                config=config,
+                facade=facade,
+            )
+            self.assertEqual(4, code)
+            self.assertEqual("SAFETY_REJECTED", payload["data"]["approach_result"]["error_code"])
+            self.assertTrue(EstopStore(config.ownership.estop_path).read().latched)
+            self.assertFalse(any(message.linear.x != 0.0 for publisher in facade.created_publishers for message in publisher.messages))
+
+    def test_estop_reset_requires_distinct_consecutive_clear_scan_messages(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            config = replace(config, safety=replace(config.safety, reset_clear_frames=2))
+            store = EstopStore(config.ownership.estop_path)
+            store.latch("TEST", "reset through CLI", now=NOW - 1.0)
+            facade = SeededRosFacade(
+                scan_messages=[clear_scan_message(), clear_scan_message(source_time=NOW + 0.01)]
+            )
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            code, payload, _ = self.run_ros_main(
+                ["--backend", "ros", "--config", "measured.json", "estop-reset"],
+                config=config,
+                facade=facade,
+            )
+            self.assertEqual(0, code)
+            self.assertTrue(payload["ok"])
+            self.assertFalse(store.read().latched)
+            self.assertEqual([], facade.created_publishers)
+
+    def test_cancelled_ros_move_returns_one_interrupted_result_and_zero_stop(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config = measured_config(directory)
+            clear_estop(config)
+            facade = SeededRosFacade()
+            facade.subscriber_nodes[config.ros.cmd_vel_topic] = ["/chassis_controller"]
+            guard = SignalCancellationGuard()
+            original_sleep = facade.sleep
+
+            def cancel_after_publish(duration_s: float) -> None:
+                original_sleep(duration_s)
+                guard.handle_signal(signal.SIGTERM, None)
+
+            facade.sleep = cancel_after_publish
+            code, payload, _ = self.run_ros_main(
+                [
+                    "--backend", "ros", "--config", "measured.json", "--operator-confirmed", "move",
+                    "--linear-x", "0.1", "--linear-y", "0", "--angular-z", "0", "--duration", "0.2",
+                ],
+                config=config,
+                facade=facade,
+                cancellation=guard,
+            )
+            self.assertEqual(4, code)
+            self.assertEqual("CANCELLED", payload["error"]["code"])
+            self.assertTrue(payload["zero_velocity_confirmed"])
 
 
 if __name__ == "__main__":

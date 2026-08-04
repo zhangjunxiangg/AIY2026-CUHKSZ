@@ -69,9 +69,9 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 
 - [x] T018 [US3] OFFLINE: Write failing LaserScan raw-field/source-time/receive-time and target schema/validity/frame/confidence/provenance/staleness conversion tests for FR-010/FR-011 in `control_ws/src/student_tasks/test/test_ros_providers.py`
 - [x] T019 [US3] SOURCE: Implement thread-safe scan and versioned JSON target providers with dual-time evidence and structured failures for FR-010/FR-011 in `control_ws/src/student_tasks/src/student_tasks/ros_providers.py`
-- [ ] T020 [US3] OFFLINE: Write failing CLI ROS selection, no-fallback, authorization, one-result, in-process approach, estop persistence, and clear-scan reset tests for FR-012/FR-013/FR-014/FR-019 in `control_ws/src/student_tasks/test/test_cli.py`
-- [ ] T021 [US3] SOURCE: Extend backend selection and CLI commands for ROS status/move/stop/approach/estop-reset with direct controller composition for FR-012/FR-013/FR-014/FR-019 in `control_ws/src/student_tasks/src/student_tasks/cli.py`
-- [ ] T022 [US3] SOURCE: Update the thin executable entry point for scoped signal handling and stable exit behavior for FR-009/FR-013 in `control_ws/src/student_tasks/scripts/robot_control_cli.py`
+- [x] T020 [US3] OFFLINE: Write failing CLI ROS selection, no-fallback, authorization, one-result, in-process approach, estop persistence, and clear-scan reset tests for FR-012/FR-013/FR-014/FR-019 in `control_ws/src/student_tasks/test/test_cli.py`
+- [x] T021 [US3] SOURCE: Extend backend selection and CLI commands for ROS status/move/stop/approach/estop-reset with direct controller composition for FR-012/FR-013/FR-014/FR-019 in `control_ws/src/student_tasks/src/student_tasks/cli.py`
+- [x] T022 [US3] SOURCE: Update the thin executable entry point for scoped signal handling and stable exit behavior for FR-009/FR-013 in `control_ws/src/student_tasks/scripts/robot_control_cli.py`
 
 **Checkpoint**: One approach process owns providers, safety state, core, and backend for its entire feedback loop.
 

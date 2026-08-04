@@ -12,7 +12,9 @@ if str(SOURCE_ROOT) not in sys.path:
     sys.path.insert(0, str(SOURCE_ROOT))
 
 from student_tasks.cli import main  # noqa: E402
+from student_tasks.signals import SignalCancellationGuard  # noqa: E402
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    with SignalCancellationGuard() as cancellation:
+        raise SystemExit(main(cancellation=cancellation))
