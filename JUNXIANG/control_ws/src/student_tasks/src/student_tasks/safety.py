@@ -36,7 +36,7 @@ def _required_sectors(velocity: Velocity) -> tuple[str, ...]:
 
 
 def _angular_distance(first: float, second: float) -> float:
-    return abs(math.atan2(math.sin(first - second), math.cos(first - second)))
+    return abs((first - second + math.pi) % (2.0 * math.pi) - math.pi)
 
 
 @dataclass(frozen=True)
@@ -177,6 +177,7 @@ class SafetyMonitor:
         if not isinstance(configuration, SafetyConfiguration):
             raise ValueError("configuration must be SafetyConfiguration")
         self.configuration = configuration
+        self._rules = {rule.name: rule for rule in configuration.sectors}
         self._latched = False
         self._latch_reason: str | None = None
         self._latched_at: float | None = None
@@ -318,23 +319,24 @@ class SafetyMonitor:
         if abs(increment) * (len(scan.ranges) - 1) > 2.0 * math.pi + 1e-6:
             return "SCAN_INVALID", (), age
 
-        samples: dict[str, list[float]] = {name: [] for name in required}
+        selected = [
+            (name, self._rules[name].center_rad, self._rules[name].half_width_rad, [])
+            for name in required
+        ]
         for index, raw_range in enumerate(scan.ranges):
             distance = _finite(raw_range)
             if distance is None or distance <= 0.0 or not range_min <= distance <= range_max:
                 continue
             angle = angle_min + index * increment
-            for name in required:
-                rule = self.configuration.sector(name)
-                if _angular_distance(angle, rule.center_rad) <= rule.half_width_rad + 1e-12:
-                    samples[name].append(distance)
+            for _, center, half_width, sector_samples in selected:
+                if _angular_distance(angle, center) <= half_width + 1e-12:
+                    sector_samples.append(distance)
 
         evidence: list[SectorEvidence] = []
         insufficient = False
         blocked = False
-        for name in required:
-            rule = self.configuration.sector(name)
-            distances = samples[name]
+        for name, _, _, distances in selected:
+            rule = self._rules[name]
             minimum = min(distances) if distances else None
             if len(distances) < rule.min_samples:
                 insufficient = True
