@@ -12,19 +12,19 @@ description: "Dependency-ordered implementation tasks for the shared motion doma
 
 ## Phase 1: Setup
 
-- [ ] T001 OFFLINE: Create the catkin-compatible package skeleton and Python package markers in `control_ws/src/student_tasks/CMakeLists.txt`, `control_ws/src/student_tasks/package.xml`, and `control_ws/src/student_tasks/src/student_tasks/__init__.py`
-- [ ] T002 [P] OFFLINE: Document package scope, offline commands, and verification labels in `control_ws/src/student_tasks/README.md`
-- [ ] T003 [P] OFFLINE: Add the standard-library test import/bootstrap helper in `control_ws/src/student_tasks/test/support.py`
+- [x] T001 OFFLINE: Create the catkin-compatible package skeleton and Python package markers in `control_ws/src/student_tasks/CMakeLists.txt`, `control_ws/src/student_tasks/package.xml`, and `control_ws/src/student_tasks/src/student_tasks/__init__.py`
+- [x] T002 [P] OFFLINE: Document package scope, offline commands, and verification labels in `control_ws/src/student_tasks/README.md`
+- [x] T003 [P] OFFLINE: Add the standard-library test import/bootstrap helper in `control_ws/src/student_tasks/test/support.py`
 
 ---
 
 ## Phase 2: Foundational Domain Contracts
 
-- [ ] T004 [P] OFFLINE: Write failing finite-number, planar-magnitude, angular, duration, operation-ID, and forbidden-interface sentinel tests for FR-001/FR-002/FR-012 in `control_ws/src/student_tasks/test/test_limits.py`
-- [ ] T005 [P] OFFLINE: Write failing serialization and stable-error tests for FR-009 in `control_ws/src/student_tasks/test/test_models.py`
-- [ ] T006 OFFLINE: Implement hard constants and validation helpers for FR-002/FR-012 in `control_ws/src/student_tasks/src/student_tasks/limits.py`
-- [ ] T007 OFFLINE: Implement versioned immutable domain values and error taxonomy for FR-001/FR-009 in `control_ws/src/student_tasks/src/student_tasks/models.py` and `control_ws/src/student_tasks/src/student_tasks/errors.py`
-- [ ] T008 OFFLINE: Define the ROS-free backend protocol and cancellation contract for FR-003/FR-011 in `control_ws/src/student_tasks/src/student_tasks/backend.py`
+- [x] T004 [P] OFFLINE: Write failing finite-number, planar-magnitude, angular, duration, operation-ID, and forbidden-interface sentinel tests for FR-001/FR-002/FR-012 in `control_ws/src/student_tasks/test/test_limits.py`
+- [x] T005 [P] OFFLINE: Write failing serialization and stable-error tests for FR-009 in `control_ws/src/student_tasks/test/test_models.py`
+- [x] T006 OFFLINE: Implement hard constants and validation helpers for FR-002/FR-012 in `control_ws/src/student_tasks/src/student_tasks/limits.py`
+- [x] T007 OFFLINE: Implement versioned immutable domain values and error taxonomy for FR-001/FR-009 in `control_ws/src/student_tasks/src/student_tasks/models.py` and `control_ws/src/student_tasks/src/student_tasks/errors.py`
+- [x] T008 OFFLINE: Define the ROS-free backend protocol and cancellation contract for FR-003/FR-011 in `control_ws/src/student_tasks/src/student_tasks/backend.py`
 
 **Checkpoint**: Domain values reject all unsafe or malformed requests without importing ROS.
 
