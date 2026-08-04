@@ -23,6 +23,11 @@ papers/
 # 部署临时扁平目录
 prep/demo_flat/
 
+# 相机截图与运行产物
+prep/demo记录/captures/
+captures/
+out/
+
 # Office 临时文件
 ~$*.pptx
 ~$*.ppt
