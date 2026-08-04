@@ -10,17 +10,17 @@ description: "Dependency-ordered tasks for offline lidar safety and visual appro
 
 ## Phase 1: Setup and Synthetic Boundaries
 
-- [ ] T001 [P] OFFLINE: Add explicitly synthetic scan, target, calibration, and convergence fixtures in `control_ws/src/student_tasks/test/fixtures/safe_approach.json`
-- [ ] T002 [P] OFFLINE: Add the offline-only configuration with provenance and non-production warning in `control_ws/src/student_tasks/config/offline.synthetic.json`
-- [ ] T003 OFFLINE: Write failing provenance, measured timestamp, and synthetic-production rejection tests for FR-015 in `control_ws/src/student_tasks/test/test_configuration.py`
-- [ ] T004 OFFLINE: Implement immutable provenance and configuration validation for FR-015 in `control_ws/src/student_tasks/src/student_tasks/configuration.py`
+- [x] T001 [P] OFFLINE: Add explicitly synthetic scan, target, calibration, and convergence fixtures in `control_ws/src/student_tasks/test/fixtures/safe_approach.json`
+- [x] T002 [P] OFFLINE: Add the offline-only configuration with provenance and non-production warning in `control_ws/src/student_tasks/config/offline.synthetic.json`
+- [x] T003 OFFLINE: Write failing provenance, measured timestamp, and synthetic-production rejection tests for FR-015 in `control_ws/src/student_tasks/test/test_configuration.py`
+- [x] T004 OFFLINE: Implement immutable provenance and configuration validation for FR-015 in `control_ws/src/student_tasks/src/student_tasks/configuration.py`
 
 ---
 
 ## Phase 2: Foundational Geometry
 
-- [ ] T005 OFFLINE: Write failing finite-vector, intrinsics, rigid-rotation, determinant, unprojection, transform, planar-distance, and bearing tests for FR-008/FR-009 in `control_ws/src/student_tasks/test/test_geometry.py`
-- [ ] T006 OFFLINE: Implement standard-library vector, intrinsics, rigid-transform, unprojection, and base-geometry helpers for FR-008/FR-009 in `control_ws/src/student_tasks/src/student_tasks/geometry.py`
+- [x] T005 OFFLINE: Write failing finite-vector, intrinsics, rigid-rotation, determinant, unprojection, transform, planar-distance, and bearing tests for FR-008/FR-009 in `control_ws/src/student_tasks/test/test_geometry.py`
+- [x] T006 OFFLINE: Implement standard-library vector, intrinsics, rigid-transform, unprojection, and base-geometry helpers for FR-008/FR-009 in `control_ws/src/student_tasks/src/student_tasks/geometry.py`
 
 **Checkpoint**: Camera-forward depth transforms into base x/y/z, and base z is never used as forward distance.
 

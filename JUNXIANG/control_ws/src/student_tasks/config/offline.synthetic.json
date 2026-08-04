@@ -1,0 +1,34 @@
+{
+  "schema": "robot-control/offline-config/v1",
+  "warning": "SYNTHETIC OFFLINE VALUES ONLY - REJECT FOR PRODUCTION OR HIL",
+  "provenance": {
+    "kind": "synthetic",
+    "source": "student_tasks/config/offline.synthetic.json",
+    "measured_at": null
+  },
+  "safety": {
+    "max_scan_age_s": 0.25,
+    "future_tolerance_s": 0.02,
+    "reset_clear_frames": 3,
+    "sectors": {
+      "front": {"center_rad": 0.0, "half_width_rad": 0.35, "min_clearance_m": 0.40, "min_samples": 3},
+      "left": {"center_rad": 1.5707963267948966, "half_width_rad": 0.35, "min_clearance_m": 0.35, "min_samples": 3},
+      "rear": {"center_rad": 3.141592653589793, "half_width_rad": 0.35, "min_clearance_m": 0.35, "min_samples": 3},
+      "right": {"center_rad": -1.5707963267948966, "half_width_rad": 0.35, "min_clearance_m": 0.35, "min_samples": 3}
+    }
+  },
+  "approach": {
+    "linear_speed_mps": 0.10,
+    "angular_speed_radps": 0.20,
+    "correction_duration_s": 0.10,
+    "bearing_tolerance_rad": 0.08,
+    "stand_off_m": 0.45,
+    "stand_off_tolerance_m": 0.03,
+    "stable_frames": 2,
+    "max_target_age_s": 0.25,
+    "min_confidence": 0.60,
+    "target_loss_limit": 1,
+    "timeout_s": 5.0,
+    "max_iterations": 20
+  }
+}
