@@ -12,10 +12,10 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 
 ## Phase 1: Setup and Test Boundary
 
-- [ ] T001 [P] OFFLINE: Create deterministic graph, publisher, subscriber, message, clock, and failure fakes in `control_ws/src/student_tasks/test/fake_ros.py`
-- [ ] T002 [P] SOURCE: Add a fully null measured-configuration template that cannot pass validation in `control_ws/src/student_tasks/config/robot.measured.template.json`
-- [ ] T003 OFFLINE: Write failing schema, null, synthetic, timestamp, topic, path, direction-sign, hard-limit, allowlist-evidence, and cross-field tests for FR-015 in `control_ws/src/student_tasks/test/test_production_config.py`
-- [ ] T004 OFFLINE: Implement standard-library production configuration loading, typed conversion, and aggregated fail-closed findings for FR-015 in `control_ws/src/student_tasks/src/student_tasks/production_config.py`
+- [x] T001 [P] OFFLINE: Create deterministic graph, publisher, subscriber, message, clock, and failure fakes in `control_ws/src/student_tasks/test/fake_ros.py`
+- [x] T002 [P] SOURCE: Add a fully null measured-configuration template that cannot pass validation in `control_ws/src/student_tasks/config/robot.measured.template.json`
+- [x] T003 OFFLINE: Write failing schema, null, synthetic, timestamp, topic, path, direction-sign, hard-limit, allowlist-evidence, and cross-field tests for FR-015 in `control_ws/src/student_tasks/test/test_production_config.py`
+- [x] T004 OFFLINE: Implement standard-library production configuration loading, typed conversion, and aggregated fail-closed findings for FR-015 in `control_ws/src/student_tasks/src/student_tasks/production_config.py`
 
 ---
 
