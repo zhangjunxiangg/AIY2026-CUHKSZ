@@ -20,6 +20,9 @@ AIY黑客松x深开鸿赛题宣讲.log
 # 研究论文与原始资料（体积大，本地参考）
 papers/
 
+# 部署临时扁平目录
+prep/demo_flat/
+
 # Office 临时文件
 ~$*.pptx
 ~$*.ppt
