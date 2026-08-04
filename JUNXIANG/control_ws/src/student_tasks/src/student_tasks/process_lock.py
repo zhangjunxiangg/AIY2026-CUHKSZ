@@ -55,6 +55,29 @@ class MotionLock:
     def held(self) -> bool:
         return self.assert_held()
 
+    def probe(self) -> LockResult:
+        """Inspect an existing record without creating or changing lock metadata."""
+
+        if self._descriptor is not None:
+            return LockResult(self.assert_held(), "LOCK_AVAILABLE", {"state": "owned_by_current_process"})
+        try:
+            descriptor = os.open(self.path, os.O_RDWR)
+        except FileNotFoundError:
+            return LockResult(True, "LOCK_AVAILABLE", {"state": "no_record"})
+        except OSError:
+            return LockResult(False, "LOCK_STATE_UNAVAILABLE", {"state": "record_unreadable"})
+        try:
+            try:
+                fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as exc:
+                if exc.errno not in {errno.EACCES, errno.EAGAIN}:
+                    return LockResult(False, "LOCK_STATE_UNAVAILABLE", {"state": "probe_failed"})
+                return LockResult(False, "MOTION_BUSY", self._read_descriptor(descriptor))
+            fcntl.flock(descriptor, fcntl.LOCK_UN)
+            return LockResult(True, "LOCK_AVAILABLE", self._read_descriptor(descriptor))
+        finally:
+            os.close(descriptor)
+
     def try_acquire(self, operation_id: str) -> LockResult:
         if not isinstance(operation_id, str) or not operation_id.strip() or len(operation_id.strip()) > 128:
             raise ValueError("operation_id must be a non-empty string of at most 128 characters")

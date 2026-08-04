@@ -125,7 +125,14 @@ class FakeRosFacade:
         self.publisher_nodes.setdefault(topic, []).append(self.node_name)
         return publisher
 
-    def subscribe(self, topic: str, callback: Callable[[object], None]) -> FakeSubscription:
+    def subscribe(
+        self,
+        topic: str,
+        callback: Callable[[object], None],
+        message_kind: str = "string",
+    ) -> FakeSubscription:
+        if message_kind not in {"laser_scan", "string", "bool"}:
+            raise ValueError("unsupported fake message kind")
         subscription = FakeSubscription(topic, callback)
         self.subscriptions.append(subscription)
         return subscription

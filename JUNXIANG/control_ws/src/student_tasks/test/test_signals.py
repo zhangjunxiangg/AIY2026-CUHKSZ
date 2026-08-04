@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import signal
+import tempfile
 import unittest
 
 import support  # noqa: F401
@@ -47,6 +48,34 @@ class SignalCancellationGuardTests(unittest.TestCase):
         with guard:
             with self.assertRaises(RuntimeError):
                 guard.__enter__()
+
+    def test_owned_motion_cancellation_for_each_signal_runs_final_stop(self) -> None:
+        from student_tasks.core import MotionController
+        from student_tasks.models import MotionRequest, Velocity
+        from test_ros_backend import ready_backend
+
+        for number in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+            with self.subTest(number=number), tempfile.TemporaryDirectory() as directory:
+                backend, facade, _ = ready_backend(directory)
+                guard = SignalCancellationGuard()
+                original_sleep = facade.sleep
+
+                def cancelling_sleep(duration_s: float) -> None:
+                    original_sleep(duration_s)
+                    guard.handle_signal(number, None)
+
+                facade.sleep = cancelling_sleep
+                with guard:
+                    result = MotionController(backend, zero_message_count=2).move(
+                        MotionRequest("signal-%d" % number, Velocity(0.1, 0.0, 0.0), 0.2),
+                        guard,
+                    )
+                self.assertFalse(result.ok)
+                self.assertEqual("CANCELLED", result.error.code)
+                self.assertTrue(result.zero_velocity_confirmed)
+                messages = facade.created_publishers[0].messages
+                self.assertEqual(1, sum(not message.linear.x == 0.0 for message in messages))
+                self.assertEqual(2, sum(message.linear.x == 0.0 for message in messages))
 
 
 if __name__ == "__main__":

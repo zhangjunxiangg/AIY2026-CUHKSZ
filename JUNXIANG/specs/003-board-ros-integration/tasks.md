@@ -38,10 +38,10 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 
 **Independent Test**: Fake graph/data fixtures cover available and every blocking condition while imports remain usable with ROS packages blocked.
 
-- [ ] T011 [US1] OFFLINE: Write failing lazy-import, explicit-load failure, facade surface, graph, pub/sub, message, time, and English-log tests for FR-001/FR-002 in `control_ws/src/student_tasks/test/test_ros_facade.py`
-- [ ] T012 [US1] SOURCE: Implement local ROS imports and the narrow real/fake facade boundary for FR-001/FR-002 in `control_ws/src/student_tasks/src/student_tasks/ros_facade.py`
-- [ ] T013 [US1] OFFLINE: Write failing status tests for Master, subscriber, configuration, authorization, lock availability, persistent estop, directional scan, self-publisher exclusion, empty allowlist, external conflict, and no-motion evidence for FR-004/FR-006 in `control_ws/src/student_tasks/test/test_ros_backend.py`
-- [ ] T014 [US1] SOURCE: Implement structured ROS readiness, graph snapshots, subscriber inspection, and exact conflict calculation for FR-004/FR-006/FR-018 in `control_ws/src/student_tasks/src/student_tasks/ros_backend.py`
+- [x] T011 [US1] OFFLINE: Write failing lazy-import, explicit-load failure, facade surface, graph, pub/sub, message, time, and English-log tests for FR-001/FR-002 in `control_ws/src/student_tasks/test/test_ros_facade.py`
+- [x] T012 [US1] SOURCE: Implement local ROS imports and the narrow real/fake facade boundary for FR-001/FR-002 in `control_ws/src/student_tasks/src/student_tasks/ros_facade.py`
+- [x] T013 [US1] OFFLINE: Write failing status tests for Master, subscriber, configuration, authorization, lock availability, persistent estop, directional scan, self-publisher exclusion, empty allowlist, external conflict, and no-motion evidence for FR-004/FR-006 in `control_ws/src/student_tasks/test/test_ros_backend.py`
+- [x] T014 [US1] SOURCE: Implement structured ROS readiness, graph snapshots, subscriber inspection, and exact conflict calculation for FR-004/FR-006/FR-018 in `control_ws/src/student_tasks/src/student_tasks/ros_backend.py`
 
 **Checkpoint**: Status never creates a non-zero Twist and reports all readiness blockers deterministically.
 
@@ -53,9 +53,9 @@ description: "Dependency-ordered source implementation tasks for the ROS1 board 
 
 **Independent Test**: Fake publishers record exact fields/cadence/final zeros and prove zero non-zero messages for every readiness or ownership failure.
 
-- [ ] T015 [US2] OFFLINE: Write failing Twist-field, measured-sign, subscriber, authorization, lock, conflict, persistent-estop, fresh directional scan, runtime recheck, stop-under-degradation, and forbidden-interface tests for FR-003/FR-004/FR-007/FR-008/FR-019 in `control_ws/src/student_tasks/test/test_ros_backend.py`
-- [ ] T016 [US2] OFFLINE: Add failing owned-movement SIGINT/SIGTERM/SIGHUP cancellation and final-stop integration tests for FR-009 in `control_ws/src/student_tasks/test/test_signals.py`
-- [ ] T017 [US2] SOURCE: Implement ROS motion ownership, Twist construction, per-publish exclusivity/safety/estop checks, zero-sequence evidence, and source verification labels for FR-003/FR-004/FR-007/FR-008/FR-018/FR-019 in `control_ws/src/student_tasks/src/student_tasks/ros_backend.py`
+- [x] T015 [US2] OFFLINE: Write failing Twist-field, measured-sign, subscriber, authorization, lock, conflict, persistent-estop, fresh directional scan, runtime recheck, stop-under-degradation, and forbidden-interface tests for FR-003/FR-004/FR-007/FR-008/FR-019 in `control_ws/src/student_tasks/test/test_ros_backend.py`
+- [x] T016 [US2] OFFLINE: Add failing owned-movement SIGINT/SIGTERM/SIGHUP cancellation and final-stop integration tests for FR-009 in `control_ws/src/student_tasks/test/test_signals.py`
+- [x] T017 [US2] SOURCE: Implement ROS motion ownership, Twist construction, per-publish exclusivity/safety/estop checks, zero-sequence evidence, and source verification labels for FR-003/FR-004/FR-007/FR-008/FR-018/FR-019 in `control_ws/src/student_tasks/src/student_tasks/ros_backend.py`
 
 **Checkpoint**: The ROS backend contains no API or executable reference to forbidden motor interfaces and every owned path ends in zeros.
 
