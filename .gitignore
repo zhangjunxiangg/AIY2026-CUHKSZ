@@ -1,12 +1,10 @@
-# SSH 私钥与凭据（严禁入库）——多层兜底，防止误 add
+# SSH 私钥与凭据（严禁入库）——补充下方「SSH 密钥与证书」段的缺口
+# 下方 main 的规则是 id_ed25519* 前缀匹配，盖不住 aiy_mrobots_ed25519 这类命名，
+# 故这里补后缀匹配与 secrets/ 目录兜底。
 JUNXIANG/secrets/
 **/secrets/
-**/id_ed25519
-**/id_rsa
 *_ed25519
 *_rsa
-*.pem
-# 注意：故意不写 *.key —— .key 也是 Keynote 后缀，会误伤 PPT 素材
 
 # 环境与缓存（不入库）
 .venv/
