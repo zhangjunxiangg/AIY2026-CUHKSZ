@@ -37,6 +37,13 @@
 - 中间件：ROS1（noetic 兼容运行时）+ Dora 0.3.12 + M-Claw 智能体
 - 开发机：Windows 11 + HDC + VSCode
 
+## 当前状态
+
+- 开发板：KaihongBoard-3588S-SBC 已拿到，HDC 连接曾因重启中断，待重新识别。
+- 传感器：激光雷达、里程计、IMU、电池、舵机状态、相机内参已 dry-run 并写入 `docs/传感器数据规格手册.md`。
+- 运行时：ROS1 兼容运行时、Python 3.12.7、Dora 0.3.12 已预装；运行 Python 节点需 `LD_PRELOAD=/data/local/release/usr/lib/libpython3.12.so.1.0`。
+- Demo：Dora Hello World + 5Hz sensor/filter 节点已就绪（`prep/demo代码/`），待板子恢复连接后上板验证。
+
 ## 现场支持
 
 - Agent / M-Claw 问题 → 鲍奇瀚导师
