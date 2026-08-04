@@ -27,3 +27,41 @@ node_modules/
 AIY黑客松x深开鸿赛题宣讲.pptx
 AIY黑客松x深开鸿赛题宣讲.pdf
 AIY黑客松x深开鸿赛题宣讲.log
+
+# 研究论文与原始资料（体积大，本地参考）
+papers/
+
+# 部署临时扁平目录
+prep/demo_flat/
+
+# 相机截图与运行产物
+prep/demo记录/captures/
+captures/
+out/
+
+# Office 临时文件
+~$*.pptx
+~$*.ppt
+~$*.docx
+~$*.doc
+
+# SSH 密钥与证书（严禁入库）
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
+*.ppk
+*.pub
+.ssh/
+ssh-keys/
+**/authorized_keys
+**/known_hosts
+
+# 环境变量与密钥配置
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
