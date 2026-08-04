@@ -31,6 +31,7 @@
 - [传感器数据规格手册](docs/板端开发参考/传感器数据规格手册.md)
 - [M-Robots 开发踩坑与参考库](docs/板端开发参考/M-Robots开发踩坑与参考库.md)
 - [HDC 连接中断排查记录](docs/板端开发参考/HDC连接中断排查记录.md)
+- [机器人健康检查脚本](scripts/healthcheck.sh)
 
 ## 技术栈
 
