@@ -90,3 +90,14 @@ yolo训练集1.0/
 yolo训练集1.0.zip
 car_output/
 *.zip
+
+# ===== 路演媒体大文件（2026-08-06，presentation 合入时补）=====
+# 视频原件与成片单个动辄数百 MB，一律不入库；deck 里的视频是本地外挂播放，不依赖 git。
+*.mp4
+*.MP4
+*.mov
+*.MOV
+presentation/素材/
+**/.__jianying_export_temp_folder_*/
+# 即梦生成的高清原图批次（过程素材，完整版留在 junxiang 分支）
+presentation/assets/jimeng/
