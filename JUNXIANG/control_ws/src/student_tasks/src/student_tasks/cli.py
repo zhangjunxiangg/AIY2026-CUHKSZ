@@ -207,6 +207,7 @@ def _build_ros_runtime(
         max_receive_age_s=config.safety.max_scan_age_s,
         future_tolerance_s=config.safety.future_tolerance_s,
     )
+    scans.wait_for_first_message(config.motion.subscriber_timeout_s)
     targets: RosTargetProvider | None = None
     if config.capabilities.approach:
         if config.target is None or config.calibration is None:

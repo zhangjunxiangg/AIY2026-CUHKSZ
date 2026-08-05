@@ -84,6 +84,7 @@ def run_smoke(
             max_receive_age_s=configuration.safety.max_scan_age_s,
             future_tolerance_s=configuration.safety.future_tolerance_s,
         )
+        scan.wait_for_first_message(configuration.motion.subscriber_timeout_s)
         payload["providers"]["scan"] = scan.diagnostics()
         backend.scan_provider = scan
     except Exception as exc:
@@ -125,7 +126,7 @@ def run_smoke(
             }
 
     status = backend.status()
-    payload["graph"] = status.details
+    payload["graph"] = dict(status.details)
     payload["motion_ready"] = status.ready
     payload["blocking_reasons"] = list(status.blocking_reasons)
     payload["ok"] = True

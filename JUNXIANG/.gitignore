@@ -7,3 +7,7 @@ dist/
 *.egg-info/
 .coverage
 htmlcov/
+
+# Board-local commissioning configuration (measured runtime state, not source)
+control_ws/src/student_tasks/config/robot.measured.json
+control_ws/src/student_tasks/config/robot.zero.test.json

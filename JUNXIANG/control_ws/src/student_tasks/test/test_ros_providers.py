@@ -43,6 +43,23 @@ def base_payload(**changes: object) -> dict[str, object]:
 
 
 class RosScanProviderTests(unittest.TestCase):
+    def test_wait_for_first_message_is_bounded_and_returns_after_callback(self) -> None:
+        facade = FakeRosFacade(wall_time=NOW)
+        provider = RosScanProvider(
+            facade,
+            "/scan",
+            max_source_age_s=0.25,
+            max_receive_age_s=0.20,
+            future_tolerance_s=0.02,
+        )
+        self.assertFalse(provider.wait_for_first_message(0.05, poll_interval_s=0.01))
+        self.assertAlmostEqual(0.05, facade.monotonic())
+
+        facade.emit("/scan", scan_message(source_time=NOW + 0.05))
+        before = facade.monotonic()
+        self.assertTrue(provider.wait_for_first_message(0.05))
+        self.assertEqual(before, facade.monotonic())
+
     def test_preserves_raw_fields_source_time_and_receive_time(self) -> None:
         facade = FakeRosFacade(wall_time=NOW)
         facade.monotonic_seconds = 20.0

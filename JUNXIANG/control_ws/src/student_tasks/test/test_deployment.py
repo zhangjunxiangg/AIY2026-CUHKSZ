@@ -97,6 +97,7 @@ class BoardSmokeTests(unittest.TestCase):
         self.assertIn("master", payload["graph"])
         self.assertIn("scan", payload["providers"])
         self.assertIn("target", payload["providers"])
+        json.dumps(payload)
         self.assertEqual([], facade.created_publishers)
 
     def test_invalid_config_fails_before_ros_loading(self) -> None:

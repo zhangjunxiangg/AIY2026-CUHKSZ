@@ -148,6 +148,19 @@ class RosScanProvider:
         code, _ = self._freshness(envelope, self.facade.monotonic())
         return envelope.scan if code == "SCAN_READY" else None
 
+    def wait_for_first_message(self, timeout_s: float, *, poll_interval_s: float = 0.02) -> bool:
+        """Wait a bounded time for ROS to deliver the initial subscription callback."""
+
+        timeout = self._positive(timeout_s, "timeout_s")
+        poll_interval = self._positive(poll_interval_s, "poll_interval_s")
+        deadline = self.facade.monotonic() + timeout
+        while self.envelope().sequence == 0:
+            remaining = deadline - self.facade.monotonic()
+            if remaining <= 0.0 or self.facade.is_shutdown():
+                return False
+            self.facade.sleep(min(poll_interval, remaining))
+        return True
+
     def latest(self, now: float) -> LaserScanSnapshot | None:
         envelope = self.envelope()
         code, _ = self._freshness(envelope, now)
