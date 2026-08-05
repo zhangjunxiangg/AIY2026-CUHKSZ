@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.mrobots/schemas/kimi-media-analysis-v1.json",
+  "title": "Kimi media analysis artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source", "request", "analysis"],
+  "properties": {
+    "schema_version": {"const": "kimi-media-analysis.v1"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "filename", "media_kind", "mime_type", "size_bytes", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "filename": {"type": "string", "minLength": 1},
+        "media_kind": {"enum": ["image", "video"]},
+        "mime_type": {"type": "string", "minLength": 1},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "api_mode", "base_url", "model", "credential_source", "request_id", "created_at", "delivery", "remote_file_id", "remote_file_retained", "usage"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "api_mode": {"enum": ["anthropic_messages", "chat_completions"]},
+        "base_url": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "credential_source": {"type": "string", "minLength": 1},
+        "request_id": {"type": ["string", "null"]},
+        "created_at": {"type": "string", "format": "date-time"},
+        "delivery": {"enum": ["inline_base64", "moonshot_file_upload"]},
+        "remote_file_id": {"type": ["string", "null"]},
+        "remote_file_retained": {"type": "boolean"},
+        "usage": {"type": "object"}
+      }
+    },
+    "analysis": {"$ref": "#/$defs/analysis"}
+  },
+  "$defs": {
+    "nullableConfidence": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["media_kind", "summary", "duration_observed_seconds", "scenes", "objects", "visible_text", "risks", "uncertainties"],
+      "properties": {
+        "media_kind": {"enum": ["image", "video"]},
+        "summary": {"type": "string"},
+        "duration_observed_seconds": {"type": ["number", "null"], "minimum": 0},
+        "scenes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["index", "start_seconds", "end_seconds", "description", "objects", "actions", "visible_text", "confidence"],
+            "properties": {
+              "index": {"type": "integer", "minimum": 0},
+              "start_seconds": {"type": ["number", "null"], "minimum": 0},
+              "end_seconds": {"type": ["number", "null"], "minimum": 0},
+              "description": {"type": "string"},
+              "objects": {"type": "array", "items": {"type": "string"}},
+              "actions": {"type": "array", "items": {"type": "string"}},
+              "visible_text": {"type": "array", "items": {"type": "string"}},
+              "confidence": {"$ref": "#/$defs/nullableConfidence"}
+            }
+          }
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "occurrences", "confidence"],
+            "properties": {
+              "label": {"type": "string"},
+              "occurrences": {"type": "integer", "minimum": 1},
+              "confidence": {"$ref": "#/$defs/nullableConfidence"}
+            }
+          }
+        },
+        "visible_text": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text", "timestamp_seconds", "location", "confidence"],
+            "properties": {
+              "text": {"type": "string"},
+              "timestamp_seconds": {"type": ["number", "null"], "minimum": 0},
+              "location": {"type": ["string", "null"]},
+              "confidence": {"$ref": "#/$defs/nullableConfidence"}
+            }
+          }
+        },
+        "risks": {"type": "array", "items": {"type": "string"}},
+        "uncertainties": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}
