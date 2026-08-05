@@ -1,7 +1,7 @@
 # 机械臂逆解（IK）使用手册
 
 > 验证环境：KaihongBoard-3588S + M-Robots OS 4.1（2026-08-05 实测）  
-> 板端位置：`/data/robot-host/host_arm/kinematics/`（本地副本 `robot-sdk/host_arm/kinematics/`）  
+> 板端位置：`/data/robot-host/host_arm/kinematics/`（本地副本 `vendor/kaihong-src/kaihong_adapter/robot-runtime/host_arm/kinematics/`）  
 > 说明：板端**没有本机 URDF**，官方提供的是纯 Python 解析 IK（Hiwonder 5-DOF），无需 URDF 即可用
 
 ---
@@ -138,7 +138,7 @@ IK 返回的是**舵机脉冲值**（与 `servo_states` 的 position 同一量�
 
 视觉抓取链路的坐标变换已标定：
 
-- 标定文件：`robot-sdk/robot-runtime/astra-arm-calibration/astra-to-base.json`（Astra 相机 → 机械臂基座）
+- 标定文件：`vendor/kaihong-src/kaihong_adapter/robot-runtime/robot-runtime/astra-arm-calibration/astra-to-base.json`（Astra 相机 → 机械臂基座）
 - 典型链路：相机识别目标点 → `astra-to-base` 变换到基座坐标系 → `/kinematics/set_pose_target` 求解 → 脉冲下发执行
 
 ---
