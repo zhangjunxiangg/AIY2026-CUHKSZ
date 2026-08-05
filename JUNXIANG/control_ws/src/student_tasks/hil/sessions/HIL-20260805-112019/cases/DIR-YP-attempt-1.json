@@ -1,0 +1,9 @@
+{
+  "schema":"robot-control/hil-case-evidence/v1","session_id":"HIL-20260805-112019","case_id":"DIR-YP","attempt_id":"attempt-1",
+  "context":{"robot_id":"mrobots-4.1-5C67039168","source_revision":"4d846dd4b8d2940da4a340fb8606d8dd70b31b66","manifest_sha256":"8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f","config_sha256":"46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"},
+  "proposal_id":"DIR-YP-attempt-1","operator_authorization":{"operator":"张峻翔","phrase":"走","authorized_at":"2026-08-05T03:27:00Z","consumed_at":"2026-08-05T03:27:00Z"},
+  "started_at":"2026-08-05T03:27:00Z","ended_at":"2026-08-05T03:27:10Z","status":"BLOCKED","nonzero_emitted":false,"request_path":null,"result_path":null,
+  "measurements":[{"observer_message_count":0,"observer_nonzero_count":0,"degraded_reason":"External power alarm and SSH command returned no motion result"}],
+  "stop_evidence":{"attempted":true,"result":"A fresh explicit zero stop succeeded after the uncertain command return; no control process or publisher remained."},"artifacts":[],
+  "rationale":"The authorized attempt emitted no observed cmd_vel and did not count as a direction execution; a fresh proposal and authorization were required for attempt 2."
+}

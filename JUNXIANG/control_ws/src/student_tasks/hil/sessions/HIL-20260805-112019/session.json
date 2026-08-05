@@ -1,0 +1,42 @@
+{
+  "schema": "robot-control/hil-session/v1",
+  "status": "HIL_PENDING",
+  "created_at": 1785900212.124276,
+  "operator": "\u5f20\u5cfb\u7fd4",
+  "robot_id": "mrobots-4.1-5C67039168",
+  "board_id": "kaihongboard-3588s@172.20.10.5",
+  "source_revision": "4d846dd4b8d2940da4a340fb8606d8dd70b31b66",
+  "manifest": {
+    "path": "JUNXIANG/control_ws/src/student_tasks/deploy/board-manifest.json",
+    "sha256": "8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f"
+  },
+  "configuration": {
+    "path": "JUNXIANG/control_ws/src/student_tasks/config/robot.measured.json",
+    "sha256": "46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"
+  },
+  "environment": "2026-08-05 supervised field HIL via SSH 2223; robot centered in clear area. Lidar was temporarily started on /dev/ttyUSB1, then re-enumerated to /dev/ttyUSB0 after external power was connected and was restarted manually. This session makes no production autostart claim.",
+  "nonzero_motion_count": 6,
+  "gates": {
+    "preflight": "PASS",
+    "zero_stop": "PASS",
+    "primitive_digital": "PASS",
+    "primitive_physical_measurement": "BLOCKED",
+    "ownership": "PASS",
+    "lidar_clear": "PASS",
+    "lidar_blocked": "NOT_RUN",
+    "estop_persistence_reset": "PASS",
+    "visual_approach": "NOT_RUN"
+  },
+  "limitations": [
+    "Six primitive directions were observed without a reported sign error, but measured displacement/angle and video references were not provided.",
+    "The lidar process is manually started and is not production-persistent across USB re-enumeration or reboot.",
+    "Blocked-sector lidar cases were not run because the supervised test area intentionally contained no obstacles.",
+    "Visual approach remained disabled by the measured v2 configuration."
+  ],
+  "artifact_roots": {
+    "cases": "cases/",
+    "logs": "logs/",
+    "snapshots": "snapshots/",
+    "media": "media/"
+  }
+}

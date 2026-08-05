@@ -1,0 +1,8 @@
+{
+  "schema": "robot-control/hil-media-index/v1",
+  "session_id": "HIL-20260805-112019",
+  "contains_secrets": false,
+  "items": [],
+  "status": "PHYSICAL_MEDIA_PENDING",
+  "note": "The nearby operator observed all primitive actions without reporting a direction error. No video file or independent distance/angle measurement was supplied for indexing."
+}

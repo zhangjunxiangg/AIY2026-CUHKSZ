@@ -1,0 +1,1 @@
+{"schema":"robot-control/cmd-vel-observer/v1","ok":true,"read_only":true,"topic":"/cmd_vel","topic_type":"geometry_msgs/Twist","observation_duration_s":3.5,"message_count":19,"nonzero_message_count":16,"last_message":{"linear_x":0.0,"linear_y":0.0,"angular_z":0.0,"received_at":1785900879.0401688},"first_received_at":1785900877.0615017,"last_received_at":1785900879.0401688}

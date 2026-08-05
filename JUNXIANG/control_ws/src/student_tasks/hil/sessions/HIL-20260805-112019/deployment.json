@@ -1,0 +1,13 @@
+{
+  "schema": "robot-control/hil-deployment/v1",
+  "session_id": "HIL-20260805-112019",
+  "status": "HIL_PENDING",
+  "source_revision": "4d846dd4b8d2940da4a340fb8606d8dd70b31b66",
+  "manifest_sha256": "8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f",
+  "config_sha256": "46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9",
+  "board_root": "/data/local/robot/jx/control_ws",
+  "smoke": "PASS",
+  "rollback": "No rollback trigger fired; exact previous artifact identity was not captured, so production promotion remains blocked.",
+  "autostart": "NOT_INSTALLED",
+  "lidar_runtime": "Manual temporary node on /dev/ttyUSB0 after power-cycle re-enumeration; not a production autostart result."
+}
