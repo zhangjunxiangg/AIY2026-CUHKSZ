@@ -1,0 +1,3 @@
+#!/bin/sh
+# teleop — 启动入口
+exec sh /data/local/teleop/run.sh /data/local/teleop/teleop.py

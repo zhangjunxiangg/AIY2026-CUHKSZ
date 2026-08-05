@@ -75,3 +75,16 @@ gemini335-web/snapshots/
 # 队友代码本地保留不入库
 perception/
 practice/
+
+# 板端克隆的驱动源码/导出包（本地参考，不入库）
+astra-debug/
+
+# 抓取/遥操运行产物与日志（本地保留）
+grasping/logs/
+teleop/captures/
+car_output/
+car_output.zip
+perception.zip
+practice.zip
+yolo训练集1.0/
+yolo训练集1.0.zip

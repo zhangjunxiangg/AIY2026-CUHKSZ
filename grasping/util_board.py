@@ -704,6 +704,13 @@ def arm_joint_set(jid: int, pos: int, duration: float = 3.0):
         cur = pulses[idx]
 
 
+def _wait_subscriber(pub, timeout: float = 5.0):
+    """等订阅者连上再发指令（防 master 重启后指令丢给空气）。"""
+    t0 = time.time()
+    while pub.get_num_connections() == 0 and time.time() - t0 < timeout:
+        time.sleep(0.1)
+
+
 # ---------------- 底盘直进（逼近阶段用） ----------------
 
 def chassis_move(linear_x: float = 0.05, seconds: float = 0.3):
@@ -711,7 +718,7 @@ def chassis_move(linear_x: float = 0.05, seconds: float = 0.3):
     chassis_controller 有 0.5s cmd 超时自停；先连续发再走零速确保停止。"""
     from geometry_msgs.msg import Twist
     pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
-    rospy.sleep(0.3)
+    _wait_subscriber(pub)
     linear_x = max(-0.05, min(0.05, linear_x))
     msg = Twist()
     msg.linear.x = linear_x
@@ -753,7 +760,7 @@ def chassis_turn(degrees: float, ang_speed: float = 0.3):
     wz = min(0.4, abs(ang_speed)) * (1 if degrees > 0 else -1)
     seconds = min(abs(degrees) / 57.3 / abs(wz), 3.0)
     pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
-    rospy.sleep(0.3)
+    _wait_subscriber(pub)
     msg = Twist()
     msg.angular.z = wz
     t0 = time.time()

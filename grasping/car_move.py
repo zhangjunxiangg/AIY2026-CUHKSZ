@@ -24,6 +24,10 @@ ANG_SPEED = 0.30      # rad/s
 
 
 def publish_for(pub, vx, vy, wz, seconds):
+    # 等订阅者（chassis_controller）连上再发，否则前几条指令会丢
+    t0 = time.time()
+    while pub.get_num_connections() == 0 and time.time() - t0 < 5.0:
+        time.sleep(0.1)
     msg = Twist()
     msg.linear.x = vx
     msg.linear.y = vy
