@@ -21,6 +21,7 @@ _ERROR_DEFINITIONS: Mapping[str, tuple[ErrorCategory, bool]] = {
     "INVALID_INPUT": (ErrorCategory.VALIDATION, False),
     "LIMIT_EXCEEDED": (ErrorCategory.VALIDATION, False),
     "BACKEND_UNAVAILABLE": (ErrorCategory.UNAVAILABLE, True),
+    "CAPABILITY_DISABLED": (ErrorCategory.UNAVAILABLE, False),
     "PRODUCTION_CONFIG_REQUIRED": (ErrorCategory.UNAVAILABLE, False),
     "MOTION_BUSY": (ErrorCategory.UNAVAILABLE, True),
     "CANCELLED": (ErrorCategory.RUNTIME, True),

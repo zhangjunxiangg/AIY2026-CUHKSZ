@@ -85,7 +85,11 @@ class ExecutableSourceContractTests(unittest.TestCase):
             self.assertRegex(cmake, r"find_package\(catkin REQUIRED COMPONENTS[\s\S]*\b%s\b" % dependency)
         self.assertIn("scripts/robot_control_cli.py", cmake)
         self.assertIn("scripts/board_smoke_test.py", cmake)
+        self.assertIn("scripts/cmd_vel_observer.py", cmake)
+        self.assertIn("scripts/hil_session.py", cmake)
+        self.assertIn("scripts/package_manifest.py", cmake)
         self.assertIn("config/robot.measured.template.json", cmake)
+        self.assertIn("config/robot.motion.measured.template.json", cmake)
         self.assertIn("deploy/robot-control", cmake)
 
     def test_package_contains_no_autostart_or_network_operation(self) -> None:

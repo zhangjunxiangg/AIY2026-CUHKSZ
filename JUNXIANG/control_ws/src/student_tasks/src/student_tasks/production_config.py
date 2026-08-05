@@ -22,7 +22,10 @@ from .limits import (
 from .safety import SafetyConfiguration, SectorRule
 
 
-CONFIG_SCHEMA = "robot-control/production-config/v1"
+CONFIG_SCHEMA_V1 = "robot-control/production-config/v1"
+CONFIG_SCHEMA_V2 = "robot-control/production-config/v2"
+SUPPORTED_CONFIG_SCHEMAS = frozenset({CONFIG_SCHEMA_V1, CONFIG_SCHEMA_V2})
+CONFIG_SCHEMA = CONFIG_SCHEMA_V1
 TARGET_SCHEMA = "robot-control/target-observation/v1"
 BOARD_ROOT = "/data/local/robot/jx/control_ws/"
 
@@ -42,9 +45,15 @@ class RosConfiguration:
     node_name_prefix: str
     cmd_vel_topic: str
     scan_topic: str
-    target_json_topic: str
-    target_valid_topic: str
-    target_schema: str
+    target_json_topic: str | None
+    target_valid_topic: str | None
+    target_schema: str | None
+
+
+@dataclass(frozen=True)
+class CapabilitiesConfiguration:
+    motion: bool
+    approach: bool
 
 
 @dataclass(frozen=True)
@@ -94,13 +103,14 @@ class CalibrationConfiguration:
 class ProductionConfiguration:
     provenance: ConfigurationProvenance
     robot_id: str
+    capabilities: CapabilitiesConfiguration
     ros: RosConfiguration
     motion: MotionConfiguration
     ownership: OwnershipConfiguration
     safety: SafetyConfiguration
-    target: TargetConfiguration
-    approach: ApproachConfiguration
-    calibration: CalibrationConfiguration
+    target: TargetConfiguration | None
+    approach: ApproachConfiguration | None
+    calibration: CalibrationConfiguration | None
     schema: str = CONFIG_SCHEMA
 
 
@@ -125,8 +135,17 @@ class ConfigurationValidation:
     def to_dict(self) -> dict[str, Any]:
         return {
             "valid": self.valid,
+            "schema": None if self.configuration is None else self.configuration.schema,
             "configuration_kind": (
                 "missing" if self.configuration is None else self.configuration.provenance.kind
+            ),
+            "capabilities": (
+                None
+                if self.configuration is None
+                else {
+                    "motion": self.configuration.capabilities.motion,
+                    "approach": self.configuration.capabilities.approach,
+                }
             ),
             "findings": [finding.to_dict() for finding in self.findings],
         }
@@ -249,7 +268,7 @@ def validate_stop_configuration(document: object) -> StopConfigurationValidation
         return StopConfigurationValidation(
             (ConfigurationFinding("$", "CONFIG_INVALID", "root must be an object"),)
         )
-    if document.get("schema") != CONFIG_SCHEMA:
+    if document.get("schema") not in SUPPORTED_CONFIG_SCHEMAS:
         validator.add("schema", "SCHEMA_INVALID", "production configuration schema is not supported")
 
     ros_data = validator.group(document, "ros")
@@ -310,12 +329,54 @@ def validate_production_config(document: object, *, now: float) -> Configuration
     if not isinstance(document, dict):
         return ConfigurationValidation((ConfigurationFinding("$", "CONFIG_INVALID", "root must be an object"),))
 
-    expected_groups = {"schema", "provenance", "ros", "motion", "ownership", "safety", "target", "approach", "calibration"}
+    expected_groups = {
+        "schema",
+        "provenance",
+        "capabilities",
+        "ros",
+        "motion",
+        "ownership",
+        "safety",
+        "target",
+        "approach",
+        "calibration",
+    }
     for key in document:
         if key not in expected_groups:
             validator.add(key, "UNKNOWN_FIELD", "unknown top-level configuration field")
-    if document.get("schema") != CONFIG_SCHEMA:
+    schema = document.get("schema")
+    if schema not in SUPPORTED_CONFIG_SCHEMAS:
         validator.add("schema", "SCHEMA_INVALID", "production configuration schema is not supported")
+
+    if schema == CONFIG_SCHEMA_V1:
+        motion_enabled = True
+        approach_enabled = True
+    else:
+        capabilities_data = validator.group(document, "capabilities")
+        motion_enabled = validator.boolean(
+            capabilities_data,
+            "motion",
+            "capabilities.motion",
+        )
+        approach_enabled = validator.boolean(
+            capabilities_data,
+            "approach",
+            "capabilities.approach",
+        )
+        if motion_enabled is False:
+            validator.add(
+                "capabilities.motion",
+                "CAPABILITY_UNSUPPORTED",
+                "this control package requires the motion capability",
+            )
+        if approach_enabled is False:
+            for group_name in ("target", "approach", "calibration"):
+                if group_name in document:
+                    validator.add(
+                        group_name,
+                        "CAPABILITY_FIELD_CONFLICT",
+                        "%s must be omitted when approach is disabled" % group_name,
+                    )
 
     provenance_data = validator.group(document, "provenance")
     kind = provenance_data.get("kind")
@@ -331,11 +392,23 @@ def validate_production_config(document: object, *, now: float) -> Configuration
         validator.add("ros.node_name_prefix", "NODE_NAME_INVALID", "node prefix must be a ROS-safe basename")
     cmd_vel_topic = _topic(validator, ros_data, "cmd_vel_topic")
     scan_topic = _topic(validator, ros_data, "scan_topic")
-    target_json_topic = _topic(validator, ros_data, "target_json_topic")
-    target_valid_topic = _topic(validator, ros_data, "target_valid_topic")
-    target_schema = validator.string(ros_data, "target_schema", "ros.target_schema")
-    if target_schema is not None and target_schema != TARGET_SCHEMA:
-        validator.add("ros.target_schema", "TARGET_SCHEMA_INVALID", "target schema must match the versioned contract")
+    target_json_topic: str | None = None
+    target_valid_topic: str | None = None
+    target_schema: str | None = None
+    if approach_enabled is True:
+        target_json_topic = _topic(validator, ros_data, "target_json_topic")
+        target_valid_topic = _topic(validator, ros_data, "target_valid_topic")
+        target_schema = validator.string(ros_data, "target_schema", "ros.target_schema")
+        if target_schema is not None and target_schema != TARGET_SCHEMA:
+            validator.add("ros.target_schema", "TARGET_SCHEMA_INVALID", "target schema must match the versioned contract")
+    elif schema == CONFIG_SCHEMA_V2:
+        for key in ("target_json_topic", "target_valid_topic", "target_schema"):
+            if key in ros_data:
+                validator.add(
+                    "ros.%s" % key,
+                    "CAPABILITY_FIELD_CONFLICT",
+                    "ros.%s must be omitted when approach is disabled" % key,
+                )
     topics = [topic for topic in (cmd_vel_topic, scan_topic, target_json_topic, target_valid_topic) if topic]
     normalized_topics = [topic if topic.startswith("/") else "/" + topic for topic in topics]
     if len(normalized_topics) != len(set(normalized_topics)):
@@ -414,109 +487,154 @@ def validate_production_config(document: object, *, now: float) -> Configuration
                 except ValueError as exc:
                     validator.add(prefix, "SECTOR_INVALID", str(exc))
 
-    target_data = validator.group(document, "target")
-    max_source_age = validator.number(target_data, "max_source_age_s", "target.max_source_age_s", minimum=0.0, strict_minimum=True)
-    max_receive_age = validator.number(target_data, "max_receive_age_s", "target.max_receive_age_s", minimum=0.0, strict_minimum=True)
-    target_future = validator.number(target_data, "future_tolerance_s", "target.future_tolerance_s", minimum=0.0)
-    min_confidence = validator.number(target_data, "min_confidence", "target.min_confidence", minimum=0.0)
-    if min_confidence is not None and min_confidence > 1.0:
-        validator.add("target.min_confidence", "VALUE_INVALID", "minimum confidence must be in [0, 1]")
-    require_calibration = validator.boolean(target_data, "require_calibration", "target.require_calibration")
-
-    approach_data = validator.group(document, "approach")
     approach_numbers: dict[str, float | None] = {}
-    for name, minimum, strict in (
-        ("linear_speed_mps", 0.0, True),
-        ("angular_speed_radps", 0.0, True),
-        ("correction_duration_s", 0.0, True),
-        ("bearing_tolerance_rad", 0.0, True),
-        ("stand_off_m", 0.0, True),
-        ("stand_off_tolerance_m", 0.0, True),
-        ("timeout_s", 0.0, True),
-        ("observation_interval_s", 0.0, True),
-    ):
-        approach_numbers[name] = validator.number(approach_data, name, "approach.%s" % name, minimum=minimum, strict_minimum=strict)
-    stable_frames = validator.integer(approach_data, "stable_frames", "approach.stable_frames", minimum=1)
-    target_loss_limit = validator.integer(approach_data, "target_loss_limit", "approach.target_loss_limit", minimum=0)
-    max_iterations = validator.integer(approach_data, "max_iterations", "approach.max_iterations", minimum=1)
-    if approach_numbers["linear_speed_mps"] is not None and approach_numbers["linear_speed_mps"] > MAX_LINEAR_SPEED_M_S:
-        validator.add("approach.linear_speed_mps", "HARD_LIMIT_EXCEEDED", "linear speed exceeds shared-core limit")
-    if approach_numbers["angular_speed_radps"] is not None and approach_numbers["angular_speed_radps"] > MAX_ANGULAR_SPEED_RAD_S:
-        validator.add("approach.angular_speed_radps", "HARD_LIMIT_EXCEEDED", "angular speed exceeds shared-core limit")
-    duration = approach_numbers["correction_duration_s"]
-    if duration is not None and not MIN_DURATION_S <= duration <= MAX_DURATION_S:
-        validator.add("approach.correction_duration_s", "HARD_LIMIT_EXCEEDED", "duration is outside shared-core limits")
-    timeout = approach_numbers["timeout_s"]
-    if duration is not None and timeout is not None and timeout < duration:
-        validator.add("approach.timeout_s", "CROSS_FIELD_INVALID", "approach timeout cannot be shorter than one correction")
-
-    calibration_data = validator.group(document, "calibration")
-    mode = validator.string(calibration_data, "mode", "calibration.mode")
-    if mode is not None and mode not in {"base_point", "pixel_depth"}:
-        validator.add("calibration.mode", "CALIBRATION_INVALID", "calibration mode is unsupported")
-    calibration_source = validator.string(calibration_data, "source", "calibration.source")
-    calibration_at = validator.timestamp(calibration_data, "measured_at", "calibration.measured_at")
-    calibration_max_age = validator.number(calibration_data, "max_age_s", "calibration.max_age_s", minimum=0.0, strict_minimum=True)
-    camera_frame = validator.string(calibration_data, "camera_frame", "calibration.camera_frame")
-    base_frame = validator.string(calibration_data, "base_frame", "calibration.base_frame")
-    if base_frame is not None and base_frame != "base_link":
-        validator.add("calibration.base_frame", "CALIBRATION_INVALID", "calibration base frame must be base_link")
-    if calibration_at is not None and calibration_max_age is not None and validator.now - calibration_at > calibration_max_age:
-        validator.add("calibration.measured_at", "CALIBRATION_STALE", "calibration is older than its measured validity window")
+    max_source_age: float | None = None
+    max_receive_age: float | None = None
+    target_future: float | None = None
+    min_confidence: float | None = None
+    require_calibration: bool | None = None
+    stable_frames: int | None = None
+    target_loss_limit: int | None = None
+    max_iterations: int | None = None
+    mode: str | None = None
+    calibration_source: str | None = None
+    calibration_at: float | None = None
+    calibration_max_age: float | None = None
+    camera_frame: str | None = None
+    base_frame: str | None = None
     intrinsics: Mapping[str, float] | None = None
     rotation: tuple[float, ...] | None = None
     translation: tuple[float, ...] | None = None
-    if mode == "pixel_depth":
-        raw_intrinsics = calibration_data.get("intrinsics")
-        if not isinstance(raw_intrinsics, dict) or set(raw_intrinsics) != {"fx", "fy", "cx", "cy", "width", "height"}:
-            validator.add("calibration.intrinsics", "CALIBRATION_INVALID", "pixel-depth mode requires complete intrinsics")
-        else:
-            try:
-                intrinsics = {key: float(value) for key, value in raw_intrinsics.items()}
-                if not all(math.isfinite(value) for value in intrinsics.values()):
-                    raise ValueError
-            except (TypeError, ValueError):
-                validator.add("calibration.intrinsics", "CALIBRATION_INVALID", "intrinsics must contain finite numbers")
-                intrinsics = None
-        rotation = _sequence_of_numbers(calibration_data.get("rotation"), 9)
-        translation = _sequence_of_numbers(calibration_data.get("translation"), 3)
-        if rotation is None:
-            validator.add("calibration.rotation", "CALIBRATION_INVALID", "pixel-depth mode requires nine rotation values")
-        if translation is None:
-            validator.add("calibration.translation", "CALIBRATION_INVALID", "pixel-depth mode requires three translation values")
-    elif mode == "base_point" and any(calibration_data.get(name) is not None for name in ("intrinsics", "rotation", "translation")):
-        validator.add("calibration", "CALIBRATION_INVALID", "base-point mode must not carry an unused camera transform")
+    if approach_enabled is True:
+        target_data = validator.group(document, "target")
+        max_source_age = validator.number(target_data, "max_source_age_s", "target.max_source_age_s", minimum=0.0, strict_minimum=True)
+        max_receive_age = validator.number(target_data, "max_receive_age_s", "target.max_receive_age_s", minimum=0.0, strict_minimum=True)
+        target_future = validator.number(target_data, "future_tolerance_s", "target.future_tolerance_s", minimum=0.0)
+        min_confidence = validator.number(target_data, "min_confidence", "target.min_confidence", minimum=0.0)
+        if min_confidence is not None and min_confidence > 1.0:
+            validator.add("target.min_confidence", "VALUE_INVALID", "minimum confidence must be in [0, 1]")
+        require_calibration = validator.boolean(target_data, "require_calibration", "target.require_calibration")
+
+        approach_data = validator.group(document, "approach")
+        for name, minimum, strict in (
+            ("linear_speed_mps", 0.0, True),
+            ("angular_speed_radps", 0.0, True),
+            ("correction_duration_s", 0.0, True),
+            ("bearing_tolerance_rad", 0.0, True),
+            ("stand_off_m", 0.0, True),
+            ("stand_off_tolerance_m", 0.0, True),
+            ("timeout_s", 0.0, True),
+            ("observation_interval_s", 0.0, True),
+        ):
+            approach_numbers[name] = validator.number(
+                approach_data,
+                name,
+                "approach.%s" % name,
+                minimum=minimum,
+                strict_minimum=strict,
+            )
+        stable_frames = validator.integer(approach_data, "stable_frames", "approach.stable_frames", minimum=1)
+        target_loss_limit = validator.integer(approach_data, "target_loss_limit", "approach.target_loss_limit", minimum=0)
+        max_iterations = validator.integer(approach_data, "max_iterations", "approach.max_iterations", minimum=1)
+        if approach_numbers["linear_speed_mps"] is not None and approach_numbers["linear_speed_mps"] > MAX_LINEAR_SPEED_M_S:
+            validator.add("approach.linear_speed_mps", "HARD_LIMIT_EXCEEDED", "linear speed exceeds shared-core limit")
+        if approach_numbers["angular_speed_radps"] is not None and approach_numbers["angular_speed_radps"] > MAX_ANGULAR_SPEED_RAD_S:
+            validator.add("approach.angular_speed_radps", "HARD_LIMIT_EXCEEDED", "angular speed exceeds shared-core limit")
+        duration = approach_numbers["correction_duration_s"]
+        if duration is not None and not MIN_DURATION_S <= duration <= MAX_DURATION_S:
+            validator.add("approach.correction_duration_s", "HARD_LIMIT_EXCEEDED", "duration is outside shared-core limits")
+        timeout = approach_numbers["timeout_s"]
+        if duration is not None and timeout is not None and timeout < duration:
+            validator.add("approach.timeout_s", "CROSS_FIELD_INVALID", "approach timeout cannot be shorter than one correction")
+
+        calibration_data = validator.group(document, "calibration")
+        mode = validator.string(calibration_data, "mode", "calibration.mode")
+        if mode is not None and mode not in {"base_point", "pixel_depth"}:
+            validator.add("calibration.mode", "CALIBRATION_INVALID", "calibration mode is unsupported")
+        calibration_source = validator.string(calibration_data, "source", "calibration.source")
+        calibration_at = validator.timestamp(calibration_data, "measured_at", "calibration.measured_at")
+        calibration_max_age = validator.number(calibration_data, "max_age_s", "calibration.max_age_s", minimum=0.0, strict_minimum=True)
+        camera_frame = validator.string(calibration_data, "camera_frame", "calibration.camera_frame")
+        base_frame = validator.string(calibration_data, "base_frame", "calibration.base_frame")
+        if base_frame is not None and base_frame != "base_link":
+            validator.add("calibration.base_frame", "CALIBRATION_INVALID", "calibration base frame must be base_link")
+        if calibration_at is not None and calibration_max_age is not None and validator.now - calibration_at > calibration_max_age:
+            validator.add("calibration.measured_at", "CALIBRATION_STALE", "calibration is older than its measured validity window")
+        if mode == "pixel_depth":
+            raw_intrinsics = calibration_data.get("intrinsics")
+            if not isinstance(raw_intrinsics, dict) or set(raw_intrinsics) != {"fx", "fy", "cx", "cy", "width", "height"}:
+                validator.add("calibration.intrinsics", "CALIBRATION_INVALID", "pixel-depth mode requires complete intrinsics")
+            else:
+                try:
+                    intrinsics = {key: float(value) for key, value in raw_intrinsics.items()}
+                    if not all(math.isfinite(value) for value in intrinsics.values()):
+                        raise ValueError
+                except (TypeError, ValueError):
+                    validator.add("calibration.intrinsics", "CALIBRATION_INVALID", "intrinsics must contain finite numbers")
+                    intrinsics = None
+            rotation = _sequence_of_numbers(calibration_data.get("rotation"), 9)
+            translation = _sequence_of_numbers(calibration_data.get("translation"), 3)
+            if rotation is None:
+                validator.add("calibration.rotation", "CALIBRATION_INVALID", "pixel-depth mode requires nine rotation values")
+            if translation is None:
+                validator.add("calibration.translation", "CALIBRATION_INVALID", "pixel-depth mode requires three translation values")
+        elif mode == "base_point" and any(calibration_data.get(name) is not None for name in ("intrinsics", "rotation", "translation")):
+            validator.add("calibration", "CALIBRATION_INVALID", "base-point mode must not carry an unused camera transform")
 
     if validator.findings:
         return ConfigurationValidation(tuple(validator.findings))
 
     assert source is not None and measured_at is not None and robot_id is not None
     provenance = ConfigurationProvenance("measured", source, measured_at)
+    capabilities = CapabilitiesConfiguration(bool(motion_enabled), bool(approach_enabled))
+    approach: ApproachConfiguration | None = None
+    target: TargetConfiguration | None = None
+    calibration: CalibrationConfiguration | None = None
     try:
         safety = SafetyConfiguration(
             tuple(sector_rules), max_scan_age, safety_future, reset_frames, provenance  # type: ignore[arg-type]
         )
-        approach = ApproachConfiguration(
-            approach_numbers["linear_speed_mps"],
-            approach_numbers["angular_speed_radps"],
-            approach_numbers["correction_duration_s"],
-            approach_numbers["bearing_tolerance_rad"],
-            approach_numbers["stand_off_m"],
-            approach_numbers["stand_off_tolerance_m"],
-            stable_frames,
-            target_loss_limit,
-            approach_numbers["timeout_s"],
-            max_iterations,
-            approach_numbers["observation_interval_s"],
-            publish_rate,
-            provenance,
-        )  # type: ignore[arg-type]
+        if approach_enabled is True:
+            approach = ApproachConfiguration(
+                approach_numbers["linear_speed_mps"],
+                approach_numbers["angular_speed_radps"],
+                approach_numbers["correction_duration_s"],
+                approach_numbers["bearing_tolerance_rad"],
+                approach_numbers["stand_off_m"],
+                approach_numbers["stand_off_tolerance_m"],
+                stable_frames,
+                target_loss_limit,
+                approach_numbers["timeout_s"],
+                max_iterations,
+                approach_numbers["observation_interval_s"],
+                publish_rate,
+                provenance,
+            )  # type: ignore[arg-type]
+            target = TargetConfiguration(
+                max_source_age,
+                max_receive_age,
+                target_future,
+                min_confidence,
+                require_calibration,
+            )  # type: ignore[arg-type]
+            calibration = CalibrationConfiguration(
+                mode,
+                calibration_source,
+                calibration_at,
+                calibration_max_age,
+                camera_frame,
+                base_frame,
+                intrinsics,
+                rotation,
+                translation,
+            )  # type: ignore[arg-type]
     except (TypeError, ValueError) as exc:
         return ConfigurationValidation((ConfigurationFinding("$", "CONFIG_INVALID", str(exc)),))
 
     configuration = ProductionConfiguration(
         provenance=provenance,
         robot_id=robot_id,
+        capabilities=capabilities,
         ros=RosConfiguration(node_prefix, cmd_vel_topic, scan_topic, target_json_topic, target_valid_topic, target_schema),  # type: ignore[arg-type]
         motion=MotionConfiguration(
             signs["linear_x_sign"], signs["linear_y_sign"], signs["angular_z_sign"], publish_rate,
@@ -524,12 +642,10 @@ def validate_production_config(document: object, *, now: float) -> Configuration
         ),  # type: ignore[arg-type]
         ownership=OwnershipConfiguration(lock_path, estop_path, allowlist, evidence_source, evidence_at),  # type: ignore[arg-type]
         safety=safety,
-        target=TargetConfiguration(max_source_age, max_receive_age, target_future, min_confidence, require_calibration),  # type: ignore[arg-type]
+        target=target,
         approach=approach,
-        calibration=CalibrationConfiguration(
-            mode, calibration_source, calibration_at, calibration_max_age, camera_frame, base_frame,
-            intrinsics, rotation, translation,
-        ),  # type: ignore[arg-type]
+        calibration=calibration,
+        schema=str(schema),
     )
     return ConfigurationValidation((), configuration)
 

@@ -34,7 +34,7 @@ def _base_payload() -> dict[str, object]:
         "verification": VERIFICATION,
         "read_only": True,
         "nonzero_motion_constructed": False,
-        "configuration": {"valid": False, "configuration_kind": "missing", "findings": []},
+        "configuration": {"valid": False, "schema": None, "configuration_kind": "missing", "capabilities": None, "findings": []},
         "ros": {"loaded": False},
         "graph": {},
         "providers": {
@@ -92,26 +92,37 @@ def run_smoke(
             "detail": str(exc),
         }
 
-    try:
-        target = RosTargetProvider(
-            facade,
-            configuration.ros.target_json_topic,
-            configuration.ros.target_valid_topic,
-            expected_schema=configuration.ros.target_schema,
-            max_source_age_s=configuration.target.max_source_age_s,
-            max_receive_age_s=configuration.target.max_receive_age_s,
-            future_tolerance_s=configuration.target.future_tolerance_s,
-            min_confidence=configuration.target.min_confidence,
-            expected_camera_frame=configuration.calibration.camera_frame,
-            calibration_source=configuration.calibration.source,
-        )
-        payload["providers"]["target"] = target.diagnostics()
-        backend.target_provider = target
-    except Exception as exc:
+    if not configuration.capabilities.approach:
         payload["providers"]["target"] = {
-            "code": "TARGET_SUBSCRIPTION_FAILED",
-            "detail": str(exc),
+            "code": "CAPABILITY_DISABLED",
+            "detail": "visual approach capability is disabled by production configuration",
         }
+    else:
+        try:
+            assert configuration.target is not None
+            assert configuration.calibration is not None
+            assert configuration.ros.target_json_topic is not None
+            assert configuration.ros.target_valid_topic is not None
+            assert configuration.ros.target_schema is not None
+            target = RosTargetProvider(
+                facade,
+                configuration.ros.target_json_topic,
+                configuration.ros.target_valid_topic,
+                expected_schema=configuration.ros.target_schema,
+                max_source_age_s=configuration.target.max_source_age_s,
+                max_receive_age_s=configuration.target.max_receive_age_s,
+                future_tolerance_s=configuration.target.future_tolerance_s,
+                min_confidence=configuration.target.min_confidence,
+                expected_camera_frame=configuration.calibration.camera_frame,
+                calibration_source=configuration.calibration.source,
+            )
+            payload["providers"]["target"] = target.diagnostics()
+            backend.target_provider = target
+        except Exception as exc:
+            payload["providers"]["target"] = {
+                "code": "TARGET_SUBSCRIPTION_FAILED",
+                "detail": str(exc),
+            }
 
     status = backend.status()
     payload["graph"] = status.details

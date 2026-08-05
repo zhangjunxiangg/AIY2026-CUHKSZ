@@ -223,6 +223,37 @@ class CliContractTests(unittest.TestCase):
             self.assertEqual("ros", payload["backend"])
             self.assertFalse(payload["data"]["fallback_used"])
 
+    def test_motion_only_configuration_disables_approach_before_ros_side_effects(self) -> None:
+        from dataclasses import replace
+        from student_tasks.production_config import CapabilitiesConfiguration
+
+        with tempfile.TemporaryDirectory() as directory:
+            full = measured_config(directory)
+            motion_only = replace(
+                full,
+                schema="robot-control/production-config/v2",
+                capabilities=CapabilitiesConfiguration(motion=True, approach=False),
+                ros=replace(
+                    full.ros,
+                    target_json_topic=None,
+                    target_valid_topic=None,
+                    target_schema=None,
+                ),
+                target=None,
+                approach=None,
+                calibration=None,
+            )
+            facade = mock.Mock(side_effect=AssertionError("approach must not load ROS"))
+            code, payload, _ = self.run_ros_main(
+                ["--backend", "ros", "--config", "motion.json", "approach"],
+                config=motion_only,
+                facade=facade,
+            )
+            self.assertEqual(3, code)
+            self.assertFalse(payload["ok"])
+            self.assertEqual("CAPABILITY_DISABLED", payload["error"]["code"])
+            facade.assert_not_called()
+
     def test_ros_move_requires_authorization_and_authorized_move_uses_shared_core(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             config = measured_config(directory)

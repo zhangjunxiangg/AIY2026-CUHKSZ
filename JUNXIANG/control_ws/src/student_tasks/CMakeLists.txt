@@ -15,6 +15,9 @@ catkin_package(
 
 catkin_install_python(PROGRAMS
   scripts/board_smoke_test.py
+  scripts/cmd_vel_observer.py
+  scripts/hil_session.py
+  scripts/package_manifest.py
   scripts/robot_control_cli.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
@@ -31,6 +34,7 @@ install(FILES
 
 install(FILES
   config/robot.measured.template.json
+  config/robot.motion.measured.template.json
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
 

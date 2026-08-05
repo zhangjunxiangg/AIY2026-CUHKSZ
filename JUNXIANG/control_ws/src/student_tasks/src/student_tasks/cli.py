@@ -52,7 +52,7 @@ class _RosRuntime:
     backend: RosMotionBackend
     controller: MotionController
     scans: RosScanProvider
-    targets: RosTargetProvider
+    targets: RosTargetProvider | None
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -169,6 +169,21 @@ def _build_ros_runtime(
             },
         )
     config = validation.configuration
+    if arguments.command == "approach" and not config.capabilities.approach:
+        return _failure_result(
+            "approach",
+            "ros",
+            control_error("CAPABILITY_DISABLED", "visual approach capability is disabled by production configuration"),
+            operation_id=getattr(arguments, "operation_id", None),
+            data={
+                "fallback_used": False,
+                "config": arguments.config,
+                "capabilities": {
+                    "motion": config.capabilities.motion,
+                    "approach": config.capabilities.approach,
+                },
+            },
+        )
     try:
         facade = load_ros_facade()
     except RosFacadeUnavailable as exc:
@@ -192,18 +207,31 @@ def _build_ros_runtime(
         max_receive_age_s=config.safety.max_scan_age_s,
         future_tolerance_s=config.safety.future_tolerance_s,
     )
-    targets = RosTargetProvider(
-        facade,
-        config.ros.target_json_topic,
-        config.ros.target_valid_topic,
-        expected_schema=config.ros.target_schema,
-        max_source_age_s=config.target.max_source_age_s,
-        max_receive_age_s=config.target.max_receive_age_s,
-        future_tolerance_s=config.target.future_tolerance_s,
-        min_confidence=config.target.min_confidence,
-        expected_camera_frame=config.calibration.camera_frame,
-        calibration_source=config.calibration.source,
-    )
+    targets: RosTargetProvider | None = None
+    if config.capabilities.approach:
+        if config.target is None or config.calibration is None:
+            return _failure_result(
+                arguments.command,
+                "ros",
+                control_error("PRODUCTION_CONFIG_REQUIRED", "approach configuration is incomplete"),
+                operation_id=getattr(arguments, "operation_id", None),
+                data={"fallback_used": False, "config": arguments.config},
+            )
+        assert config.ros.target_json_topic is not None
+        assert config.ros.target_valid_topic is not None
+        assert config.ros.target_schema is not None
+        targets = RosTargetProvider(
+            facade,
+            config.ros.target_json_topic,
+            config.ros.target_valid_topic,
+            expected_schema=config.ros.target_schema,
+            max_source_age_s=config.target.max_source_age_s,
+            max_receive_age_s=config.target.max_receive_age_s,
+            future_tolerance_s=config.target.future_tolerance_s,
+            min_confidence=config.target.min_confidence,
+            expected_camera_frame=config.calibration.camera_frame,
+            calibration_source=config.calibration.source,
+        )
     backend.scan_provider = scans
     backend.target_provider = targets
     controller = MotionController(
@@ -302,6 +330,22 @@ def _run_approach(
     cancellation: Cancellation | None,
 ) -> MotionResult:
     operation = operation_id or "approach-%s" % uuid.uuid4().hex
+    if not runtime.configuration.capabilities.approach or runtime.targets is None:
+        return _failure_result(
+            "approach",
+            "ros",
+            control_error("CAPABILITY_DISABLED", "visual approach capability is disabled by production configuration"),
+            operation_id=operation,
+            data={"fallback_used": False},
+        )
+    if runtime.configuration.approach is None or runtime.configuration.target is None or runtime.configuration.calibration is None:
+        return _failure_result(
+            "approach",
+            "ros",
+            control_error("PRODUCTION_CONFIG_REQUIRED", "approach configuration is incomplete"),
+            operation_id=operation,
+            data={"fallback_used": False},
+        )
     if not runtime.backend.operator_confirmed:
         return _failure_result(
             "approach",
@@ -448,7 +492,7 @@ def _run_estop_reset(runtime: _RosRuntime, cancellation: Cancellation | None) ->
             )
             if not current.latched:
                 return _estop_reset_result(runtime, current, started, last_decision, None)
-        runtime.backend.sleep(min(0.05, config.approach.observation_interval_s))
+        runtime.backend.sleep(min(0.05, 1.0 / config.motion.publish_rate_hz))
     return _estop_reset_result(
         runtime,
         store.read(),
@@ -485,6 +529,8 @@ def _estop_reset_result(
 
 
 def _camera_calibration(config: ProductionConfiguration) -> CameraCalibration | None:
+    if config.calibration is None:
+        return None
     calibration = config.calibration
     if calibration.mode != "pixel_depth":
         return None

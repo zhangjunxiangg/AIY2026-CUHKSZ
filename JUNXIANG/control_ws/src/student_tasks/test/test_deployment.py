@@ -42,10 +42,14 @@ def expected_manifest_sources() -> set[str]:
         "src/student_tasks/README.md",
         "src/student_tasks/package.xml",
         "src/student_tasks/config/robot.measured.template.json",
+        "src/student_tasks/config/robot.motion.measured.template.json",
         "src/student_tasks/deploy/README.md",
         "src/student_tasks/deploy/board-manifest.json",
         "src/student_tasks/deploy/robot-control",
         "src/student_tasks/scripts/board_smoke_test.py",
+        "src/student_tasks/scripts/cmd_vel_observer.py",
+        "src/student_tasks/scripts/hil_session.py",
+        "src/student_tasks/scripts/package_manifest.py",
         "src/student_tasks/scripts/robot_control_cli.py",
     }
     sources.update(

@@ -1,0 +1,45 @@
+{
+  "schema": "robot-control/production-config/v2",
+  "provenance": {
+    "kind": "measured",
+    "source": null,
+    "measured_at": null,
+    "robot_id": null
+  },
+  "capabilities": {
+    "motion": true,
+    "approach": false
+  },
+  "ros": {
+    "node_name_prefix": null,
+    "cmd_vel_topic": null,
+    "scan_topic": null
+  },
+  "motion": {
+    "linear_x_sign": null,
+    "linear_y_sign": null,
+    "angular_z_sign": null,
+    "publish_rate_hz": null,
+    "zero_message_count": null,
+    "zero_interval_s": null,
+    "subscriber_timeout_s": null,
+    "watchdog_timeout_s": null
+  },
+  "ownership": {
+    "lock_path": null,
+    "estop_path": null,
+    "publisher_allowlist": [],
+    "allowlist_evidence": null
+  },
+  "safety": {
+    "max_scan_age_s": null,
+    "future_tolerance_s": null,
+    "reset_clear_frames": null,
+    "sectors": [
+      {"name": "front", "center_rad": null, "half_width_rad": null, "min_clearance_m": null, "min_samples": null},
+      {"name": "rear", "center_rad": null, "half_width_rad": null, "min_clearance_m": null, "min_samples": null},
+      {"name": "left", "center_rad": null, "half_width_rad": null, "min_clearance_m": null, "min_samples": null},
+      {"name": "right", "center_rad": null, "half_width_rad": null, "min_clearance_m": null, "min_samples": null}
+    ]
+  }
+}

@@ -232,6 +232,57 @@ class ProductionConfigurationTests(unittest.TestCase):
             result.findings,
         )
 
+    def test_v2_motion_only_configuration_omits_visual_contract(self) -> None:
+        document = valid_document()
+        document["schema"] = "robot-control/production-config/v2"
+        document["capabilities"] = {"motion": True, "approach": False}
+        for group in ("target", "approach", "calibration"):
+            document.pop(group)
+        document["ros"] = {
+            "node_name_prefix": "jx_control",
+            "cmd_vel_topic": "/cmd_vel",
+            "scan_topic": "/scan",
+        }
+        result = validate_production_config(document, now=NOW)
+        self.assertTrue(result.valid, result.findings)
+        assert result.configuration is not None
+        self.assertTrue(result.configuration.capabilities.motion)
+        self.assertFalse(result.configuration.capabilities.approach)
+        self.assertIsNone(result.configuration.target)
+        self.assertIsNone(result.configuration.approach)
+        self.assertIsNone(result.configuration.calibration)
+        self.assertIsNone(result.configuration.ros.target_json_topic)
+
+    def test_v2_motion_only_does_not_accept_visual_fields_or_missing_motion_measurements(self) -> None:
+        document = valid_document()
+        document["schema"] = "robot-control/production-config/v2"
+        document["capabilities"] = {"motion": True, "approach": False}
+        document.pop("target")
+        document.pop("approach")
+        document.pop("calibration")
+        document["ros"].pop("target_json_topic")
+        document["ros"].pop("target_valid_topic")
+        document["ros"].pop("target_schema")
+        document["motion"]["linear_x_sign"] = None
+        document["target"] = {"unexpected": True}
+        result = validate_production_config(document, now=NOW)
+        self.assertIn("CAPABILITY_FIELD_CONFLICT", codes(result))
+        self.assertIn("DIRECTION_SIGN_INVALID", codes(result))
+
+    def test_v2_motion_only_stop_is_zero_only(self) -> None:
+        document = valid_document()
+        document["schema"] = "robot-control/production-config/v2"
+        document["capabilities"] = {"motion": True, "approach": False}
+        for group in ("target", "approach", "calibration"):
+            document.pop(group)
+        document["ros"] = {
+            "node_name_prefix": "jx_control",
+            "cmd_vel_topic": "/cmd_vel",
+            "scan_topic": "/scan",
+        }
+        result = validate_stop_configuration(document)
+        self.assertTrue(result.valid, result.findings)
+
 
 if __name__ == "__main__":
     unittest.main()
