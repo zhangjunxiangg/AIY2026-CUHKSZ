@@ -135,7 +135,7 @@ def get_current_pose(timeout: float = 5.0):
     防呆：新节点首次调用偶发返回全零位姿，校验失败后重试。"""
     rospy.wait_for_service(POSE_SERVICE, timeout=timeout)
     fn = rospy.ServiceProxy(POSE_SERVICE, GetRobotPose)
-    for attempt in range(4):
+    for attempt in range(8):
         res = fn()
         if res.success:
             p = res.pose.position
@@ -144,7 +144,7 @@ def get_current_pose(timeout: float = 5.0):
                 return [p.x, p.y, p.z], _quat_to_rpy_deg(
                     res.pose.orientation.x, res.pose.orientation.y,
                     res.pose.orientation.z, res.pose.orientation.w)
-        time.sleep(0.3)
+        time.sleep(0.5)
     raise RuntimeError("get_current_pose 连续返回无效位姿（全零）")
 
 
@@ -235,7 +235,10 @@ def cartesian_jog(dx=0.0, dy=0.0, dz=0.0, duration: float = 1.5, max_step: float
     返回 (目标位姿, 脉冲) 或 None（IK 无解/目标出工作空间）。"""
     if max(abs(dx), abs(dy), abs(dz)) > max_step:
         raise ValueError(f"jog too large: {dx},{dy},{dz} (max {max_step})")
-    pos, rpy = get_current_pose()
+    try:
+        pos, rpy = get_current_pose()
+    except RuntimeError:
+        return None   # 位姿服务暂时不可用，由调用方重试/中止
     cur_v = _ws_violation(pos)
     target = [pos[0] + dx, pos[1] + dy, pos[2] + dz]
     tgt_v = _ws_violation(target)
@@ -613,3 +616,150 @@ def advance_to_grasp(color: str, u_target: float = 287.0, v_trigger: float = 380
             return None
         u_align(color, u_target=u_target, max_iter=3, pitch_deg=pitch_deg, log=log)
     return None
+
+
+# ---------------- J1 扫描与旋转对准 ----------------
+
+def j1_set(pulse: int, duration: float = 1.5):
+    """单动 J1（其余关节保持当前 goal）。"""
+    states = get_servo_states()
+    pulses = [states[j]["goal"] for j in ARM_IDS]
+    pulses[0] = int(pulse)
+    move_joints_pulses(pulses, duration=duration)
+
+
+def scan_for_color(color: str, lo: int = 200, hi: int = 800, step: int = 60,
+                   settle: float = 0.4, log=None):
+    """J1 旋转扫描找目标：从中心 500 向两端扩展，每步停 settle 秒检测。
+    返回找到时的 det（含当时 J1 位置），整圈找不到返回 None。"""
+    states = get_servo_states()
+    j1_home = states[1]["goal"]
+    # 扫描顺序：中心 → 右 → 左交替扩展
+    offsets = [0]
+    k = step
+    while k <= max(hi - 500, 500 - lo):
+        offsets.append(k)
+        offsets.append(-k)
+        k += step
+    for off in offsets:
+        target = max(lo, min(hi, 500 + off))
+        j1_set(target, duration=1.5)
+        rospy.sleep(settle)
+        det = detect_centroid(get_frame(), color)
+        if log:
+            log(f"scan: J1={target} -> {'FOUND u=%.0f v=%.0f area=%.0f' % (det['u'], det['v'], det['area']) if det else 'none'}")
+        if det is not None:
+            return det
+    j1_set(j1_home, duration=1.5)
+    return None
+
+
+def j1_align(color: str, u_target: float = 321.0, tol: float = 12.0,
+             max_iter: int = 12, log=None):
+    """J1 旋转对准：让目标质心 u → u_target。符号在线探测。"""
+    sign = None
+    for i in range(max_iter):
+        det = detect_centroid(get_frame(), color)
+        if det is None:
+            if log:
+                log(f"j1_align iter{i}: 目标丢失")
+            return None
+        eu = u_target - det["u"]
+        if log:
+            log(f"j1_align iter{i}: u={det['u']:.0f} eu={eu:+.0f}")
+        if abs(eu) <= tol:
+            return det
+        j1_now = get_servo_states()[1]["goal"]
+        if sign is None:
+            j1_set(j1_now + 15, duration=1.0)
+            det2 = detect_centroid(get_frame(), color)
+            if det2 is None:
+                return None
+            du = det2["u"] - det["u"]
+            sign = 1.0 if du > 0 else -1.0
+            if log:
+                log(f"j1_align: 方向探测 +15tick → du={du:+.1f}，sign={sign:+.0f}")
+            continue
+        # eu>0 需 u 增大；du/dtick 符号 = sign。增益实测 ~1.5px/tick（近距更小）
+        step = eu * sign / 1.5 * 0.5
+        step = max(-40.0, min(40.0, step))
+        min_step = 4.0 if abs(eu) < 30 else 8.0   # 接近目标时允许小步，防过冲振荡
+        if abs(step) < min_step:
+            step = min_step if step > 0 else -min_step
+        j1_set(j1_now + int(step), duration=1.0)
+    return None
+
+
+def arm_joint_set(jid: int, pos: int, duration: float = 3.0):
+    """单关节到位（自动分步，每步 ≤100 tick）。"""
+    import math as _m
+    states = get_servo_states()
+    pulses = [states[j]["goal"] for j in ARM_IDS]
+    idx = ARM_IDS.index(jid)
+    cur = pulses[idx]
+    n = max(1, _m.ceil(abs(pos - cur) / 100))
+    for k in range(1, n + 1):
+        pulses[idx] = round(cur + (pos - cur) * k / n)
+        move_joints_pulses(list(pulses), duration=max(duration / n, 1.0))
+        cur = pulses[idx]
+
+
+# ---------------- 底盘直进（逼近阶段用） ----------------
+
+def chassis_move(linear_x: float = 0.05, seconds: float = 0.3):
+    """底盘直行一小段（限速 0.05m/s 内，时长可控）。
+    chassis_controller 有 0.5s cmd 超时自停；先连续发再走零速确保停止。"""
+    from geometry_msgs.msg import Twist
+    pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+    rospy.sleep(0.3)
+    linear_x = max(-0.05, min(0.05, linear_x))
+    msg = Twist()
+    msg.linear.x = linear_x
+    t0 = time.time()
+    r = rospy.Rate(10)
+    while time.time() - t0 < seconds:
+        pub.publish(msg)
+        r.sleep()
+    pub.publish(Twist())
+    rospy.sleep(0.2)
+
+
+def j1_align_oneshot(color: str, u_target: float = 321.0, log=None):
+    """J1 一次性对准：按质心偏差一次算好转角，只动一次（不摇头）。
+    增益 ~4px/tick（实测 3.3-5.6，取中；残余误差由宽夹爪容差吸收）。
+    符号：本抓取构型实测 J1 脉冲增大 → u 增大。"""
+    det = detect_centroid(get_frame(), color)
+    if det is None:
+        if log:
+            log("j1_align_oneshot: 目标丢失")
+        return None
+    eu = u_target - det["u"]
+    delta = int(max(-150, min(150, eu / 4.0)))
+    j1_now = get_servo_states()[1]["goal"]
+    if log:
+        log(f"j1_align_oneshot: u={det['u']:.0f} eu={eu:+.0f} -> J1 {j1_now}+{delta}")
+    j1_set(j1_now + delta, duration=max(1.0, abs(delta) / 60.0 + 0.5))
+    det2 = detect_centroid(get_frame(), color)
+    if log and det2:
+        log(f"j1_align_oneshot: after u={det2['u']:.0f}")
+    return det2
+
+
+def chassis_turn(degrees: float, ang_speed: float = 0.3):
+    """底盘原地旋转。degrees > 0 = 逆时针（左转），< 0 = 顺时针。
+    角速度限 0.4 rad/s，单次 ≤ 3s。"""
+    from geometry_msgs.msg import Twist
+    degrees = max(-60.0, min(60.0, degrees))
+    wz = min(0.4, abs(ang_speed)) * (1 if degrees > 0 else -1)
+    seconds = min(abs(degrees) / 57.3 / abs(wz), 3.0)
+    pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+    rospy.sleep(0.3)
+    msg = Twist()
+    msg.angular.z = wz
+    t0 = time.time()
+    r = rospy.Rate(10)
+    while time.time() - t0 < seconds:
+        pub.publish(msg)
+        r.sleep()
+    pub.publish(Twist())
+    rospy.sleep(0.3)

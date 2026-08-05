@@ -28,17 +28,18 @@
 ```
 grasping/                      # 本地仓库目录 == 板端 /data/local/grasping/（同名，双向同步）
 ├── README.md                  # 本文件（MANIFEST）
+├── grasp.py                   # ★ 交付主程序：复位→扫描→J1对准→底盘逼近→闭合→抬升验证
+├── 像素伺服抓取说明文档.md      # ★ 原理与使用文档
+├── arm                        # ★ 关节调试 CLI：./arm 2 300 / ./arm 查状态
+├── car                        # ★ 底盘移动 CLI：./car forward 0.1 / turn 30
+├── joint_set.py / car_move.py # arm / car 的实现
+├── start_camera.sh            # 相机启动（按名字解析设备号，掉线自愈）
+├── run_step.sh                # 运行环境包装（robot-env + LD_PRELOAD）
 ├── util_gate.py               # gate/日志/timing/STATUS 框架
-├── util_board.py              # ROS 硬件接口（取帧/检测/臂状态/IK/微动/夹爪）
-├── 01_camera_ready.py         # 相机就绪：曝光收敛 + 帧有效性
-├── 02_detect_centroid.py      # 三色质心检测 + 证据图
-├── 03_arm_state.py            # 舵机状态 + FK 当前位姿
-├── 04_jog_probe.py            # 单步微动 → 像素响应方向/比例标定
-├── 05_align.py                # 像素伺服对准（不降 Z）
-├── 06_descend.py              # 对准保持 + 分段下降到位
-├── 07_grasp.py                # 夹取 + 抬升验证
-├── 08_full_run.py             # 端到端：输入颜色+形状 → 抓起
-├── grasp.py                   # 交付主程序（08 的产品化封装）
+├── util_board.py              # ROS 硬件接口 + 安全护栏（取帧/检测/J1伺服/底盘/夹爪）
+├── 01_camera_ready.py ~ 04_jog_probe.py   # 分步 gate 验证（相机/检测/臂状态/标定）
+├── 05_align.py ~ 07_grasp.py              # 早期笛卡尔伺服方案步骤（已被 grasp.py 取代，留档）
+├── servo_direction_probe.py   # 舵机方向实证探针
 ├── sync.sh                    # 本地 → 板端同步（scp）
 └── logs/<step>/{step.log,timing.json,STATUS.txt,*.jpg}
 ```
@@ -50,7 +51,8 @@ grasping/                      # 本地仓库目录 == 板端 /data/local/graspi
 ```bash
 ssh -p 2223 root@<板子IP>
 cd /data/local/grasping
-run python3 01_camera_ready.py   # 依次执行，下一步前确认上一步 PASS
+sh run_step.sh grasp.py --color red --shape cylinder   # 端到端抓取
+./arm    # 查关节状态；./car forward 0.1   # 底盘前进 10cm
 ```
 
 前置：`gripper_camera_node` 已启动（`/gripper_camera/image_raw` 在发布）；机械臂栈已启动（`start-host-arm-4.1.sh`）。

@@ -1,0 +1,7 @@
+#!/bin/sh
+# stop_grasp — 安全停止抓取程序：杀进程 + 底盘刹车
+# （正则里的 [p] 是为了防止匹配到本命令自身）
+pkill -f "python3 gras[p]" 2>/dev/null
+. /data/robot-host/robot-env.sh
+rostopic pub -1 /cmd_vel geometry_msgs/Twist '{}' >/dev/null 2>&1
+echo "grasp stopped, chassis braked"

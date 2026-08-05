@@ -1,0 +1,13 @@
+#!/bin/sh
+# car — 底盘移动 CLI（板端直接用）
+#
+# 用法：
+#   ./car forward 0.10    前进 10cm
+#   ./car back 0.10       后退 10cm
+#   ./car left 0.10       左平移 10cm
+#   ./car right 0.10      右平移 10cm
+#   ./car turn 30         逆时针转 30°（负数顺时针）
+#   ./car raw 0.05 0 0 1  原始：vx vy wz 秒
+#
+# 方向约定：linear.x+ 前进，linear.y+ 左移，angular.z+ 逆时针（俯视右手系）
+exec sh /data/local/grasping/run_step.sh /data/local/grasping/car_move.py "$@"

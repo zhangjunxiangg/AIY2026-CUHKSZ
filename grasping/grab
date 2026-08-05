@@ -1,0 +1,4 @@
+#!/bin/sh
+# grab — 一键抓取 CLI
+# 用法: ./grab red | yellow | green [--release]
+exec sh /data/local/grasping/run_step.sh /data/local/grasping/grasp.py --color "$1" --shape cylinder ${2:-}
