@@ -66,3 +66,15 @@ ssh-keys/
 !.env.example
 !.env.sample
 !.env.template
+
+# ===== 路演素材大文件（2026-08-06）=====
+# 视频原件与成片：单个动辄数百 MB，进 git 会永久撑爆仓库。
+# 成片走 U 盘/网盘传递；deck 里的视频是本地外挂播放，不依赖 git。
+*.MOV
+*.mov
+*.mp4
+*.MP4
+presentation/素材/
+
+# 即梦生成的高清原图批次（单张 1–4MB，按需手动 git add -f 归档精选）
+presentation/assets/jimeng/[A-G].png
