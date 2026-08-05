@@ -64,8 +64,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--api-key-env", help="Name of the authorized environment variable containing the key")
     parser.add_argument(
         "--api-mode",
-        choices=("anthropic", "openai"),
-        help="Override transport: anthropic for Coding Plan, openai for Moonshot Platform",
+        choices=("anthropic", "openai", "openrouter"),
+        help="Override transport: anthropic for Coding Plan, openai for Moonshot Platform, openrouter for OpenRouter Kimi K3",
     )
     parser.add_argument("--timeout", type=float, default=180.0, help="HTTP timeout in seconds")
     parser.add_argument(
@@ -79,7 +79,11 @@ def _parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     _bootstrap_mclaw_runtime()
     args = _parser().parse_args(argv)
-    mode = {"anthropic": "anthropic_messages", "openai": "chat_completions"}.get(args.api_mode)
+    mode = {
+        "anthropic": "anthropic_messages",
+        "openai": "chat_completions",
+        "openrouter": "openrouter",
+    }.get(args.api_mode)
     try:
         media = inspect_media(args.media_path)
         settings = resolve_provider(

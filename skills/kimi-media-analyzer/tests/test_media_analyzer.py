@@ -129,6 +129,57 @@ def test_video_switches_away_from_image_only_k3_256k(
     assert resolve_provider("video").model == "k3"
 
 
+def test_openrouter_mode_uses_hermes_pool_and_image_only_k3_defaults(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr("media_analyzer._load_mclaw_provider", lambda: None)
+    monkeypatch.setattr(
+        "media_analyzer._get_hermes_openrouter_key",
+        lambda: ("openrouter-test-secret", "hermes:OPENROUTER_API_KEY"),
+    )
+    settings = resolve_provider("video", api_mode="openrouter", api_key_env="OPENROUTER_API_KEY")
+    assert settings.provider == "openrouter"
+    assert settings.api_mode == "chat_completions"
+    assert settings.base_url == "https://openrouter.ai/api/v1"
+    assert settings.model == "moonshotai/kimi-k3"
+    assert settings.credential_source == "hermes:OPENROUTER_API_KEY"
+    assert "openrouter-test-secret" not in repr(settings)
+
+
+def test_openrouter_image_flow_uses_inline_data_without_file_upload(
+    tmp_path: Path, tiny_png: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("media_analyzer._load_mclaw_provider", lambda: None)
+    monkeypatch.setenv("OPENROUTER_API_KEY", "openrouter-test-key")
+    monkeypatch.delenv("KIMI_API_KEY", raising=False)
+    seen: dict[str, Any] = {}
+
+    def fake_request(method, url, headers, body, content_type, timeout, api_key):
+        seen.update(url=url, payload=json.loads(body), api_key=api_key)
+        assert url == "https://openrouter.ai/api/v1/chat/completions"
+        assert "/files" not in url
+        media_part = seen["payload"]["messages"][0]["content"][0]
+        assert media_part["type"] == "image_url"
+        assert media_part["image_url"]["url"].startswith("data:image/jpeg;base64,")
+        return HttpResponse(
+            {"id": "or_test", "choices": [{"message": {"content": json.dumps(valid_analysis())}}]},
+            {},
+        )
+
+    output = tmp_path / "openrouter.json"
+    result = analyze_media(
+        tiny_png,
+        output,
+        api_mode="openrouter",
+        api_key_env="OPENROUTER_API_KEY",
+        http_request=fake_request,
+    )
+    assert result["request"]["provider"] == "openrouter"
+    assert result["request"]["delivery"] == "inline_base64"
+    assert result["request"]["remote_file_id"] is None
+    assert "openrouter-test-key" not in output.read_text(encoding="utf-8")
+
+
 def test_coding_transport_enforces_size_limit(tmp_path: Path) -> None:
     path = tmp_path / "large.png"
     path.write_bytes(b"x")

@@ -9,6 +9,8 @@ import json
 import mimetypes
 import os
 import re
+import shutil
+import subprocess
 import tempfile
 import urllib.error
 import urllib.request
@@ -25,6 +27,8 @@ MIB = 1024 * 1024
 CODING_IMAGE_LIMIT = 10 * MIB
 CODING_VIDEO_LIMIT = 20 * MIB
 PLATFORM_MEDIA_LIMIT = 100 * MIB
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_MODEL = "moonshotai/kimi-k3"
 
 MIME_BY_SUFFIX = {
     ".jpg": "image/jpeg",
@@ -195,7 +199,49 @@ def _get_named_key(name: str, mclaw_get: Callable[[str], str | None] | None) -> 
             value = ""
         if value:
             return value, f"mclaw:{name}"
+    if name == "OPENROUTER_API_KEY":
+        value, source = _get_hermes_openrouter_key()
+        if value:
+            return value, source
     return "", ""
+
+
+def _get_hermes_openrouter_key() -> tuple[str, str]:
+    """Resolve a protected Hermes OpenRouter pool entry without printing it."""
+
+    hermes_python = Path(
+        os.environ.get(
+            "HERMES_PYTHON",
+            "/home/snikmas/.hermes/hermes-agent/venv/bin/python",
+        )
+    )
+    hermes_root = Path(
+        os.environ.get("HERMES_AGENT_ROOT", "/home/snikmas/.hermes/hermes-agent")
+    )
+    if not hermes_python.is_file() or not hermes_root.is_dir():
+        return "", ""
+    helper = (
+        "from agent.credential_pool import load_pool; "
+        "entry=load_pool('openrouter').select(); "
+        "print((entry.runtime_api_key if entry else ''), end='')"
+    )
+    environment = dict(os.environ)
+    environment["PYTHONPATH"] = str(hermes_root)
+    try:
+        completed = subprocess.run(
+            [str(hermes_python), "-c", helper],
+            check=False,
+            capture_output=True,
+            text=True,
+            env=environment,
+            timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return "", ""
+    if completed.returncode != 0:
+        return "", ""
+    value = completed.stdout.strip()
+    return (value, "hermes:OPENROUTER_API_KEY") if value else ("", "")
 
 
 def resolve_provider(
@@ -212,6 +258,7 @@ def resolve_provider(
     if mclaw is not None:
         configured, mclaw_get = mclaw
 
+    requested_openrouter = api_mode == "openrouter"
     chosen_mode = api_mode or str(configured.get("api_mode") or "")
     chosen_base = base_url or str(configured.get("base_url") or "")
     chosen_model = model or str(configured.get("model") or "")
@@ -239,6 +286,7 @@ def resolve_provider(
     aliases = {
         "anthropic": "anthropic_messages",
         "openai": "chat_completions",
+        "openrouter": "chat_completions",
     }
     chosen_mode = aliases.get(chosen_mode, chosen_mode)
     if chosen_mode not in {"anthropic_messages", "chat_completions"}:
@@ -248,14 +296,21 @@ def resolve_provider(
         chosen_base = (
             "https://api.kimi.com/coding"
             if chosen_mode == "anthropic_messages"
+            else OPENROUTER_BASE_URL if requested_openrouter or chosen_env == "OPENROUTER_API_KEY"
             else "https://api.moonshot.ai/v1"
         )
     chosen_base = _safe_base_url(chosen_base)
-    if not _is_kimi_endpoint(chosen_base):
-        raise MediaAnalyzerError(f"Configured endpoint is not a recognized Kimi/Moonshot host: {chosen_base}")
+    base_host = (urlsplit(chosen_base).hostname or "").lower()
+    is_openrouter = base_host == "openrouter.ai" or base_host.endswith(".openrouter.ai")
+    if not _is_kimi_endpoint(chosen_base) and not is_openrouter:
+        raise MediaAnalyzerError(f"Configured endpoint is not a recognized Kimi/Moonshot/OpenRouter host: {chosen_base}")
+    if is_openrouter:
+        provider_name = "openrouter"
 
     if not chosen_model:
-        chosen_model = "k3" if chosen_mode == "anthropic_messages" else "kimi-k3"
+        chosen_model = "k3" if chosen_mode == "anthropic_messages" else (
+            OPENROUTER_MODEL if is_openrouter else "kimi-k3"
+        )
     if media_kind == "video" and chosen_model in {"k3-256k", "kimi-k3-256k"}:
         chosen_model = "k3" if chosen_mode == "anthropic_messages" else "kimi-k3"
 
@@ -441,6 +496,8 @@ def _call_openai(
     timeout: float,
     request: HttpRequest,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
+    if settings.provider == "openrouter":
+        return _call_openrouter(media, settings, focus, timeout, request)
     upload_body, upload_type = _multipart_file(media, media.media_kind)
     upload = request(
         "POST",
@@ -503,6 +560,138 @@ def _call_openai(
         "delivery": "moonshot_file_upload",
         "remote_file_id": file_id,
         "remote_file_retained": True,
+    }
+
+
+def _sample_video_frames(media: MediaInfo, maximum: int = 8) -> list[bytes]:
+    """Extract bounded JPEG samples for providers whose K3 route is image-only."""
+
+    ffprobe = shutil.which("ffprobe")
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffprobe or not ffmpeg:
+        raise MediaAnalyzerError("OpenRouter Kimi K3 video analysis requires ffmpeg and ffprobe")
+    probe = subprocess.run(
+        [
+            ffprobe,
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(media.path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    try:
+        duration = max(0.0, float(probe.stdout.strip()))
+    except (TypeError, ValueError):
+        duration = 0.0
+    count = maximum if duration > 0 else 1
+    timestamps = [
+        0.0 if count == 1 else duration * index / (count - 1)
+        for index in range(count)
+    ]
+    frames: list[bytes] = []
+    with tempfile.TemporaryDirectory(prefix="kimi-openrouter-frames-") as frame_dir:
+        for index, timestamp in enumerate(timestamps):
+            frame_path = Path(frame_dir) / f"frame-{index:02d}.jpg"
+            extracted = subprocess.run(
+                [
+                    ffmpeg,
+                    "-hide_banner",
+                    "-loglevel",
+                    "error",
+                    "-y",
+                    "-ss",
+                    str(timestamp),
+                    "-i",
+                    str(media.path),
+                    "-frames:v",
+                    "1",
+                    "-vf",
+                    "scale=1280:-2",
+                    str(frame_path),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if extracted.returncode == 0 and frame_path.is_file():
+                frames.append(frame_path.read_bytes())
+    if not frames:
+        raise MediaAnalyzerError("OpenRouter Kimi K3 could not extract a video frame")
+    return frames
+
+
+def _call_openrouter(
+    media: MediaInfo,
+    settings: ProviderSettings,
+    focus: str | None,
+    timeout: float,
+    request: HttpRequest,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    if media.media_kind == "image":
+        images = [media.path.read_bytes()]
+    else:
+        images = _sample_video_frames(media)
+    content: list[dict[str, Any]] = []
+    for image in images:
+        encoded = base64.b64encode(image).decode("ascii")
+        content.append(
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:image/jpeg;base64,{encoded}"},
+            }
+        )
+    prompt = _prompt(media.media_kind, focus)
+    if media.media_kind == "video":
+        prompt += (
+            f" The video was sampled into {len(images)} chronological frames. "
+            "Describe only evidence visible in those sampled frames and say when motion "
+            "cannot be established."
+        )
+    content.append({"type": "text", "text": prompt})
+    payload = {
+        "model": settings.model,
+        "messages": [{"role": "user", "content": content}],
+        "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+                "name": "media_analysis",
+                "strict": True,
+                "schema": analysis_schema(),
+            },
+        },
+    }
+    response = _json_request(
+        _endpoint(settings.base_url, "chat/completions", settings.api_mode),
+        {"Authorization": f"Bearer {settings.api_key}"},
+        payload,
+        settings,
+        timeout,
+        request,
+    )
+    try:
+        value = response.data["choices"][0]["message"]["content"]
+        value = value if isinstance(value, dict) else json.loads(value)
+    except (KeyError, IndexError, TypeError, json.JSONDecodeError):
+        raise MediaAnalyzerError("OpenRouter Kimi K3 completion did not contain valid JSON") from None
+    if not isinstance(value, dict):
+        raise MediaAnalyzerError("OpenRouter Kimi K3 analysis is not a JSON object")
+    return value, {
+        "request_id": response.data.get("id") or response.headers.get("x-request-id"),
+        "usage": {
+            **(response.data.get("usage") if isinstance(response.data.get("usage"), dict) else {}),
+            "sampled_frame_count": len(images) if media.media_kind == "video" else None,
+        },
+        "delivery": "inline_base64",
+        "remote_file_id": None,
+        "remote_file_retained": False,
     }
 
 
