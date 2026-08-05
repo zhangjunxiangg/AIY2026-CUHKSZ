@@ -2,7 +2,7 @@
   "schema": "robot-control/hil-evidence-audit/v1",
   "session_id": "HIL-20260805-112019",
   "validated_at": "2026-08-05T03:46:27Z",
-  "schema_path": "JUNXIANG/specs/004-hil-validation-handoff/contracts/evidence-record.schema.json",
+  "schema_path": "src/robot-control/specs/004-hil-validation-handoff/contracts/evidence-record.schema.json",
   "validator": "check-jsonschema",
   "case_file_count": 27,
   "schema_valid": 27,

@@ -26,7 +26,7 @@ Provide one supervised, evidence-driven procedure that promotes the motion-contr
 
 *GATE: Passed before research and re-checked after design.*
 
-- [x] All files are scoped to `JUNXIANG/` and no secret path is accessed.
+- [x] All files are scoped to `src/robot-control/` and no secret path is accessed.
 - [x] Vendor interfaces and hard motion limits are preserved.
 - [x] CLI and automatic control share one testable control core.
 - [x] Every terminal path has an explicit zero-velocity assertion.
@@ -87,7 +87,7 @@ specs/004-hil-validation-handoff/
 └── tasks.md
 ```
 
-### Deferred HIL Records (`JUNXIANG/` root)
+### Deferred HIL Records (`src/robot-control/` root)
 
 ```text
 control_ws/src/student_tasks/hil/

@@ -44,7 +44,7 @@
 
 ## Source Evidence
 
-- `/scan` and current measured frequency: `JUNXIANG/机器人控制对接文档.md`
+- `/scan` and current measured frequency: `src/robot-control/机器人控制对接文档.md`
 - Candidate base target relay: `vendor/kaihong-src/kaihong_adapter/robot-runtime/student/interfaces/aux_target_relay.py`
 - Historical feedback-flow reference only: `vendor/kaihong-src/ros_ws/src/competition/scripts/navigation_transport/automatic_pick.py`
 

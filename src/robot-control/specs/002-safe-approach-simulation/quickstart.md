@@ -7,7 +7,7 @@ Run only on the developer Mac. The fixture file is explicitly synthetic; success
 ## Full Tests
 
 ```bash
-python3 -m unittest discover -s JUNXIANG/control_ws/src/student_tasks/test -p 'test_*.py' -v
+python3 -m unittest discover -s src/robot-control/control_ws/src/student_tasks/test -p 'test_*.py' -v
 ```
 
 Expected: existing domain-core tests and the new geometry, perception, safety, and approach tests all pass with no ROS import.
@@ -15,7 +15,7 @@ Expected: existing domain-core tests and the new geometry, perception, safety, a
 ## Focused Safety Tests
 
 ```bash
-python3 -m unittest discover -s JUNXIANG/control_ws/src/student_tasks/test -p 'test_safety.py' -v
+python3 -m unittest discover -s src/robot-control/control_ws/src/student_tasks/test -p 'test_safety.py' -v
 ```
 
 Expected coverage includes every translation direction, diagonals, rotation, invalid/stale scans, insufficient rays, obstacle latch, and deliberate reset.
@@ -23,7 +23,7 @@ Expected coverage includes every translation direction, diagonals, rotation, inv
 ## Focused Approach Tests
 
 ```bash
-python3 -m unittest discover -s JUNXIANG/control_ws/src/student_tasks/test -p 'test_approach.py' -v
+python3 -m unittest discover -s src/robot-control/control_ws/src/student_tasks/test -p 'test_approach.py' -v
 ```
 
 Expected: scripted sequences cover rotate, translate, stable visual verification, target loss, safety latch, cancellation, timeout, iteration bound, motion failure, and stop failure.

@@ -7,11 +7,11 @@
   "board_id": "kaihongboard-3588s@172.20.10.5",
   "source_revision": "4d846dd4b8d2940da4a340fb8606d8dd70b31b66",
   "manifest": {
-    "path": "JUNXIANG/control_ws/src/student_tasks/deploy/board-manifest.json",
+    "path": "src/robot-control/control_ws/src/student_tasks/deploy/board-manifest.json",
     "sha256": "8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f"
   },
   "configuration": {
-    "path": "JUNXIANG/control_ws/src/student_tasks/config/robot.measured.json",
+    "path": "src/robot-control/control_ws/src/student_tasks/config/robot.measured.json",
     "sha256": "46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"
   },
   "environment": "2026-08-05 supervised field HIL via SSH 2223; robot centered in clear area. Lidar started on /dev/ttyUSB1, re-enumerated to /dev/ttyUSB0 after external power was connected, and finally returned to /dev/ttyUSB1 after later USB disconnect/reconnect events. The final known official lidar-scan check passed on a manually started /dev/ttyUSB1 node before board control was handed to a teammate. This session makes no production autostart claim.",

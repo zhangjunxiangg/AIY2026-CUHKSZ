@@ -15,9 +15,9 @@ three target ROS fields; it must not contain placeholder values. `approach` retu
 Local checks:
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/package_manifest.py \
-  --manifest JUNXIANG/control_ws/src/student_tasks/deploy/board-manifest.json
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/package_manifest.py \
+  --manifest src/robot-control/control_ws/src/student_tasks/deploy/board-manifest.json
 ```
 
 The command is manifest-only by default. `--stage-dir <local-directory>` is the only

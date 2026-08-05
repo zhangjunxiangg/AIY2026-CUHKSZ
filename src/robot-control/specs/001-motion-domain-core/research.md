@@ -40,6 +40,6 @@
 
 - Official current publisher: `vendor/kaihong-src/kaihong_adapter/mclaw-skill/scripts/ros_cmd_vel.py`
 - Official safety policy: `vendor/kaihong-src/kaihong_adapter/mclaw-skill/SKILL.md`
-- Local measured interface record: `JUNXIANG/机器人控制对接文档.md`
+- Local measured interface record: `src/robot-control/机器人控制对接文档.md`
 
 Source inspection supports design constraints only. It does not assign `HIL_VERIFIED`.

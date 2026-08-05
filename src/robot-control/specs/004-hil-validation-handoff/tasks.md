@@ -105,7 +105,7 @@ T001-T040 below.
 - [ ] T036 HIL: Validate every case JSON against `specs/004-hil-validation-handoff/contracts/evidence-record.schema.json` and record schema results in `control_ws/src/student_tasks/hil/sessions/<session-id>/evidence-audit.json`
 - [ ] T037 HIL: Verify 100% mapping from FR-001-FR-022 and SC-001-SC-010 to accepted case/evidence IDs in `control_ws/src/student_tasks/hil/sessions/<session-id>/traceability.json`
 - [ ] T038 HIL: Assign individual case verification levels, preserving `BLOCKED`/`NOT_RUN`/`FAIL`, and set overall `HIL_VERIFIED` only if every mandatory case passes in `control_ws/src/student_tasks/hil/sessions/<session-id>/session.json`
-- [ ] T039 HIL: Update `JUNXIANG/机器人控制对接文档.md` only with dated measured facts and accepted interface evidence from the completed session
+- [ ] T039 HIL: Update `src/robot-control/机器人控制对接文档.md` only with dated measured facts and accepted interface evidence from the completed session
 - [ ] T040 HIL: Record final limitations, demo-operating instructions, rollback reference, and owners in `control_ws/src/student_tasks/hil/sessions/<session-id>/handoff.json`
 
 ## Dependencies and Execution Order

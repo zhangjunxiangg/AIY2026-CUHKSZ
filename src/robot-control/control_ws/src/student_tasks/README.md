@@ -54,24 +54,24 @@ or robot access:
 
 ```bash
 python3 -m unittest discover \
-  -s JUNXIANG/control_ws/src/student_tasks/test \
+  -s src/robot-control/control_ws/src/student_tasks/test \
   -p 'test_*.py' -v
 
-python3 -m compileall -q JUNXIANG/control_ws/src/student_tasks
-sh -n JUNXIANG/control_ws/src/student_tasks/deploy/robot-control
+python3 -m compileall -q src/robot-control/control_ws/src/student_tasks
+sh -n src/robot-control/control_ws/src/student_tasks/deploy/robot-control
 python3 -m json.tool \
-  JUNXIANG/control_ws/src/student_tasks/deploy/board-manifest.json >/dev/null
+  src/robot-control/control_ws/src/student_tasks/deploy/board-manifest.json >/dev/null
 ```
 
 The fake CLI uses virtual time and performs no ROS or network operation:
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py \
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py \
   --backend fake status
 
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py \
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py \
   --backend fake move \
   --linear-x 0.10 --linear-y 0.00 --angular-z 0.00 --duration 0.10
 ```
@@ -109,10 +109,10 @@ a dated graph capture. Lock and estop paths must remain below
 Validate the template rejection locally:
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py \
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py \
   --backend ros \
-  --config JUNXIANG/control_ws/src/student_tasks/config/robot.measured.template.json \
+  --config src/robot-control/control_ws/src/student_tasks/config/robot.measured.template.json \
   status
 ```
 

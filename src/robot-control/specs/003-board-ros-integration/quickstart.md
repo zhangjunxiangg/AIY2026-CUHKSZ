@@ -7,7 +7,7 @@ Run from the developer Mac with no HDC/SSH/ROS Master connection. Do not set a r
 ## Complete Tests with ROS Blocked
 
 ```bash
-python3 -m unittest discover -s JUNXIANG/control_ws/src/student_tasks/test -p 'test_*.py' -v
+python3 -m unittest discover -s src/robot-control/control_ws/src/student_tasks/test -p 'test_*.py' -v
 ```
 
 Expected: all domain, safety, approach, ROS-facade, lock, signal, configuration, store, source-contract, and deployment tests pass.
@@ -15,9 +15,9 @@ Expected: all domain, safety, approach, ROS-facade, lock, signal, configuration,
 ## Production Template Must Fail Closed
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py \
-  --backend ros --config JUNXIANG/control_ws/src/student_tasks/config/robot.measured.template.json status
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py \
+  --backend ros --config src/robot-control/control_ws/src/student_tasks/config/robot.measured.template.json status
 ```
 
 Expected: one JSON failure describing unfilled measured fields. If ROS modules are absent, the result may also report ROS unavailable; it must not fall back to fake.
@@ -25,9 +25,9 @@ Expected: one JSON failure describing unfilled measured fields. If ROS modules a
 ## Syntax and Manifest
 
 ```bash
-python3 -m compileall -q JUNXIANG/control_ws/src/student_tasks
-sh -n JUNXIANG/control_ws/src/student_tasks/deploy/robot-control
-python3 -m json.tool JUNXIANG/control_ws/src/student_tasks/deploy/board-manifest.json >/dev/null
+python3 -m compileall -q src/robot-control/control_ws/src/student_tasks
+sh -n src/robot-control/control_ws/src/student_tasks/deploy/robot-control
+python3 -m json.tool src/robot-control/control_ws/src/student_tasks/deploy/board-manifest.json >/dev/null
 ```
 
 Expected: all commands exit zero after implementation. This does not execute the board wrapper.

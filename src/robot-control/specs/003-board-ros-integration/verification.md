@@ -11,8 +11,8 @@
 | Full standard-library suite | PASS | 143 tests, 0 failures |
 | Null-template ROS `status` | PASS | exit 3; one `robot-control/v1` JSON; `PRODUCTION_CONFIG_REQUIRED`; `fallback_used=false`; no zero or non-zero publish attempted |
 | Read-only board smoke | PASS | exit 2; one `robot-control/board-smoke/v1` JSON; `read_only=true`; `ros.loaded=false`; `nonzero_motion_constructed=false` |
-| Python compilation | PASS | `python3 -m compileall -q JUNXIANG/control_ws/src/student_tasks` |
-| Board wrapper syntax | PASS | `sh -n JUNXIANG/control_ws/src/student_tasks/deploy/robot-control` |
+| Python compilation | PASS | `python3 -m compileall -q src/robot-control/control_ws/src/student_tasks` |
+| Board wrapper syntax | PASS | `sh -n src/robot-control/control_ws/src/student_tasks/deploy/robot-control` |
 | Deployment manifest syntax | PASS | `python3 -m json.tool` exited zero |
 | Requirements checklist | PASS | 27/27 items checked |
 | Spec implementation tasks | PASS | 31/31 tasks checked |

@@ -47,4 +47,4 @@ Schema `robot-control/estop-state/v1`; fields: latched boolean, trigger code/det
 
 ## DeploymentManifestEntry
 
-Fields: source path below `JUNXIANG/control_ws`, absolute target path below `/data/local/robot/jx/control_ws`, file mode, purpose, and whether the file is allowed in production. Secret paths and synthetic configuration are forbidden entries.
+Fields: source path below `src/robot-control/control_ws`, absolute target path below `/data/local/robot/jx/control_ws`, file mode, purpose, and whether the file is allowed in production. Secret paths and synthetic configuration are forbidden entries.

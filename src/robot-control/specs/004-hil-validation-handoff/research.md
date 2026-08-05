@@ -57,8 +57,8 @@
 ## Source Basis
 
 - Repository constitution: per-action `走`, hard limits, stop guarantees, verification levels.
-- `JUNXIANG/机器人控制对接文档.md`: measured interface facts and pending values.
-- `JUNXIANG/首次连板checklist.md`: established board and robot inspection sequence.
+- `src/robot-control/机器人控制对接文档.md`: measured interface facts and pending values.
+- `src/robot-control/首次连板checklist.md`: established board and robot inspection sequence.
 - Spec 001: shared motion/result contracts and fake baseline.
 - Spec 002: directional scan, target, approach, estop/reset state model.
 - Spec 003: ROS facade, ownership, persistent estop, production configuration, manifest, and smoke boundary.

@@ -9,7 +9,7 @@
 ## Test Suite
 
 ```bash
-python3 -m unittest discover -s JUNXIANG/control_ws/src/student_tasks/test -p 'test_*.py' -v
+python3 -m unittest discover -s src/robot-control/control_ws/src/student_tasks/test -p 'test_*.py' -v
 ```
 
 Expected: limit, control-core, fake-backend, and CLI tests pass without ROS imports or network access.
@@ -17,8 +17,8 @@ Expected: limit, control-core, fake-backend, and CLI tests pass without ROS impo
 ## Fake Status
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py --backend fake status
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py --backend fake status
 ```
 
 Expected: one JSON line with `ok=true`, backend `fake`, and verification `OFFLINE_VERIFIED`.
@@ -26,8 +26,8 @@ Expected: one JSON line with `ok=true`, backend `fake`, and verification `OFFLIN
 ## Fake Bounded Move
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py --backend fake move \
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py --backend fake move \
   --linear-x 0.10 --linear-y 0 --angular-z 0 --duration 0.10 --operation-id offline-demo
 ```
 
@@ -36,8 +36,8 @@ Expected: one success object whose evidence ends in zero velocity. This is simul
 ## Fail-Closed Boundary
 
 ```bash
-PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
-python3 JUNXIANG/control_ws/src/student_tasks/scripts/robot_control_cli.py --backend fake move \
+PYTHONPATH=src/robot-control/control_ws/src/student_tasks/src \
+python3 src/robot-control/control_ws/src/student_tasks/scripts/robot_control_cli.py --backend fake move \
   --linear-x 0.20 --linear-y 0.20 --angular-z 0 --duration 1
 ```
 

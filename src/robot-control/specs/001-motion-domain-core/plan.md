@@ -24,7 +24,7 @@ Build the hardware-independent foundation used by both the board CLI and the lat
 
 *GATE: Passed before research and re-checked after design.*
 
-- [x] All files are scoped to `JUNXIANG/` and no secret path is accessed.
+- [x] All files are scoped to `src/robot-control/` and no secret path is accessed.
 - [x] Vendor interfaces and hard motion limits are preserved.
 - [x] CLI and automatic control share one testable control core.
 - [x] Every terminal path has an explicit zero-velocity assertion.
@@ -61,7 +61,7 @@ specs/001-motion-domain-core/
 └── tasks.md
 ```
 
-### Source Code (`JUNXIANG/` root)
+### Source Code (`src/robot-control/` root)
 
 ```text
 control_ws/src/student_tasks/
