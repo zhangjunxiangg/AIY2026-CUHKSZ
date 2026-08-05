@@ -33,14 +33,38 @@ readiness.
 - `tests/test_startup_deferred.py` verifies deferred, one-time recovery and lazy
   Skill loading.
 
+## Change 3: add an opt-in low-overhead robot-control profile foundation
+
+Purpose: reduce model input and accidental long loops for latency-sensitive
+robot requests without narrowing normal development sessions.
+
+- `mclaw/tools/toolsets.py` adds an opt-in `robot-control` preset that exposes
+  only the `terminal` tool. It is not enabled by default.
+- `mclaw/agent/builtin_memory_provider.py` no longer prefetches memory when both
+  memory targets are explicitly disabled.
+- `examples/robot-control.mclaw.yaml` shows a three-turn budget, disabled broad
+  memory/reviews, and the narrow WeChat tool list. The example is inert until
+  approved values are copied to a real `.mclaw.yaml`.
+- `tests/test_robot_control_profile.py` verifies the exact tool boundary and
+  that disabled memory contributes no prefetched context.
+
+This partially addresses P8/P10. It does not yet implement P16 request-mode
+classification or P2's atomic `battery-status` workflow. Those require the
+active Robot Skill and an approved side-effect contract, which are not present
+in the local snapshot.
+
 ## Files in this update
 
 ```text
 LOCAL_ONLY.md
 mclaw/channels/weixin/adapter.py
 mclaw/cli/app.py
+mclaw/agent/builtin_memory_provider.py
+mclaw/tools/toolsets.py
+examples/robot-control.mclaw.yaml
 tests/test_startup_deferred.py
 tests/test_weixin_voice_transcript.py
+tests/test_robot_control_profile.py
 ```
 
 These are repository-relative paths and should be placed at the root of an
@@ -48,6 +72,9 @@ existing M-Claw checkout.
 
 ## Verification
 
+- Robot-control profile plus existing focused update tests: `8 passed`.
+- Robot-control profile plus adjacent config/runtime/tool/memory tests:
+  `133 passed`.
 - WeChat and startup focused tests together: `6 passed`.
 - WeChat plus adjacent lifecycle tests: `42 passed`.
 - Startup/CLI/runtime tests from the startup session: `51 passed`.

@@ -1,0 +1,28 @@
+# Copy the approved values into the project's .mclaw.yaml. This example is not
+# loaded automatically and leaves normal M-Claw development behavior unchanged.
+
+# Expose one bounded execution tool instead of the full development toolset.
+toolsets:
+  - robot-control
+
+# Stop accidental long model/tool loops. Increase deliberately for a diagnosed
+# task instead of silently removing the limit.
+agent:
+  max_turns: 3
+
+# Do not inject or write broad cross-session memory in robot-control sessions.
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+  memory_review_round: 0
+
+# Do not run automatic Skill-evolution review in a latency-sensitive session.
+skills:
+  evolution_review_round: 0
+
+# WeChat uses its own toolset list. Add `weixin` only if sending files back to
+# the current chat is required; inbound text and voice transcripts do not need it.
+channels:
+  weixin:
+    toolsets:
+      - robot-control
