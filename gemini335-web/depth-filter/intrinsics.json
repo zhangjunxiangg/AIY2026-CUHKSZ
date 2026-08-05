@@ -1,0 +1,9 @@
+{
+  "source": "rostopic echo -n 1 /aux_camera/depth/camera_info (2026-08-05, live)",
+  "width": 640,
+  "height": 480,
+  "fx": 463.75286865234375,
+  "fy": 464.0082092285156,
+  "cx": 322.9681091308594,
+  "cy": 243.6584014892578
+}
