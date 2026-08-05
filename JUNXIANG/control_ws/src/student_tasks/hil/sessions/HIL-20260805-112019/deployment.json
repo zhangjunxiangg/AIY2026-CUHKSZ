@@ -9,5 +9,5 @@
   "smoke": "PASS",
   "rollback": "No rollback trigger fired; exact previous artifact identity was not captured, so production promotion remains blocked.",
   "autostart": "NOT_INSTALLED",
-  "lidar_runtime": "Manual temporary node on /dev/ttyUSB0 after power-cycle re-enumeration; not a production autostart result."
+  "lidar_runtime": "Manual temporary node; enumeration changed USB1 -> USB0 -> USB1 during the session. Final known official lidar-scan was PASS on /dev/ttyUSB1 before teammate handoff. This is not a production autostart result."
 }

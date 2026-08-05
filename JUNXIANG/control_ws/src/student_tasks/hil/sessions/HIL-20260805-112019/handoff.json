@@ -25,7 +25,7 @@
   "runtime_requirements": [
     "Exit M-Claw before the control CLI owns /cmd_vel.",
     "Run read-only preflight after power, USB, process, deployment, configuration or network context changes.",
-    "Treat lidar USB enumeration as dynamic; the current node is manually started on /dev/ttyUSB0 and has no production autostart guarantee.",
+    "Treat lidar USB enumeration as dynamic; resolve the current CH341 ttyUSB device before each manual start. The final known session node used /dev/ttyUSB1 and has no production autostart guarantee.",
     "Require one nearby-operator proposal and exact authorization for every non-zero action."
   ],
   "remaining_work": [
@@ -35,5 +35,14 @@
     "Enable visual approach only after the target and calibration contracts are accepted."
   ],
   "production_accepted": false,
-  "autostart_installed": false
+  "autostart_installed": false,
+  "final_known_runtime": {
+    "recorded_before_teammate_handoff": true,
+    "lidar_port": "/dev/ttyUSB1",
+    "lidar_healthcheck": "PASS",
+    "scan_time_s": 0.07256358861923218,
+    "cmd_vel_publishers": [],
+    "estop_latched": false,
+    "note": "A teammate entered the board after this observation; do not treat process IDs or graph state as current."
+  }
 }
