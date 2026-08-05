@@ -85,18 +85,22 @@ Fake results are `OFFLINE_VERIFIED`; ROS mock and source results are
 fail-closed. Create the board's `robot.measured.json` only from dated physical
 measurements; do not fill it from examples or synthetic fixtures.
 
+For chassis-only work before vision/calibration is accepted, use
+`config/robot.motion.measured.template.json` as the v2 shape. It sets
+`capabilities.motion=true` and `capabilities.approach=false`, and deliberately omits
+the target, approach, calibration, and target ROS fields. The CLI rejects `approach`
+with `CAPABILITY_DISABLED` and does not subscribe to a target provider.
+
 Required evidence groups are:
 
 | Group | Required measured facts |
 |---|---|
 | `provenance` | robot ID, source record, measurement time |
-| `ros` | node prefix and exact cmd/scan/target topics and target schema |
+| `ros` | node prefix and exact cmd/scan topics; target topics/schema only when approach is enabled |
 | `motion` | three direction signs, cadence, zero sequence, subscriber and watchdog timing |
 | `ownership` | project-local lock/estop paths and evidence-backed publisher allowlist |
 | `safety` | scan freshness and front/rear/left/right sector geometry, clearance, sample counts |
-| `target` | source/receive freshness, confidence floor, calibration requirement |
-| `approach` | bounded correction speeds/timing, bearing/range tolerances, stability and timeout limits |
-| `calibration` | mode, frames, dated source, validity window, and transform/intrinsics when required |
+| `target` / `approach` / `calibration` | source/receive freshness, bounded corrections, and calibration only when approach is enabled |
 
 An empty publisher allowlist needs no evidence. Any non-empty allowlist requires
 a dated graph capture. Lock and estop paths must remain below
@@ -186,3 +190,8 @@ watchdog timing, signal behavior, persistent estop across real processes, and
 visual arrival all remain under
 `specs/004-hil-validation-handoff/`. Only that supervised evidence may promote
 individual cases or the complete capability to `HIL_VERIFIED`.
+
+The local HIL helpers are bounded: `hil_session.py` records explicit identity and
+digests, `package_manifest.py` validates the allowlist and optionally stages to a
+local directory, and `cmd_vel_observer.py` only observes `geometry_msgs/Twist`.
+None performs board transfer, startup, or motion.

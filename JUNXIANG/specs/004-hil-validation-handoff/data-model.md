@@ -2,7 +2,7 @@
 
 ## HilSession
 
-Identity fields: schema, session ID, started/ended time, operator/reviewer, robot ID, board IDs, source revision, manifest digest, configuration digest, calibration ID/digest, deployed root, runtime versions, environment notes, and overall status.
+Identity fields: schema, session ID, started/ended time, operator/reviewer, robot ID, board IDs, source revision, manifest digest, configuration digest, optional calibration ID/digest, deployed root, runtime versions, environment notes, and overall status. A motion-only v2 session records approach as explicitly disabled rather than inventing calibration identity.
 
 States: `CREATED -> PREFLIGHT_PASSED -> PRIMITIVES_PASSED -> SAFETY_PASSED -> APPROACH_PASSED -> HANDOFF_READY`. `FAILED`, `BLOCKED`, and `ROLLED_BACK` are terminal for that deployment context. A changed identity starts a new session rather than mutating accepted evidence.
 

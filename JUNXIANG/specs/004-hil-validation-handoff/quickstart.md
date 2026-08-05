@@ -2,7 +2,26 @@
 
 ## Tonight's Boundary
 
-Do not run any command in this guide tonight. Offline work stops after validating these documents and implementing Specs 001-003. The feature status remains `HIL_PENDING`.
+Offline implementation may run without a board. It is limited to configuration validation,
+manifest checking/staging into an explicitly local directory, session-record preparation,
+and read-only observer code. Nothing in this phase contacts the board, creates a ROS
+publisher, or sends velocity. The feature status remains `HIL_PENDING`.
+
+The v2 production configuration can enable chassis motion while explicitly disabling
+visual approach. A motion-only file omits `target`, `approach`, `calibration`, and the
+three target ROS fields; it must not contain placeholder values. `approach` returns
+`CAPABILITY_DISABLED` until the vision contract and calibration are measured.
+
+Local checks:
+
+```bash
+PYTHONPATH=JUNXIANG/control_ws/src/student_tasks/src \
+python3 JUNXIANG/control_ws/src/student_tasks/scripts/package_manifest.py \
+  --manifest JUNXIANG/control_ws/src/student_tasks/deploy/board-manifest.json
+```
+
+The command is manifest-only by default. `--stage-dir <local-directory>` is the only
+optional copy operation and stages locally; it never transfers or starts anything.
 
 ## Start a Session Tomorrow
 
@@ -12,6 +31,11 @@ Do not run any command in this guide tonight. Offline work stops after validatin
 4. Run the remaining Spec 003 status paths in read-only mode. Record graph, types, ownership, scan/target freshness, and persistent-estop state.
 5. Run an explicit zero-only stop check. Do not infer readiness from it.
 6. Work through [case-matrix.md](contracts/case-matrix.md) in dependency order.
+
+The first board session must re-read the exact link and battery voltage. A battery
+reading below `11000 mV`, missing `/scan`, unknown ownership, or an unfilled measured
+configuration blocks all non-zero cases. M-Claw must be exited before the control CLI
+owns `/cmd_vel`.
 
 ## Before Each Non-Zero Case
 

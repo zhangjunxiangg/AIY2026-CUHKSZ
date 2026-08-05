@@ -5,9 +5,11 @@ Every non-zero row requires the [supervision contract](supervision.md). Case IDs
 | Gate | Case ID | Case | Non-zero | Required evidence |
 |---|---|---|---|---|
 | Staging | DEP-001 | Backup, manifest-only candidate copy, modes/digests, read-only smoke | No | deployment and smoke record |
+| Config | CFG-001 | Validate v2 motion-only configuration with approach explicitly disabled | No | validator result and capability record |
 | Preflight | PRE-001 | Board/revision/manifest/config/runtime identity | No | session identity and digests |
 | Preflight | PRE-002 | ROS graph/topic/type/owner snapshot | No | publishers, subscribers, types |
 | Preflight | PRE-003 | Fresh scan/target and persistent-estop status | No | dual timestamps and validation |
+| Preflight | PRE-004 | Read-only `/cmd_vel` observer reports type, graph, cadence, and zero/non-zero counts | No | observer JSON |
 | Stop | STOP-001 | Explicit zero sequence under normal readiness | No | result and zero publish count |
 | Stop | STOP-002 | Stop attempt under degraded readiness | No | degraded reason and zero attempt |
 | Primitive | DIR-XP | Forward x sign | Yes | proposal, video, distance, zeros |

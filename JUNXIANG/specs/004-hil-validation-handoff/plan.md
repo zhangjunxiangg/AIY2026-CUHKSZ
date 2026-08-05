@@ -4,7 +4,7 @@
 
 **Input**: Feature specification from `specs/004-hil-validation-handoff/spec.md`
 
-**Execution status**: Planning complete; all board/deployment/motion tasks remain `HIL_PENDING`.
+**Execution status**: Local implementation and offline regression complete; all board/deployment/motion tasks remain `HIL_PENDING`.
 
 ## Summary
 
@@ -44,6 +44,26 @@ No violations require justification. This feature intentionally does not impleme
 - `HIL_VERIFIED`: Assigned only to an individual executed case whose prerequisites, nearby-operator authorization, physical observation, explicit stop, identity/digest binding, and required evidence all pass.
 - Global promotion requires all mandatory cases to pass in one compatible session context. Partial sessions remain `HIL_PENDING`.
 - No command in tonight's validation may contact HDC, SSH, ROS Master, or a robot.
+
+## Local Implementation Completed Before HIL
+
+- Capability-scoped production configuration v2 supports `motion=true` with
+  `approach=false`; absent vision fields remain absent and fail-closed.
+- Existing v1 full configurations retain their prior behavior and implicitly enable
+  both capabilities.
+- The CLI gates `approach` with `CAPABILITY_DISABLED` before ROS loading and builds no
+  target provider for motion-only status/move/stop/reset paths.
+- `board_smoke_test.py` reports target `CAPABILITY_DISABLED` without claiming target
+  readiness when approach is disabled.
+- `hil_session.py` creates an explicit local session identity with file digests,
+  `package_manifest.py` validates the reviewed allowlist and only stages locally when
+  requested, and `cmd_vel_observer.py` observes `geometry_msgs/Twist` read-only.
+- Offline evidence is the 147-test regression, compile/shell/JSON checks, and a
+  successful manifest validation. None promotes physical cases.
+
+The next executable boundary is read-only board preflight. Deployment and any ROS
+process start require a separately reported, user-observed test stage; non-zero
+motion remains one proposal plus one nearby-operator `走` at a time.
 
 ## Project Structure
 

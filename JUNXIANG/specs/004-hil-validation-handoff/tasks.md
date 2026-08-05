@@ -10,6 +10,16 @@ description: "Deferred supervised HIL execution and evidence tasks"
 
 **Operator gate**: Before every task attempt that may emit non-zero velocity, present exact parameters, theoretical movement, expected direction, measured clearance, stop method, and risks to the operator beside the robot. Execute only after that operator says `走`; consume the approval after one attempt.
 
+## Phase 0: Local Preparation Completed Offline
+
+- [x] LOC-001 Implement capability-scoped v2 production configuration; preserve v1 full-configuration compatibility.
+- [x] LOC-002 Add motion-only measured template without placeholder vision fields and add manifest entries.
+- [x] LOC-003 Add local session initializer, manifest validator/local stager, and read-only `/cmd_vel` observer.
+- [x] LOC-004 Run offline regression, compile, shell, JSON, source-contract, and manifest checks.
+
+These local tasks do not create HIL evidence and do not change the unchecked status of
+T001-T040 below.
+
 ## Phase 1: HIL Session Setup
 
 - [ ] T001 HIL: Create the session identity with operator, robot/board IDs, source revision, manifest/configuration/calibration digests, environment, and artifact roots in `control_ws/src/student_tasks/hil/sessions/<session-id>/session.json`
