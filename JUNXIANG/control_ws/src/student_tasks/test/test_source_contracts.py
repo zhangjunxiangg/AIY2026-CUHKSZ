@@ -14,7 +14,7 @@ from test_production_config import NOW, valid_document
 
 PACKAGE_ROOT = support.PACKAGE_ROOT
 REPOSITORY_ROOT = PACKAGE_ROOT.parents[3]
-OFFICIAL_ROOT = REPOSITORY_ROOT / "AIY黑客松比赛资料 (深开鸿赛道)" / "source code" / "kaihong_adapter"
+OFFICIAL_ROOT = REPOSITORY_ROOT / "vendor" / "kaihong-src" / "kaihong_adapter"
 CHASSIS_SOURCE = OFFICIAL_ROOT / "robot-runtime" / "src" / "chassis_controller" / "scripts" / "chassis_controller_node.py"
 LIDAR_SOURCE = OFFICIAL_ROOT / "robot-runtime" / "rplidar-raw-node.py"
 TARGET_SOURCE = OFFICIAL_ROOT / "robot-runtime" / "student" / "interfaces" / "aux_target_relay.py"

@@ -9,8 +9,8 @@
 - `ROBOT_ROOT=/data/robot-host`
 
 当前生效的 `SKILL.md` 和全部六个 Python 脚本的 `cksum`，均与本地源文件
-`info/00-source code/kaihong_adapter/mclaw-skill/` 一致。当前生效的 gripper 脚本也与
-`robot-folder/` 中的文件一致。因此，下面 Skill/runtime 脚本的行号同时对应板端当前文件和本地副本。
+`vendor/kaihong-src/kaihong_adapter/mclaw-skill/` 一致。当前生效的 gripper 脚本也与
+`src/grasping/` 中的文件一致。因此，下面 Skill/runtime 脚本的行号同时对应板端当前文件和本地副本。
 
 ## 本文所说的 software-only constraint 是什么
 
