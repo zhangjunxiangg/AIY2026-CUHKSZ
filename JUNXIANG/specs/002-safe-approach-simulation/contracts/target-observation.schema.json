@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "robot-control/target-observation/v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "kind", "observed_at", "frame_id", "x", "y", "z", "valid", "confidence", "source"],
+      "properties": {
+        "schema": {"const": "robot-control/target-observation/v1"},
+        "kind": {"const": "base_point"},
+        "observed_at": {"type": "number"},
+        "frame_id": {"const": "base_link"},
+        "x": {"type": "number"},
+        "y": {"type": "number"},
+        "z": {"type": "number"},
+        "valid": {"type": "boolean"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "kind", "observed_at", "frame_id", "u", "v", "depth_m", "valid", "confidence", "source"],
+      "properties": {
+        "schema": {"const": "robot-control/target-observation/v1"},
+        "kind": {"const": "pixel_depth"},
+        "observed_at": {"type": "number"},
+        "frame_id": {"type": "string", "minLength": 1},
+        "u": {"type": "number"},
+        "v": {"type": "number"},
+        "depth_m": {"type": "number", "exclusiveMinimum": 0},
+        "valid": {"type": "boolean"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {"type": "string", "minLength": 1}
+      }
+    }
+  ]
+}

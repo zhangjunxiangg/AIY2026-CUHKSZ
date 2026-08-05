@@ -1,0 +1,29 @@
+[12:13:28] ===== step 02_detect_centroid start 2026-08-05 12:13:28 =====
+[12:13:28] GATE PASS: prev_01_camera_ready_pass (measured=PASS 2026-08-05 12:12:18 5 gates passed)
+[12:13:29] GATE PASS: red_detected_all_frames (measured=5/5)
+[12:13:29] GATE PASS: red_area (measured=min_area=25760)
+[12:13:29] GATE PASS: red_stable (measured=jitter=0.5px)
+[12:13:29] red: centroid=(251,355) area=25778 bbox=(162, 260, 169, 196)
+[12:13:29] GATE FAIL: yellow_detected_all_frames (measured=0/5, expected=5/5 帧检出)
+[12:15:51] ===== step 02_detect_centroid start 2026-08-05 12:15:51 =====
+[12:15:51] GATE PASS: prev_01_camera_ready_pass (measured=PASS 2026-08-05 12:12:18 5 gates passed)
+[12:15:56] EXCEPTION: ROSException: timeout exceeded while waiting for message on topic /gripper_camera/image_raw
+[12:18:38] ===== step 02_detect_centroid start 2026-08-05 12:18:38 =====
+[12:18:38] GATE PASS: prev_01_camera_ready_pass (measured=PASS 2026-08-05 12:12:18 5 gates passed)
+[12:18:39] red: status=FULL detected=5/5
+[12:18:39] GATE PASS: red_not_out (measured=FULL)
+[12:18:39] GATE PASS: red_stable (measured=jitter=0.3px)
+[12:18:39] red: centroid=(250,354) area=25081 bbox=(164, 261, 167, 193)
+[12:18:39] yellow: status=FULL detected=5/5
+[12:18:39] GATE PASS: yellow_not_out (measured=FULL)
+[12:18:39] GATE PASS: yellow_stable (measured=jitter=1.6px)
+[12:18:39] yellow: centroid=(6,381) area=726 bbox=(0, 346, 17, 72)
+[12:18:39] green: status=FULL detected=5/5
+[12:18:39] GATE PASS: green_not_out (measured=FULL)
+[12:18:39] GATE PASS: green_stable (measured=jitter=2.6px)
+[12:18:39] green: centroid=(592,329) area=8792 bbox=(539, 261, 101, 141)
+[12:18:39] GATE PASS: at_least_two_full (measured=FULL=3 status={'red': 'FULL', 'yellow': 'FULL', 'green': 'FULL'})
+[12:18:39] GATE PASS: separation_red_yellow (measured=246px)
+[12:18:39] GATE PASS: separation_red_green (measured=343px)
+[12:18:39] GATE PASS: separation_yellow_green (measured=589px)
+[12:18:39] ===== step 02_detect_centroid PASS =====

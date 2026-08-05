@@ -1,0 +1,42 @@
+{
+  "health": {
+    "color": {
+      "frames": 457,
+      "fps": 7.511281646606042,
+      "age_s": 0.07303071022033691
+    },
+    "depth": {
+      "frames": 457,
+      "fps": 7.48302024601648,
+      "age_s": 0.10066342353820801
+    },
+    "depth_raw": {
+      "frames": 458,
+      "fps": 7.507269795080823,
+      "age_s": 0.009804725646972656
+    },
+    "filter": {
+      "active": true,
+      "last_ms": 30.89975299917569,
+      "params": {
+        "alpha": 0.15,
+        "gate_mm": 250.0,
+        "hold_frames": 3,
+        "snap_frames": 3,
+        "median_ksize": 5,
+        "snap_density": 0.2,
+        "box_ksize": 15
+      }
+    },
+    "topics": {
+      "color": "/aux_camera/color/image_raw",
+      "depth": "/aux_camera/depth/image_raw"
+    }
+  },
+  "recorded_fps": 6.492014247975757,
+  "frames": {
+    "filtered": 115,
+    "raw": 113
+  },
+  "seconds": 17.405999999959022
+}

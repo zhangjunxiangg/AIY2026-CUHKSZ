@@ -1,0 +1,8 @@
+{
+  "schema":"robot-control/hil-case-evidence/v1","session_id":"HIL-20260805-112019","case_id":"OWN-002","attempt_id":"attempt-1",
+  "context":{"robot_id":"mrobots-4.1-5C67039168","source_revision":"4d846dd4b8d2940da4a340fb8606d8dd70b31b66","manifest_sha256":"8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f","config_sha256":"46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"},
+  "started_at":"2026-08-05T03:35:46Z","ended_at":"2026-08-05T03:35:50Z","status":"PASS","nonzero_emitted":false,
+  "measurements":[{"temporary_publisher":"/jx_unexpected_publisher_probe","published_messages":0,"blocking_reason":"CMD_VEL_PUBLISHER_CONFLICT","publishers_after":[]}],
+  "stop_evidence":{"attempted":false,"result":"The temporary publisher registered on the graph but never published a Twist."},"artifacts":[],
+  "rationale":"Status rejected an unexpected cmd_vel owner and the graph returned to no publishers after probe exit."
+}

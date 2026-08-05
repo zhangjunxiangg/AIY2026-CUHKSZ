@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "robot-control/production-config/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "provenance", "ros", "motion", "ownership", "safety", "target", "approach", "calibration"],
+  "properties": {
+    "schema": {"const": "robot-control/production-config/v1"},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source", "measured_at", "robot_id"],
+      "properties": {
+        "kind": {"const": "measured"},
+        "source": {"type": "string", "minLength": 1},
+        "measured_at": {"type": "number"},
+        "robot_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "ros": {"type": "object"},
+    "motion": {"type": "object"},
+    "ownership": {"type": "object"},
+    "safety": {"type": "object"},
+    "target": {"type": "object"},
+    "approach": {"type": "object"},
+    "calibration": {"type": "object"}
+  }
+}

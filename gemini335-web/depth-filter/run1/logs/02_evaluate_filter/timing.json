@@ -1,0 +1,14 @@
+{
+  "metrics_raw": [
+    502.387
+  ],
+  "filter_all": [
+    1347.874
+  ],
+  "metrics_filtered": [
+    505.434
+  ],
+  "write_compare_video": [
+    2824.68
+  ]
+}

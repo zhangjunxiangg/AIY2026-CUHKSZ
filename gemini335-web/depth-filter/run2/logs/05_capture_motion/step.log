@@ -1,0 +1,8 @@
+[05:33:05] step 05_capture_motion start 05:33:05
+[05:33:05] target=150 frames, timeout=60.0s
+[05:33:16] captured depth=150 color=149
+[05:33:16] gate frames >= 120: PASS (measured=150, threshold=>=120)
+[05:33:16] gate valid_ratio >= 0.05: PASS (measured=0.9066, threshold=>=0.05)
+[05:33:17] motion_score=0.4764
+[05:33:17] gate motion present (max changed fraction >= 2%): PASS (measured=47.64%, threshold=>=2%)
+[05:33:21] step 05_capture_motion PASS

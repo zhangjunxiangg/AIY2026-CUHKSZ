@@ -1,0 +1,10 @@
+{
+  "schema":"robot-control/hil-case-evidence/v1","session_id":"HIL-20260805-112019","case_id":"DIR-XP","attempt_id":"attempt-1",
+  "context":{"robot_id":"mrobots-4.1-5C67039168","source_revision":"4d846dd4b8d2940da4a340fb8606d8dd70b31b66","manifest_sha256":"8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f","config_sha256":"46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"},
+  "proposal_id":"DIR-XP-attempt-1","operator_authorization":{"operator":"张峻翔","phrase":"走","authorized_at":"2026-08-05T03:14:03Z","consumed_at":"2026-08-05T03:14:03Z"},
+  "started_at":"2026-08-05T03:14:03Z","ended_at":"2026-08-05T03:14:06Z","status":"BLOCKED","nonzero_emitted":true,"request_path":null,"result_path":null,
+  "measurements":[{"linear_x_mps":0.1,"duration_s":2.0,"theoretical_displacement_m":0.2,"front_clearance_m":0.792,"publish_count":20,"observer_nonzero_count":19,"physical_direction":"Forward observed without reported anomaly","independent_distance_m":null}],
+  "stop_evidence":{"attempted":true,"result":"Three zero attempts confirmed; observer last message was zero; /cmd_vel had no publisher after exit."},
+  "artifacts":[{"path":"logs/DIR-XP-attempt-1-observer.json","kind":"log","sha256":"7278aecb5e59652e1e382751beccf90907fbdec15fc923114e188db3f2fcb872","contains_secrets":false}],
+  "rationale":"Direction and digital stop behavior were accepted on site, but independent displacement and video evidence remain pending."
+}

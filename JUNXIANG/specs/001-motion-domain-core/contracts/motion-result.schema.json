@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "robot-control/motion-result/v1",
+  "title": "MotionResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "operation", "operation_id", "ok", "backend", "verification", "zero_velocity_attempted", "zero_velocity_confirmed", "elapsed_s", "data", "error"],
+  "properties": {
+    "schema": {"const": "robot-control/v1"},
+    "operation": {"enum": ["status", "move", "stop"]},
+    "operation_id": {"type": ["string", "null"]},
+    "ok": {"type": "boolean"},
+    "backend": {"type": "string", "minLength": 1},
+    "verification": {"enum": ["OFFLINE_VERIFIED", "SOURCE_VERIFIED_HIL_PENDING", "HIL_VERIFIED"]},
+    "zero_velocity_attempted": {"type": "boolean"},
+    "zero_velocity_confirmed": {"type": "boolean"},
+    "elapsed_s": {"type": "number", "minimum": 0},
+    "data": {"type": "object"},
+    "error": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "category", "detail", "retryable"],
+          "properties": {
+            "code": {"type": "string", "minLength": 1},
+            "category": {"enum": ["usage", "validation", "unavailable", "runtime", "stop_safety"]},
+            "detail": {"type": "string", "minLength": 1},
+            "retryable": {"type": "boolean"}
+          }
+        }
+      ]
+    }
+  }
+}

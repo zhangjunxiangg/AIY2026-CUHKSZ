@@ -1,0 +1,20 @@
+[04:51:20] step 02_evaluate_filter start 04:51:20
+[04:51:20] gate predecessor 01_capture_baseline STATUS=PASS: PASS (measured=PASS, threshold=PASS)
+[04:51:20] loaded (100, 480, 640) from /tmp/df/out/depth_seq.npy
+[04:51:21] raw: {"temporal": {"median_std_mm": 330.7333984375, "p95_std_mm": 3677.2566650390604, "eval_px": 242264}, "valid_ratio": 0.8415341796875, "speckles": 14.1}
+[04:51:23] filter time mean=24.60ms p95=29.00ms
+[04:51:24] filtered: {"temporal": {"median_std_mm": 182.8355712890625, "p95_std_mm": 2964.9006713867134, "eval_px": 277498}, "valid_ratio": 0.9107709309895833, "speckles": 0.45}
+[04:51:27] gate temporal std reduction >= 50%: FAIL (measured=44.7%, threshold=>=50%)
+[04:51:27] step 02_evaluate_filter FAIL
+[04:53:42] step 02_evaluate_filter start 04:53:42
+[04:53:42] gate predecessor 01_capture_baseline STATUS=PASS: PASS (measured=PASS, threshold=PASS)
+[04:53:42] loaded (100, 480, 640) from /tmp/df/out/depth_seq.npy
+[04:53:42] raw: {"temporal": {"median_std_mm": 330.7333984375, "p95_std_mm": 3677.2566650390604, "eval_px": 242264}, "valid_ratio": 0.8415341796875, "speckles": 14.1}
+[04:53:44] filter time mean=13.47ms p95=13.77ms
+[04:53:44] filtered: {"temporal": {"median_std_mm": 67.12956237792969, "p95_std_mm": 2466.348681640623, "eval_px": 277193}, "valid_ratio": 0.9099758463541666, "speckles": 2.18}
+[04:53:47] gate temporal std reduction >= 50%: PASS (measured=79.7%, threshold=>=50%)
+[04:53:47] gate valid ratio drop <= 2pp: PASS (measured=-6.84pp, threshold=<=2pp)
+[04:53:47] gate speckle reduction >= 70%: PASS (measured=84.5%, threshold=>=70%)
+[04:53:47] gate filter time p95 <= 15ms: PASS (measured=13.77ms, threshold=<=15ms)
+[04:53:47] gate filtered still has depth: PASS (measured=0.91, threshold=>=0.05)
+[04:53:47] step 02_evaluate_filter PASS

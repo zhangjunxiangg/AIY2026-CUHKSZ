@@ -1,0 +1,230 @@
+{
+  "schema": "mrobots.camera-live-snapshot.v1",
+  "inspection_date": "2026-08-05",
+  "timezone": "Asia/Shanghai",
+  "source": "VERIFIED-LIVE over SSH from mrobots and ROS1 topics in rk3588s-vision",
+  "mutations_performed": [],
+  "device": {
+    "model": "Astra Pro Plus",
+    "type": "structured light monocular camera",
+    "serial_number": "ACRL16401WF",
+    "firmware_version": "RD2510",
+    "orbbec_sdk_version": "1.9.1",
+    "ros_wrapper_version": "1.4.3",
+    "usb": {
+      "depth_ir": {
+        "vendor_id": "0x2bc5",
+        "product_id": "0x060f",
+        "manufacturer": "Orbbec(R)",
+        "product": "ORBBEC Depth Sensor",
+        "speed_mbps": 480,
+        "driver_uid": "1-1.4.1-6"
+      },
+      "rgb": {
+        "vendor_id": "0x2bc5",
+        "product_id": "0x050f",
+        "manufacturer": "Sonix Technology Co., Ltd.",
+        "product": "USB 2.0 Camera",
+        "usb_serial": "SN0001",
+        "speed_mbps": 480
+      }
+    }
+  },
+  "software": {
+    "container": "rk3588s-vision",
+    "container_image": "rk3588s-ros1-vision:noetic",
+    "container_status": "running",
+    "container_restart_count": 0,
+    "ros_distribution": "noetic",
+    "ros_node": "/astra_camera/camera",
+    "launch_file": "/vision_ws/src/orbbec_camera/launch/astra_pro_plus.launch",
+    "detector_enabled": false,
+    "web_ui_enabled": false
+  },
+  "parameters": {
+    "camera_name": "astra_camera",
+    "vendor_id": "0x2bc5",
+    "product_id": "0x060f",
+    "device_num": 1,
+    "enable_color": true,
+    "enable_depth": true,
+    "enable_ir": true,
+    "enable_point_cloud": true,
+    "enable_colored_point_cloud": true,
+    "enable_soft_filter": true,
+    "enable_pipeline": true,
+    "depth_registration": false,
+    "publish_tf": true,
+    "tf_publish_rate_hz": 10.0,
+    "color": {"width": 640, "height": 480, "fps": 30, "device_format": "MJPG", "flip": false},
+    "depth": {"width": 640, "height": 480, "fps": 30, "device_format": "Y11", "flip": false},
+    "ir": {"width": 640, "height": 480, "fps": 30, "device_format": "Y10", "flip": false},
+    "ldp_enabled": true,
+    "depth_exposure": 1049,
+    "depth_gain": 8000,
+    "ir_exposure": 1049,
+    "ir_gain": 8000,
+    "color_auto_exposure": true,
+    "color_gain": 0,
+    "auto_white_balance": 1,
+    "white_balance": 4600
+  },
+  "topics": {
+    "rgb_image": "/astra_camera/rgb/image_raw",
+    "rgb_camera_info": "/astra_camera/rgb/camera_info",
+    "depth_image": "/astra_camera/depth/image_raw",
+    "depth_camera_info": "/astra_camera/depth/camera_info",
+    "ir_image": "/astra_camera/ir/image_raw",
+    "ir_camera_info": "/astra_camera/ir/camera_info",
+    "depth_points": "/astra_camera/depth/points",
+    "registered_points": "/astra_camera/astra_camera/depth_registered/points"
+  },
+  "measured_rates_hz": {
+    "rgb_image": {"approximately": 30.2, "observed_average_range": [29.781, 30.436]},
+    "depth_image": {"approximately": 30.0, "observed_average_range": [29.893, 30.023]},
+    "ir_image": {"approximately": 30.1, "observed_average_range": [29.892, 30.194]},
+    "depth_points_messages": {"approximately": 30.1, "observed_average_range": [29.738, 30.485]},
+    "registered_points": null
+  },
+  "live_samples": {
+    "continuous_probe_duration_seconds": 4.0,
+    "frames_received": {"rgb": 89, "depth": 89, "ir": 89, "depth_points": 89},
+    "rgb_last_frame": {
+      "sequence": 227,
+      "timestamp_seconds": 1785896435.077,
+      "frame_id": "astra_camera_color_optical_frame",
+      "width": 640,
+      "height": 480,
+      "encoding": "rgb8",
+      "is_bigendian": false,
+      "step_bytes": 1920,
+      "payload_bytes": 921600,
+      "channel_order": "rgb",
+      "channel_mean": [101.8662109375, 99.61088216145833, 100.97060546875],
+      "center_pixel": [75, 83, 86]
+    },
+    "ir_last_frame": {
+      "sequence": 220,
+      "timestamp_seconds": 1785896435.034,
+      "frame_id": "astra_camera_color_optical_frame",
+      "width": 640,
+      "height": 480,
+      "encoding": "mono16",
+      "is_bigendian": false,
+      "step_bytes": 1280,
+      "payload_bytes": 614400,
+      "raw_min": 18,
+      "raw_max": 115,
+      "nonzero_min": 18,
+      "nonzero_median": 41.0,
+      "nonzero_mean": 41.44560546875,
+      "nonzero_max": 115,
+      "center_raw": 40,
+      "valid_pixels": 307200,
+      "valid_percent": 100.0
+    },
+    "depth_last_frame": {
+      "sequence": 250,
+      "timestamp_seconds": 1785896435.043,
+      "frame_id": "astra_camera_color_optical_frame",
+      "width": 640,
+      "height": 480,
+      "encoding": "16UC1",
+      "documented_unit": "millimetres for nonzero depth values",
+      "is_bigendian": false,
+      "step_bytes": 1280,
+      "payload_bytes": 614400,
+      "raw_min": 0,
+      "raw_max": 0,
+      "center_raw": 0,
+      "valid_pixels": 0,
+      "valid_percent": 0.0
+    },
+    "depth_validity_over_89_frames": {
+      "frames_with_any_valid_depth": 0,
+      "min_valid_percent": 0.0,
+      "max_valid_percent": 0.0,
+      "verdict": "FAIL: persistent all-zero depth"
+    },
+    "depth_points_last_message": {
+      "sequence": 221,
+      "timestamp_seconds": 1785896435.043,
+      "frame_id": "astra_camera_color_optical_frame",
+      "message_type": "sensor_msgs/PointCloud2",
+      "fields": [
+        {"name": "x", "offset": 0, "datatype": 7, "count": 1},
+        {"name": "y", "offset": 4, "datatype": 7, "count": 1},
+        {"name": "z", "offset": 8, "datatype": 7, "count": 1}
+      ],
+      "height": 1,
+      "width": 0,
+      "point_step_bytes": 16,
+      "row_step_bytes": 0,
+      "payload_bytes": 0,
+      "total_points": 0,
+      "finite_xyz_points": 0,
+      "is_dense": true,
+      "verdict": "FAIL: empty point cloud"
+    },
+    "registered_points": {
+      "message_received": false,
+      "error": "timeout exceeded while waiting for /astra_camera/astra_camera/depth_registered/points",
+      "related_parameter": "depth_registration=false"
+    }
+  },
+  "calibration": {
+    "status": "fallback/default matrices are published; device-specific YAML files are missing",
+    "missing_files": [
+      "/root/.ros/camera_info/astra_camera_color.yaml",
+      "/root/.ros/camera_info/astra_camera_ir.yaml"
+    ],
+    "rgb": {
+      "width": 640,
+      "height": 480,
+      "frame_id": "astra_camera_color_optical_frame",
+      "distortion_model": "rational_polynomial",
+      "D": [0.11155129224061966, -0.18160298466682434, -0.0023391135036945343, 0.0024356262292712927, -0.042575184255838394, 0.0, 0.0, 0.0],
+      "K": [545.5231323242188, 0.0, 320.628173828125, 0.0, 545.5231323242188, 239.10073852539062, 0.0, 0.0, 1.0],
+      "R": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+      "P": [545.5231323242188, 0.0, 320.628173828125, 0.0, 0.0, 545.5231323242188, 239.10073852539062, 0.0, 0.0, 0.0, 1.0, 0.0]
+    },
+    "depth": {
+      "width": 640,
+      "height": 480,
+      "frame_id": "astra_camera_color_optical_frame",
+      "distortion_model": "rational_polynomial",
+      "D": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "K": [545.5231323242188, 0.0, 320.628173828125, 0.0, 545.5231323242188, 239.10073852539062, 0.0, 0.0, 1.0],
+      "R": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+      "P": [545.5231323242188, 0.0, 320.628173828125, 0.0, 0.0, 545.5231323242188, 239.10073852539062, 0.0, 0.0, 0.0, 1.0, 0.0]
+    },
+    "ir": {
+      "width": 640,
+      "height": 480,
+      "frame_id": "astra_camera_color_optical_frame",
+      "distortion_model": "rational_polynomial",
+      "D": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "K": [545.5231323242188, 0.0, 320.628173828125, 0.0, 545.5231323242188, 239.10073852539062, 0.0, 0.0, 1.0],
+      "R": [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+      "P": [545.5231323242188, 0.0, 320.628173828125, 0.0, 0.0, 545.5231323242188, 239.10073852539062, 0.0, 0.0, 0.0, 1.0, 0.0]
+    },
+    "binning": {"x": 0, "y": 0},
+    "roi": {"x_offset": 0, "y_offset": 0, "width": 0, "height": 0, "do_rectify": false}
+  },
+  "driver_warnings": [
+    "Camera calibration file /root/.ros/camera_info/astra_camera_color.yaml not found",
+    "Camera calibration file /root/.ros/camera_info/astra_camera_ir.yaml not found",
+    "Some queried exposure/auto-exposure properties are not supported by this device/driver combination"
+  ],
+  "health_verdict": {
+    "rgb": "PASS",
+    "ir": "PASS",
+    "depth_transport": "PASS",
+    "usable_depth": "FAIL",
+    "depth_point_cloud": "FAIL",
+    "registered_point_cloud": "FAIL_NOT_PUBLISHING",
+    "calibration": "FAIL_MISSING_DEVICE_SPECIFIC_FILES",
+    "overall_rgbd": "FAIL_PARTIAL_CAMERA_ONLY"
+  },
+  "important_note": "This file contains compact metadata and statistics, not the full 614400/921600-byte pixel arrays. No raw frame was saved or overwritten."
+}

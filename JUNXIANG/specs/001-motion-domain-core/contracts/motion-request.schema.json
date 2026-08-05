@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "robot-control/motion-request/v1",
+  "title": "MotionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "operation_id", "linear_x", "linear_y", "angular_z", "duration_s"],
+  "properties": {
+    "schema": {"const": "robot-control/motion-request/v1"},
+    "operation_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "linear_x": {"type": "number"},
+    "linear_y": {"type": "number"},
+    "angular_z": {"type": "number"},
+    "duration_s": {"type": "number", "minimum": 0.1, "maximum": 10.0},
+    "publish_rate_hz": {"type": "number", "minimum": 2.0, "maximum": 50.0, "default": 20.0}
+  }
+}

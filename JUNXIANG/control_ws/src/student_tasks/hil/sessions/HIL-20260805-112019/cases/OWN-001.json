@@ -1,0 +1,8 @@
+{
+  "schema":"robot-control/hil-case-evidence/v1","session_id":"HIL-20260805-112019","case_id":"OWN-001","attempt_id":"attempt-1",
+  "context":{"robot_id":"mrobots-4.1-5C67039168","source_revision":"4d846dd4b8d2940da4a340fb8606d8dd70b31b66","manifest_sha256":"8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f","config_sha256":"46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"},
+  "started_at":"2026-08-05T03:35:45Z","ended_at":"2026-08-05T03:35:46Z","status":"PASS","nonzero_emitted":false,
+  "measurements":[{"primary":"LOCK_ACQUIRED","contender":"MOTION_BUSY","owner_operation_id":"OWN-001-primary"}],
+  "stop_evidence":{"attempted":false,"result":"The test used MotionLock directly and constructed no velocity request."},"artifacts":[],
+  "rationale":"A second project process could not acquire motion ownership while the first held the advisory lock."
+}

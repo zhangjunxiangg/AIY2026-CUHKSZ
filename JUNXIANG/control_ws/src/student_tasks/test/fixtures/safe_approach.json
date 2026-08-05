@@ -1,0 +1,35 @@
+{
+  "schema": "robot-control/safe-approach-fixture/v1",
+  "warning": "SYNTHETIC OFFLINE EVIDENCE - NOT A PHYSICAL VALIDATION",
+  "provenance": {
+    "kind": "synthetic",
+    "source": "student_tasks/test/fixtures/safe_approach.json",
+    "measured_at": null
+  },
+  "scan": {
+    "observed_at": 10.0,
+    "angle_min": -3.141592653589793,
+    "angle_increment": 0.17453292519943295,
+    "range_min": 0.05,
+    "range_max": 8.0,
+    "ranges": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+  },
+  "calibration": {
+    "camera_frame": "camera_optical_frame",
+    "base_frame": "base_link",
+    "measured_at": 10.0,
+    "intrinsics": {"fx": 100.0, "fy": 100.0, "cx": 50.0, "cy": 40.0, "width": 100, "height": 80},
+    "rotation": [0.0, 0.0, 1.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0],
+    "translation": [0.1, 0.0, 0.2]
+  },
+  "targets": {
+    "base": {"observed_at": 10.0, "frame_id": "base_link", "x": 0.8, "y": 0.1, "z": 0.2, "valid": true, "confidence": 0.9, "source": "synthetic-base"},
+    "pixel_depth": {"observed_at": 10.0, "frame_id": "camera_optical_frame", "u": 60.0, "v": 30.0, "depth_m": 1.0, "valid": true, "confidence": 0.9, "source": "synthetic-pixel"}
+  },
+  "convergence": [
+    {"x": 0.80, "y": 0.20, "z": 0.20},
+    {"x": 0.70, "y": 0.02, "z": 0.20},
+    {"x": 0.46, "y": 0.01, "z": 0.20},
+    {"x": 0.45, "y": 0.00, "z": 0.20}
+  ]
+}

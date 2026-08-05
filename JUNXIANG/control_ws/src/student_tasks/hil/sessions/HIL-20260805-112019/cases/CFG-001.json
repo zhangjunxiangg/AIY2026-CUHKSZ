@@ -1,0 +1,11 @@
+{
+  "schema": "robot-control/hil-case-evidence/v1",
+  "session_id": "HIL-20260805-112019",
+  "case_id": "CFG-001",
+  "attempt_id": "attempt-1",
+  "context": {"robot_id":"mrobots-4.1-5C67039168","source_revision":"4d846dd4b8d2940da4a340fb8606d8dd70b31b66","manifest_sha256":"8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f","config_sha256":"46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"},
+  "started_at":"2026-08-05T03:20:20Z","ended_at":"2026-08-05T03:20:21Z","status":"PASS","nonzero_emitted":false,
+  "measurements":[{"schema":"robot-control/production-config/v2","configuration_kind":"measured","motion":true,"approach":false,"valid":true}],
+  "stop_evidence":{"attempted":false,"result":"Configuration validation is read-only."},"artifacts":[],
+  "rationale":"The deployed v2 measured configuration validated with motion enabled and visual approach explicitly disabled."
+}

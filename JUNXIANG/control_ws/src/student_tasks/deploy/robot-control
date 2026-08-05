@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+CONTROL_ROOT="/data/local/robot/jx/control_ws"
+PYTHONPATH="$CONTROL_ROOT/src/student_tasks/src${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH
+
+exec /bin/run python3 "$CONTROL_ROOT/src/student_tasks/scripts/robot_control_cli.py" "$@"

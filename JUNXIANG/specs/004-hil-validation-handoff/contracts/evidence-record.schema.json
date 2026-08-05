@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/robot-control/hil-evidence-v1.schema.json",
+  "title": "Robot Control HIL Case Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "session_id",
+    "case_id",
+    "attempt_id",
+    "context",
+    "started_at",
+    "ended_at",
+    "status",
+    "nonzero_emitted",
+    "stop_evidence",
+    "artifacts",
+    "rationale"
+  ],
+  "properties": {
+    "schema": { "const": "robot-control/hil-case-evidence/v1" },
+    "session_id": { "type": "string", "minLength": 1 },
+    "case_id": { "type": "string", "pattern": "^[A-Z0-9-]+$" },
+    "attempt_id": { "type": "string", "minLength": 1 },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["robot_id", "source_revision", "manifest_sha256", "config_sha256"],
+      "properties": {
+        "robot_id": { "type": "string", "minLength": 1 },
+        "source_revision": { "type": "string", "minLength": 7 },
+        "manifest_sha256": { "$ref": "#/$defs/sha256" },
+        "config_sha256": { "$ref": "#/$defs/sha256" },
+        "calibration_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "proposal_id": { "type": ["string", "null"] },
+    "operator_authorization": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operator", "phrase", "authorized_at", "consumed_at"],
+          "properties": {
+            "operator": { "type": "string", "minLength": 1 },
+            "phrase": { "const": "走" },
+            "authorized_at": { "type": "string", "format": "date-time" },
+            "consumed_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      ]
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "ended_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["PASS", "FAIL", "BLOCKED", "NOT_RUN"] },
+    "nonzero_emitted": { "type": "boolean" },
+    "request_path": { "type": ["string", "null"] },
+    "result_path": { "type": ["string", "null"] },
+    "measurements": { "type": "array", "items": { "type": "object" } },
+    "stop_evidence": {
+      "type": "object",
+      "required": ["attempted", "result"],
+      "properties": {
+        "attempted": { "type": "boolean" },
+        "result": { "type": "string", "minLength": 1 }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "kind", "sha256", "contains_secrets"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "kind": { "enum": ["json", "log", "scan", "target", "image", "video", "note"] },
+          "sha256": { "$ref": "#/$defs/sha256" },
+          "contains_secrets": { "const": false }
+        }
+      }
+    },
+    "rationale": { "type": "string", "minLength": 1 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "nonzero_emitted": { "const": true } }, "required": ["nonzero_emitted"] },
+      "then": {
+        "required": ["proposal_id", "operator_authorization"],
+        "properties": {
+          "proposal_id": { "type": "string", "minLength": 1 },
+          "operator_authorization": { "type": "object" },
+          "stop_evidence": {
+            "properties": { "attempted": { "const": true } }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

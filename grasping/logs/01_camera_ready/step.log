@@ -1,0 +1,10 @@
+[12:12:16] ===== step 01_camera_ready start 2026-08-05 12:12:16 =====
+[12:12:16] GATE PASS: topic_alive (measured=frame received)
+[12:12:16] GATE PASS: frame_shape (measured=(480, 640, 3))
+[12:12:16] first-frame stats: mean=163.3 std=52.1（允许过曝）
+[12:12:18] timing: exposure_discard = 1.691s
+[12:12:18] GATE PASS: exposure_converged (measured=mean=163.3)
+[12:12:18] GATE PASS: frame_not_uniform (measured=std=52.0)
+[12:12:18] GATE PASS: exposure_stable (measured=means=[163.2, 163.4, 163.3] drift=0.2)
+[12:12:18] settled stats: mean=163.3 std=52.0；证据 frame_ok.jpg
+[12:12:18] ===== step 01_camera_ready PASS =====

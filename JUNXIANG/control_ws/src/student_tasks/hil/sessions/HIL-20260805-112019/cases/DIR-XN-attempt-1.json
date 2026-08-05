@@ -1,0 +1,51 @@
+{
+  "schema": "robot-control/hil-case-evidence/v1",
+  "session_id": "HIL-20260805-112019",
+  "case_id": "DIR-XN",
+  "attempt_id": "attempt-1",
+  "context": {
+    "robot_id": "mrobots-4.1-5C67039168",
+    "source_revision": "4d846dd4b8d2940da4a340fb8606d8dd70b31b66",
+    "manifest_sha256": "8a005ffa6ffc7784ff813e0730fb70295b4c4799e409d8447d5debe66f41809f",
+    "config_sha256": "46e8ac64814c2e5d1f7faa9e14c6115d750436ccedaca1c27de4961937fc90d9"
+  },
+  "proposal_id": "DIR-XN-attempt-1",
+  "operator_authorization": {
+    "operator": "张峻翔",
+    "phrase": "走",
+    "authorized_at": "2026-08-05T03:25:07Z",
+    "consumed_at": "2026-08-05T03:25:07Z"
+  },
+  "started_at": "2026-08-05T03:25:07Z",
+  "ended_at": "2026-08-05T03:25:11Z",
+  "status": "BLOCKED",
+  "nonzero_emitted": true,
+  "request_path": null,
+  "result_path": null,
+  "measurements": [
+    {
+      "linear_x_mps": -0.1,
+      "linear_y_mps": 0.0,
+      "angular_z_radps": 0.0,
+      "duration_s": 2.0,
+      "theoretical_displacement_m": 0.2,
+      "rear_clearance_m": 0.984250009059906,
+      "publish_count": 19,
+      "observer_nonzero_count": 18,
+      "physical_observation": "No anomaly was reported by the nearby operator; measured displacement and video reference remain pending."
+    }
+  ],
+  "stop_evidence": {
+    "attempted": true,
+    "result": "Three zero attempts reported confirmed; observer last message was zero; /cmd_vel had no publisher after exit."
+  },
+  "artifacts": [
+    {
+      "path": "logs/DIR-XN-attempt-1-observer.json",
+      "kind": "log",
+      "sha256": "c593bedce0bfa6d2c0a860082bf67a7da104483b31185c428d86603ff14902e1",
+      "contains_secrets": false
+    }
+  ],
+  "rationale": "Digital motion and stop evidence passed, but the case cannot be promoted to HIL_VERIFIED until physical displacement and video evidence are indexed."
+}

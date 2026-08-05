@@ -57,3 +57,12 @@ ssh-keys/
 !.env.example
 !.env.sample
 !.env.template
+
+# 外部源码树（本地参考，含独立 .git，不入库）
+softbus-source/
+
+# 深度滤波原始采集序列（体积大，可由 pipeline 脚本重新采集）
+*.npy
+
+# Python 缓存
+__pycache__/

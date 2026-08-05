@@ -1,0 +1,27 @@
+{
+  "schema": "robot-control/hil-evidence-audit/v1",
+  "session_id": "HIL-20260805-112019",
+  "validated_at": "2026-08-05T03:46:27Z",
+  "schema_path": "JUNXIANG/specs/004-hil-validation-handoff/contracts/evidence-record.schema.json",
+  "validator": "check-jsonschema",
+  "case_file_count": 27,
+  "schema_valid": 27,
+  "schema_invalid": 0,
+  "status_counts": {
+    "PASS": 16,
+    "BLOCKED": 7,
+    "NOT_RUN": 4,
+    "FAIL": 0
+  },
+  "offline_regression": {
+    "tests": 151,
+    "result": "PASS"
+  },
+  "overall_verification": "HIL_PENDING",
+  "promotion_blockers": [
+    "Independent physical displacement/angle measurements and video references are missing for all six primitive directions.",
+    "Four controlled blocked-sector lidar cases were not run.",
+    "Exact previous deployment artifact identity was not captured for production rollback.",
+    "Visual approach is disabled and remains outside this motion-only session."
+  ]
+}
