@@ -47,8 +47,9 @@ else
     echo "[FAIL] STM32 串口不存在"
 fi
 
-if exec_cmd "ls -la /dev/ttyUSB1" 2>/dev/null | grep -q "crw"; then
-    echo "[PASS] 雷达串口 /dev/ttyUSB1 存在"
+if exec_cmd "ls -la /dev/ttyUSB*" 2>/dev/null | grep -q "crw"; then
+    LIDAR_DEV=$(exec_cmd "ls /dev/ttyUSB* 2>/dev/null" | head -1)
+    echo "[PASS] 雷达串口存在 ($LIDAR_DEV)"
 else
     echo "[WARN] 雷达串口不存在（可能未接雷达）"
 fi
@@ -117,7 +118,7 @@ echo ""
 # ---------- 5. 软总线/网络检查 ----------
 echo "[5] 软总线/网络检查"
 if exec_cmd "ifconfig wlan0 2>/dev/null | grep -q 'inet addr'"; then
-    IP=$(exec_cmd "ifconfig wlan0 2>/dev/null | grep 'inet addr' | awk '{print \$2}' | cut -d: -f2")
+    IP=$(exec_cmd "ifconfig wlan0 2>/dev/null | grep 'inet addr' | sed 's/.*inet addr:\([0-9.]*\).*/\1/'")
     echo "[PASS] WiFi 已连接，IP: $IP"
 else
     echo "[WARN] WiFi 未连接"

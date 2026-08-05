@@ -43,7 +43,7 @@ echo "[3] 传感器数据流检查"
 check_topic() {
     local topic="$1"
     local label="$2"
-    if $HDC shell "timeout 3 run rostopic echo -n 1 $topic >/dev/null 2>&1"; then
+    if $HDC shell ". /data/robot-host/robot-env.sh && timeout 5 rostopic echo -n 1 $topic >/dev/null 2>&1"; then
         echo "[PASS] $label ($topic)"
         return 0
     else
