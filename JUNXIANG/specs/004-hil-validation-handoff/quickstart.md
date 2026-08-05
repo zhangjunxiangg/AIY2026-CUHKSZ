@@ -32,10 +32,11 @@ optional copy operation and stages locally; it never transfers or starts anythin
 5. Run an explicit zero-only stop check. Do not infer readiness from it.
 6. Work through [case-matrix.md](contracts/case-matrix.md) in dependency order.
 
-The first board session must re-read the exact link and battery voltage. A battery
-reading below `11000 mV`, missing `/scan`, unknown ownership, or an unfilled measured
-configuration blocks all non-zero cases. M-Claw must be exited before the control CLI
-owns `/cmd_vel`.
+The first board session must re-read the exact link and battery voltage. Battery
+telemetry is recorded as environment evidence, but `11000 mV` is not a validated hard
+gate for this robot. A reported power fault, missing `/scan`, unknown ownership, or an
+unfilled measured configuration blocks all non-zero cases. M-Claw must be exited before
+the control CLI owns `/cmd_vel`.
 
 ## Before Each Non-Zero Case
 
