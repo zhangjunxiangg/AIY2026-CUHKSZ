@@ -7,34 +7,41 @@
 ## 仓库结构
 
 ```
-├── docs/              # 团队材料与官方文档转录（唯一文档源）
-│   ├── 官方材料/      # 赛方原始材料转录
-│   ├── 板端开发参考/   # 板端数据结构、踩坑、HDC排查、传感器规格
+├── docs/                     # 团队材料与官方文档转录（唯一文档源）
+│   ├── 官方材料/             # 赛方原始材料转录
+│   ├── 板端开发参考/          # 板端数据结构、踩坑、HDC排查、传感器规格
+│   ├── 技术选型报告/          # 算法与技术选型文档
+│   ├── 拾安/                 # M-Claw 行为准则（SOUL.md）
+│   ├── 新手快速入门手册/      # 入门指南
 │   ├── 选题方向与场景策略研究.md
 │   ├── 0802会议材料-系统分层与场景定义.md
-│   ├── 项目启动全员必备知识文档.md
 │   └── ...
-├── src/               # 团队自研代码
-│   ├── grasping/      # 抓取控制脚本
-│   ├── teleop/        # 遥操作
-│   ├── yolo-pipeline/ # YOLO 训练与推理管线
-│   └── gemini335-web/ # Gemini 335 相机 Web 流
-├── vendor/            # 官方/外部源码（只读）
-│   └── kaihong-src/   # KaihongBoard 官方 SDK 与 ROS 工作区
-├── scripts/           # 运维脚本（健康检查、控制就绪检查）
-│   ├── healthcheck.sh         # 全链路健康检查
+├── src/                      # 团队自研代码统一入口
+│   ├── grasping/             # 抓取控制脚本
+│   ├── teleop/               # 遥操作
+│   ├── yolo-pipeline/        # YOLO 训练与推理管线
+│   ├── gemini335-web/        # Gemini 335 相机 Web 流
+│   ├── perception/           # 相机与感知节点
+│   ├── robot-control/        # 机器人控制工作区（含 specs）
+│   └── mclaw-update/         # M-Claw 本地补丁与测试
+├── vendor/                   # 官方/外部源码（只读）
+│   ├── kaihong-src/          # KaihongBoard 官方 SDK 与 ROS 工作区
+│   └── robot-folder/         # 官方 robot-folder 归档
+├── scripts/                  # 运维脚本（健康检查、控制就绪检查）
+│   ├── healthcheck.sh        # 全链路健康检查
 │   ├── check-control-ready.sh # 控制前就绪检查
-│   └── README.md              # 控制前必须运行的脚本文档
-└── prep/              # 赛前准备交付物（环境、工具包、选题、演练记录）
+│   └── README.md             # 控制前必须运行的脚本文档
+└── prep/                     # 赛前准备交付物（环境、工具包、选题、演练记录）
+    ├── mclaw-install/        # M-Claw 安装记录
     ├── 环境验证.md
     ├── 工具使用简介.md
-    ├── 安装包清单.md
     └── ...
 ```
 
 说明：
 - `papers/`、`_audit-cache/` 为本地参考资料，已移出仓库。
 - `src/` 为团队自研代码统一入口；`vendor/` 为官方只读源码。
+- `AIY文件/` 为官方原始档案（docx/pdf），保持不动。
 
 ## 快速入口
 
