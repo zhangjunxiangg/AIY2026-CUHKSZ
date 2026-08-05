@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" font-family="'JetBrains Mono','IBM Plex Mono','SF Mono','Consolas',ui-monospace,monospace">
+  <defs>
+    <marker id="arrow-ink6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0a0a0a"/>
+    </marker>
+    <marker id="arrow-ink6-rev" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M10,0 L0,5 L10,10 z" fill="#0a0a0a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="640" height="640" fill="#fafaf8"/>
+
+  <!-- 标题 -->
+  <text x="40" y="46" font-size="12" letter-spacing="2" fill="#0a0a0a" opacity="0.5">CHASSIS · MECANUM OMNIDIRECTIONAL</text>
+  <text x="40" y="76" font-size="24" font-weight="700" fill="#0a0a0a">麦克纳姆轮全向底盘</text>
+
+  <!-- 底盘主体 -->
+  <rect x="220" y="200" width="200" height="300" rx="18" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+  <text x="320" y="360" font-size="13" fill="#0a0a0a" opacity="0.45" text-anchor="middle">不需要掉头</text>
+  <text x="320" y="380" font-size="13" fill="#0a0a0a" opacity="0.45" text-anchor="middle">即可横移 / 斜移</text>
+
+  <!-- 四个麦克纳姆轮（对角滚子花纹） -->
+  <!-- 左前 -->
+  <g>
+    <rect x="150" y="210" width="46" height="88" rx="8" fill="#fafaf8" stroke="#0a0a0a" stroke-width="1.5"/>
+    <clipPath id="clipFL"><rect x="150" y="210" width="46" height="88" rx="8"/></clipPath>
+    <g clip-path="url(#clipFL)" stroke="#002FA7" stroke-width="1.5" opacity="0.7">
+      <line x1="150" y1="230" x2="196" y2="276"/>
+      <line x1="150" y1="252" x2="196" y2="298"/>
+      <line x1="150" y1="208" x2="182" y2="240"/>
+      <line x1="164" y1="210" x2="196" y2="242"/>
+    </g>
+  </g>
+  <!-- 右前 -->
+  <g>
+    <rect x="444" y="210" width="46" height="88" rx="8" fill="#fafaf8" stroke="#0a0a0a" stroke-width="1.5"/>
+    <clipPath id="clipFR"><rect x="444" y="210" width="46" height="88" rx="8"/></clipPath>
+    <g clip-path="url(#clipFR)" stroke="#002FA7" stroke-width="1.5" opacity="0.7">
+      <line x1="490" y1="230" x2="444" y2="276"/>
+      <line x1="490" y1="252" x2="444" y2="298"/>
+      <line x1="490" y1="208" x2="458" y2="240"/>
+      <line x1="476" y1="210" x2="444" y2="242"/>
+    </g>
+  </g>
+  <!-- 左后 -->
+  <g>
+    <rect x="150" y="402" width="46" height="88" rx="8" fill="#fafaf8" stroke="#0a0a0a" stroke-width="1.5"/>
+    <clipPath id="clipBL"><rect x="150" y="402" width="46" height="88" rx="8"/></clipPath>
+    <g clip-path="url(#clipBL)" stroke="#002FA7" stroke-width="1.5" opacity="0.7">
+      <line x1="150" y1="422" x2="196" y2="468"/>
+      <line x1="150" y1="444" x2="196" y2="490"/>
+      <line x1="150" y1="400" x2="182" y2="432"/>
+      <line x1="164" y1="402" x2="196" y2="434"/>
+    </g>
+  </g>
+  <!-- 右后 -->
+  <g>
+    <rect x="444" y="402" width="46" height="88" rx="8" fill="#fafaf8" stroke="#0a0a0a" stroke-width="1.5"/>
+    <clipPath id="clipBR"><rect x="444" y="402" width="46" height="88" rx="8"/></clipPath>
+    <g clip-path="url(#clipBR)" stroke="#002FA7" stroke-width="1.5" opacity="0.7">
+      <line x1="490" y1="422" x2="444" y2="468"/>
+      <line x1="490" y1="444" x2="444" y2="490"/>
+      <line x1="490" y1="400" x2="458" y2="432"/>
+      <line x1="476" y1="402" x2="444" y2="434"/>
+    </g>
+  </g>
+
+  <!-- 运动方向标注：前进/后退（竖直双向箭头） -->
+  <line x1="320" y1="130" x2="320" y2="185" stroke="#0a0a0a" stroke-width="2" marker-end="url(#arrow-ink6)" marker-start="url(#arrow-ink6-rev)"/>
+  <text x="320" y="118" font-size="13" fill="#0a0a0a" opacity="0.7" text-anchor="middle">前进 / 后退</text>
+
+  <!-- 横移（水平双向箭头，穿过底盘中线） -->
+  <line x1="80" y1="350" x2="150" y2="350" stroke="#0a0a0a" stroke-width="2" marker-end="url(#arrow-ink6)" marker-start="url(#arrow-ink6-rev)"/>
+  <text x="80" y="330" font-size="13" fill="#0a0a0a" opacity="0.7" text-anchor="start">横移 →</text>
+
+  <!-- 斜移（右侧对角双向箭头） -->
+  <line x1="560" y1="240" x2="500" y2="300" stroke="#0a0a0a" stroke-width="2" marker-end="url(#arrow-ink6)" marker-start="url(#arrow-ink6-rev)"/>
+  <text x="560" y="225" font-size="13" fill="#0a0a0a" opacity="0.7" text-anchor="end">斜移</text>
+
+  <!-- 底部一句话 -->
+  <text x="40" y="560" font-size="14" fill="#0a0a0a" font-weight="600">活动室桌椅密集，全向移动不用掉头找角度。</text>
+</svg>

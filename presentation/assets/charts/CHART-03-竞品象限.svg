@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="'JetBrains Mono','IBM Plex Mono','SF Mono','Consolas',ui-monospace,monospace">
+  <defs>
+    <marker id="arrow-ink3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0a0a0a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="600" fill="#fafaf8"/>
+
+  <!-- 标题 -->
+  <text x="60" y="56" font-size="13" letter-spacing="2.4" fill="#0a0a0a" opacity="0.55">POSITIONING · WHO OWNS THE FLOOR</text>
+  <text x="60" y="92" font-size="30" font-weight="700" fill="#0a0a0a" letter-spacing="0.5">竞品象限</text>
+
+  <!-- 象限区域底色（右上空象限高亮） -->
+  <rect x="500" y="130" width="360" height="270" fill="#002FA7" opacity="0.06"/>
+
+  <!-- 坐标轴 -->
+  <g stroke="#0a0a0a" stroke-width="1.5">
+    <line x1="140" y1="400" x2="880" y2="400" marker-end="url(#arrow-ink3)"/>
+    <line x1="140" y1="400" x2="140" y2="130" marker-end="url(#arrow-ink3)"/>
+    <line x1="500" y1="130" x2="500" y2="400" stroke-dasharray="3 6" opacity="0.3"/>
+    <line x1="140" y1="265" x2="880" y2="265" stroke-dasharray="3 6" opacity="0.3"/>
+  </g>
+
+  <!-- 轴标签 -->
+  <text x="145" y="420" font-size="13" fill="#0a0a0a" opacity="0.65">清洁对象</text>
+  <text x="875" y="420" font-size="13" fill="#0a0a0a" opacity="0.65" text-anchor="end">风险证据</text>
+  <text x="500" y="440" font-size="12" fill="#0a0a0a" opacity="0.45" text-anchor="middle">横轴：机器人如何理解地上的小东西 →</text>
+
+  <g transform="translate(105,265) rotate(-90)">
+    <text x="0" y="0" font-size="13" fill="#0a0a0a" opacity="0.65" text-anchor="middle">家用</text>
+  </g>
+  <g transform="translate(105,150) rotate(-90)">
+    <text x="0" y="0" font-size="13" fill="#0a0a0a" opacity="0.65" text-anchor="middle">机构</text>
+  </g>
+  <g transform="translate(75,265) rotate(-90)">
+    <text x="0" y="0" font-size="12" fill="#0a0a0a" opacity="0.45" text-anchor="middle">纵轴：部署场景 →</text>
+  </g>
+
+  <!-- 左下象限：家用清洁机器人聚集 -->
+  <g>
+    <circle cx="255" cy="335" r="7" fill="#0a0a0a" opacity="0.55"/>
+    <text x="270" y="330" font-size="13" fill="#0a0a0a" opacity="0.75">石头 Saros Z70</text>
+    <text x="270" y="347" font-size="11" fill="#0a0a0a" opacity="0.5">OmniGrip 五轴臂 · 识别 108 种</text>
+
+    <circle cx="210" cy="365" r="6" fill="#0a0a0a" opacity="0.45"/>
+    <text x="223" y="369" font-size="12" fill="#0a0a0a" opacity="0.6">追觅</text>
+
+    <circle cx="330" cy="310" r="6" fill="#0a0a0a" opacity="0.4"/>
+    <text x="343" y="314" font-size="12" fill="#0a0a0a" opacity="0.55">高仙</text>
+
+    <circle cx="290" cy="375" r="6" fill="#0a0a0a" opacity="0.4"/>
+    <text x="303" y="379" font-size="12" fill="#0a0a0a" opacity="0.55">普渡</text>
+  </g>
+
+  <!-- 左下象限批注：石头 OmniGrip 停用 -->
+  <g>
+    <line x1="255" y1="342" x2="255" y2="378" stroke="#0a0a0a" stroke-width="1" opacity="0.3"/>
+    <text x="145" y="392" font-size="12" fill="#0a0a0a" opacity="0.6">⚠ 石头 OmniGrip 默认停用 + 紧急按钮 + 儿童锁</text>
+  </g>
+
+  <!-- 右上空象限：拾安 -->
+  <g>
+    <circle cx="700" cy="200" r="10" fill="#002FA7"/>
+    <circle cx="700" cy="200" r="18" fill="none" stroke="#002FA7" stroke-width="1.5" opacity="0.4"/>
+    <text x="720" y="196" font-size="16" font-weight="700" fill="#002FA7">拾安 Gauge</text>
+    <text x="720" y="216" font-size="12" fill="#002FA7" opacity="0.75">机构场景 · 把小物件当风险证据处理</text>
+  </g>
+  <text x="860" y="150" font-size="13" font-weight="600" fill="#002FA7" opacity="0.85" text-anchor="end">这里空着</text>
+
+  <!-- 底部一句话 -->
+  <text x="60" y="470" font-size="15" fill="#0a0a0a" font-weight="600">它们把地上的东西当"清洁对象"或"通行障碍"，没有人把它当"风险证据"。</text>
+  <text x="60" y="500" font-size="12" fill="#0a0a0a" opacity="0.55">行业龙头对"儿童在场 + 会动的机械臂"的解法，是把这个功能锁掉——这就是留给我们的空位。</text>
+</svg>
