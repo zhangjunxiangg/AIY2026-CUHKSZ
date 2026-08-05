@@ -1,0 +1,14 @@
+nodes:
+  - id: sensor
+    path: /data/local/robot/sensor_node.py
+    inputs:
+      tick: dora/timer/millis/200    # 5 Hz 采样
+    outputs:
+      - raw_data
+
+  - id: filter
+    path: /data/local/robot/filter_node.py
+    inputs:
+      raw_data: sensor/raw_data      # 接收 sensor 节点的输出
+    outputs:
+      - filtered_data

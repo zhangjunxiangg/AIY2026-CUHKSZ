@@ -1,0 +1,12 @@
+# dataflow_ros.yml —— 用 Dora 同时拉起 talker 和 listener（官方进阶玩法）
+# 纯 ROS 节点可直接放入 Dora dataflow，Dora 当进程管理器，免开多个终端
+nodes:
+  - id: talker
+    path: /data/local/robot/talker.py
+    # talker 自带定时循环，不需要外部 tick 触发
+    outputs:
+      - chatter         # 供其他 Dora 节点订阅（可选）
+
+  - id: listener
+    path: /data/local/robot/listener.py
+    # listener 订阅 ROS 话题，不依赖 Dora 输入

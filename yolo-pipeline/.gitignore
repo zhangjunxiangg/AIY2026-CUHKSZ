@@ -1,0 +1,27 @@
+.venv/
+# 运行环境：D:/conda-envs/ppft/python.exe（torch 2.4.1+cu124, CUDA 可用）
+# 用法示例: D:/conda-envs/ppft/python.exe 01_inspect_dataset.py
+runs/
+logs/
+dataset/
+models/
+report/
+__pycache__/
+*.pt
+*.onnx
+
+# 原始数据与转换产物（图片不入库；人工校验过的标签 .txt 保留）
+dataset_raw/*.jpg
+dataset_raw/*.jpeg
+dataset_raw/*.png
+dataset_raw/*.txt
+!dataset_raw/README.txt
+dataset_transformed/*.jpg
+
+# 调试/验证产物
+prelabel_preview/
+sheet_*.jpg
+grid_*.jpg
+review_*.jpg
+style_compare.jpg
+astra_yolo_test.jpg

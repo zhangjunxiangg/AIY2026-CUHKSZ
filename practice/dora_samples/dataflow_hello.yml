@@ -1,0 +1,7 @@
+nodes:
+  - id: hello
+    path: /data/local/robot/hello_node.py
+    inputs:
+      tick: dora/timer/millis/1000   # 每秒触发一次
+    outputs:
+      - count
