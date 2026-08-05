@@ -71,3 +71,7 @@ __pycache__/
 gemini335-web/depth-filter/run*/
 gemini335-web/depth-filter/live*/
 gemini335-web/snapshots/
+
+# 队友代码本地保留不入库
+perception/
+practice/
