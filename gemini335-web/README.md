@@ -1,13 +1,32 @@
-# Gemini 335 Web 双流监视（gemini335-web）
+# Gemini 335 Web 双流监视 + 机器人定位（gemini335-web）
 
 > 日期：2026-08-05
 > 设备：辅助开发板 KaihongBoard-3588S（KaihongOS 4.1.2.11C12）+ Orbbec Gemini 335（SN CP0E1630003S，固件 1.4.60）
 > 本目录同时存在于：辅助板 `/data/gemini335-web/` ↔ 电脑 `J:\Hackthon-Art\MRobots-OS-AIY-hackthon\gemini335-web\`
 > 两侧同名同内容，cksum 已逐一核对一致（见文末清单）。
 
+## 快速启动（TL;DR）
+
+```powershell
+# 0. 前置：USB 线连接电脑和辅助板，hdc list targets 能看到设备
+# 1. 电脑建 HDC 端口转发（hdc 服务重启后需重跑这一步）
+hdc fport tcp:8080 tcp:8080
+
+# 2. 板端启动相机栈 + Web 服务（含真实帧自检，失败会报错退出）
+hdc shell "sh /data/gemini335-web/start-web.sh"
+
+# 3. 浏览器打开
+#    http://localhost:8080        双流监视（彩色 + 滤波深度）
+#    http://localhost:8080/locate 机器人场地定位（识别框 + 坐标）
+```
+
+日常状态检查：`hdc shell "sh /data/gemini335-web/status-web.sh"`。
+停止：`stop-web.sh`（只停 Web）/ `sh /data/gemini335/stop-gemini335.sh`（停相机栈）。
+Git Bash 下用 hdc 推文件需先 `export MSYS_NO_PATHCONV=1`（否则 /data 路径被转义成 Windows 路径，静默失败）。
+
 ## 功能
 
-启动服务后，在电脑浏览器打开一个页面即可同时看到 Gemini 335 的**彩色视频流**和**深度流**（TURBO 伪彩，0–5000 mm 固定量程，无效深度为黑色），页面顶部实时显示两路 FPS 和帧龄。
+启动服务后，在电脑浏览器打开一个页面即可同时看到 Gemini 335 的**彩色视频流**和**深度流**（TURBO 伪彩，0–5000 mm 固定量程，无效深度为黑色），页面顶部实时显示两路 FPS 和帧龄；`/locate` 页提供机器人场地定位可视化（识别框 + 场地坐标 + 锥桶标记）。
 
 - 数据源：ROS1 话题 `/aux_camera/color/image_raw`（640×480 MJPG）和 `/aux_camera/depth/image_raw`（640×480 16UC1 毫米深度，软件配准到彩色）
 - Web 服务：`gemini_web_stream.py`，运行在相机驱动容器（`rk3588s-gemini335`）内，监听 `0.0.0.0:8080`
@@ -29,7 +48,15 @@ sh /data/gemini335-web/stop-web.sh      # 只停 Web 服务，相机继续跑
 sh /data/gemini335/stop-gemini335.sh    # 停相机栈
 ```
 
-Web 服务端点：`/`（监视页，滤波深度）、`/raw`（未滤波对比页）、`/locate`（**机器人定位可视化页**）、`/color.mjpeg`、`/depth.mjpeg`（滤波）、`/depth_raw.mjpeg`（原始）、`/locate.mjpeg`（定位叠加流）、`/snapshot/*.jpg`、`/health`（JSON，含滤波器状态）、`/locate/status`（定位状态 JSON）、`POST /locate/recalibrate`（重新标定地面）。
+Web 服务端点：`/`（监视页，滤波深度）、`/raw`（未滤波对比页）、`/locate`（**机器人定位可视化页**）、`/color.mjpeg`、`/depth.mjpeg`（滤波）、`/depth_raw.mjpeg`（原始）、`/locate.mjpeg`（定位叠加流）、`/snapshot/*.jpg`、`/health`（JSON，含滤波器状态）、`/locate/status`（定位状态 JSON）、`/locate/debug`（候选/簇分解 JSON）、`/locate/debugimg`（掩码可视化图）、`POST /locate/recalibrate`（重新标定地面）。
+
+## FAQ：能不能直接对深度（3D 点）做聚类？
+
+当前管线**没有**做 3D 深度聚类：聚类发生在 2D 图像空间（像素级 DBSCAN）+ 场地平面坐标（时序 DBSCAN），深度只用于地面平面拟合。
+对深度点云做 3D 聚类（Euclidean cluster extraction）**可行但分对象**：
+
+- **IR 友好物体**（锥桶、EVA 方块、小球、木圆柱等浅色漫反射目标）：深度返回完整，3D 聚类直接可用——平面残差分割 + 垂直投影即可得到带坐标的物体清单，与 07 号离线脚本同源
+- **机器人本体**：黑色塑料/金属/亮面屏是弱结构光目标（单帧仅 2–15% 像素返回有效深度），3D 点太稀疏，3D 聚类会碎——所以机器人检测走"彩色特征 + 深度定位"的组合，这是实测后的结论（见下文踩坑记录）
 
 ### `/locate` 机器人定位页（2026-08-05，DBSCAN 管线）
 

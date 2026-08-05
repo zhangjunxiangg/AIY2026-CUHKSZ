@@ -30,4 +30,7 @@
 - `util_gate.py` / `util_filter.py` — 共享 gate 与滤波/度量实现
 - `01_capture_baseline.py`、`02_evaluate_filter.py`、`04_verify_live.py` — 编号步骤，按序执行
 - `03` = 集成（直接编辑 `../gemini_web_stream.py`，记录于 logs/03_integrate/）
-- `run1/` — 采集数据与离线产物（npy/mp4/metrics）；`logs/<step>/STATUS.txt` — 每步 PASS/FAIL
+- 后续扩展步骤：`05_capture_motion.py`（含运动基线）、`06_evaluate_ghost.py`（残影指标）、
+  `07_robot_localization.py`（机器人场地定位，彩色检测+深度定位）
+- `intrinsics.json` — 实测相机内参（来自 `/aux_camera/depth/camera_info`）
+- `run1/`、`run2/` — 采集数据与离线产物（npy/mp4/metrics）；`logs/<step>/STATUS.txt` — 每步 PASS/FAIL
