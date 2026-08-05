@@ -66,3 +66,8 @@ softbus-source/
 
 # Python 缓存
 __pycache__/
+
+# Gemini 运行产物（视频/采集数据，本地保留不入库，可由 pipeline 重新生成）
+gemini335-web/depth-filter/run*/
+gemini335-web/depth-filter/live*/
+gemini335-web/snapshots/
