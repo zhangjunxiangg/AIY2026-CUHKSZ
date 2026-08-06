@@ -307,7 +307,10 @@ FILTER = DepthFilterV2()
 # Method mirrors depth-filter/07_robot_localization.py: RANSAC floor plane
 # from a live depth window, largest dark blob on the floor ROI in the COLOR
 # image (the robot is a weak structured-light target), footprint = blob
-# base band ray x floor plane.
+# base band ray x floor plane. Fallback when the dark-blob chain finds
+# nothing: _simple_robot_detect — largest dark-neutral blob inside the
+# mat region (color-only; the camera's hole-filling depth filter erases
+# the robot from depth, so depth occupancy is useless for this robot).
 
 INTRINSICS = {"fx": 463.75286865234375, "fy": 464.0082092285156,
               "cx": 322.9681091308594, "cy": 243.6584014892578}
@@ -388,7 +391,7 @@ def plane_fit_worker():
                                interpolation=cv2.INTER_NEAREST).astype(bool)
         PLANE.update({"n": n, "d": d, "roi": roi, "x_f": x_f,
                       "y_f": np.cross(n, x_f), "origin": origin,
-                      "inlier": float(mask.mean()),
+                      "inlier": float(mask.mean()), "inl": inl_full,
                       "fitted_at": time.time(),
                       "coef_small": coef_small, "roi_small": roi_small})
     except Exception as exc:  # noqa: BLE001
@@ -409,6 +412,8 @@ def _locate_debug():
         return {"error": "no frame or no plane"}
     img = cv2.imdecode(np.frombuffer(hub.jpeg, np.uint8), cv2.IMREAD_COLOR)
     res = _locate_step(img)
+    if res["robot"] is None or res["robot"].get("src", "dark") == "dark":
+        _simple_robot_detect(img)  # keep SIMPLE_DBG current for inspection
     clusters = []
     for c in sorted(res["clusters"], key=lambda c: -c["tot_area"]):
         clusters.append({
@@ -419,6 +424,9 @@ def _locate_debug():
             "bbox": c["latest"]["bbox"]})
     return {"plane_fitted": True, "candidates_this_frame": res["candidates"],
             "window_size": len(LOC_WINDOW), "clusters": clusters,
+            "robot_src": res["robot"] and res["robot"].get("src", "dark"),
+            "simple": {k: v for k, v in SIMPLE_DBG.items()
+                       if not k.startswith("_")},
             "robot_center_mm": res["robot"] and
             [round(res["robot"]["center"][0]),
              round(res["robot"]["center"][1])]}
@@ -440,6 +448,38 @@ def _mat_mask(gray):
     biggest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
     mat = (labels == biggest).astype(np.uint8)
     return cv2.dilate(mat, np.ones((15, 15), np.uint8)).astype(bool)
+
+
+def _mat_filled(img, inl):
+    """Field region for the simple fallback detector: convex hull of the
+    largest (floor-inlier & not-magenta-carpet) component. Geometry +
+    chroma only, NO brightness gate — a fixed gray threshold collapses
+    when the venue lights dim. Barrier faces and white drapes beyond the
+    field are not floor inliers, so they cannot leak into the component.
+    The hull is what makes object recovery work: the robot occludes the
+    mat behind it and its hole would otherwise connect to the field
+    boundary and defeat hole-filling; the hull spans occlusions, the
+    robot, cables and shadows by construction. A light erode pulls the
+    boundary back inside the barriers."""
+    pix16 = img.astype(np.int16)
+    magenta = (pix16[:, :, 2] - pix16[:, :, 1] > 40) \
+        & (pix16[:, :, 0] - pix16[:, :, 1] > 20)
+    surface = (inl & ~magenta).astype(np.uint8)
+    surface = cv2.morphologyEx(surface, cv2.MORPH_OPEN,
+                               np.ones((9, 9), np.uint8))
+    nlab, labels, stats, _ = cv2.connectedComponentsWithStats(surface, 8)
+    if nlab <= 1:
+        return np.zeros(inl.shape, bool)
+    biggest = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+    mat = (labels == biggest).astype(np.uint8)
+    contours, _ = cv2.findContours(mat, cv2.RETR_EXTERNAL,
+                                   cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return np.zeros(inl.shape, bool)
+    hull = cv2.convexHull(np.vstack(contours))
+    out = np.zeros_like(mat)
+    cv2.drawContours(out, [hull], -1, 1, thickness=cv2.FILLED)
+    return cv2.erode(out, np.ones((15, 15), np.uint8)).astype(bool)
 
 
 def dbscan(points, eps, min_samples):
@@ -487,6 +527,109 @@ def _footprint_mm(blob, img_shape):
     p = (-d / float(n @ dirv)) * dirv
     return float((p - PLANE["origin"]) @ PLANE["x_f"]), \
         float((p - PLANE["origin"]) @ PLANE["y_f"]), bx, by
+
+
+SIMPLE_AREA = (int(os.environ.get("LOC_SIMPLE_AREA_MIN", "4000")),
+               int(os.environ.get("LOC_SIMPLE_AREA_MAX", "150000")))
+SIMPLE_DBG = {}      # last-run stage counters, surfaced via /locate/debug
+
+
+def _simple_robot_detect(img):
+    """Fallback detector, deliberately simpler than the DBSCAN chain and
+    fully independent of it: the robot is the largest dark-neutral blob
+    inside the mat region (color only — the camera's hole-filling depth
+    filter erases the robot from the depth map, so depth occupancy does
+    not work here). Mat region = bright floor-inliers with holes filled;
+    threshold is relative to the mat's own brightness; cones are boxed
+    out via their dark-blue bases (the robot screen is blue but BRIGHT,
+    so it is not a seed). Returns a cluster-shaped dict or None."""
+    SIMPLE_DBG.clear()
+    if PLANE["n"] is None or PLANE.get("inl") is None:
+        SIMPLE_DBG["fail"] = "precondition (plane/inl)"
+        return None
+    h, w = img.shape[:2]
+    gray = img.mean(axis=2)
+    mat = _mat_filled(img, PLANE["inl"])
+    SIMPLE_DBG["mat_px"] = int(mat.sum())
+    SIMPLE_DBG["_mask_mat"] = mat
+    if not mat.any():
+        SIMPLE_DBG["fail"] = "mat empty"
+        return None
+    pix16 = img.astype(np.int16)
+    blue_dom = pix16[:, :, 0] - 0.5 * (pix16[:, :, 1] + pix16[:, :, 2])
+    spread = pix16.max(axis=2) - pix16.min(axis=2)
+    med = float(np.median(gray[mat]))
+    thr = min(140.0, 0.72 * med)
+    SIMPLE_DBG.update({"mat_gray_med": round(med, 1), "thr": round(thr, 1)})
+    dark = ((gray < thr) & (spread < 60) & (blue_dom < 25.0)
+            & mat).astype(np.uint8)
+    # cone exclusion: dark-blue bases -> generous box upward
+    seed = ((blue_dom > 30.0) & (gray < 130.0) & mat).astype(np.uint8)
+    seed = cv2.morphologyEx(seed, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    nc, _, cstats, _ = cv2.connectedComponentsWithStats(seed, 8)
+    SIMPLE_DBG["cone_seeds"] = nc - 1
+    for i in range(1, nc):
+        if int(cstats[i, cv2.CC_STAT_AREA]) < 100:
+            continue
+        bx, by = int(cstats[i, cv2.CC_STAT_LEFT]), int(cstats[i, cv2.CC_STAT_TOP])
+        bw, bh = int(cstats[i, cv2.CC_STAT_WIDTH]), int(cstats[i, cv2.CC_STAT_HEIGHT])
+        x0 = max(0, int(bx - 0.6 * bw))
+        x1 = min(w, int(bx + 1.6 * bw))
+        y0 = max(0, int(by - 3.0 * bh))
+        dark[y0:min(h, by + bh + 1), x0:x1] = 0
+    dark = cv2.morphologyEx(dark, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
+    dark = cv2.morphologyEx(dark, cv2.MORPH_CLOSE, np.ones((45, 45), np.uint8))
+    SIMPLE_DBG["_mask_dark"] = dark
+    SIMPLE_DBG["_mask_seed"] = seed
+    nlab, labels, stats, _ = cv2.connectedComponentsWithStats(dark, 8)
+    comps = []
+    best, best_area = None, 0
+    for i in range(1, nlab):
+        area = int(stats[i, cv2.CC_STAT_AREA])
+        x0 = int(stats[i, cv2.CC_STAT_LEFT])
+        y0 = int(stats[i, cv2.CC_STAT_TOP])
+        x1 = x0 + int(stats[i, cv2.CC_STAT_WIDTH])
+        y1 = y0 + int(stats[i, cv2.CC_STAT_HEIGHT])
+        reason = None
+        if not (SIMPLE_AREA[0] <= area <= SIMPLE_AREA[1]):
+            reason = "area"
+        elif x0 <= 2 or y0 <= 2 or x1 >= w - 2:
+            reason = "border"
+        elif y1 >= h - 2 and (x1 - x0) > 0.6 * w:
+            reason = "wide-bottom"
+        comps.append({"area": area, "bbox": [x0, y0, x1, y1],
+                      "reject": reason})
+        if reason is not None:
+            continue
+        if area > best_area:
+            best_area, best = area, (labels == i)
+    SIMPLE_DBG["comps"] = comps
+    if best is None:
+        SIMPLE_DBG["fail"] = "no component passed"
+        return None
+    SIMPLE_DBG.pop("fail", None)
+    ys_c, xs_c = np.nonzero(best)
+    cut = np.percentile(ys_c, 95)
+    base = ys_c >= cut
+    bx, by = float(xs_c[base].mean()), float(ys_c[base].mean())
+    fx, fy = INTRINSICS["fx"], INTRINSICS["fy"]
+    cx, cy = INTRINSICS["cx"], INTRINSICS["cy"]
+    n, d = PLANE["n"], PLANE["d"]
+    dirv = np.array([(bx - cx) / fx, (by - cy) / fy, 1.0])
+    p = (-d / float(n @ dirv)) * dirv
+    fx_mm = float((p - PLANE["origin"]) @ PLANE["x_f"])
+    fy_mm = float((p - PLANE["origin"]) @ PLANE["y_f"])
+    if not (abs(fx_mm) < 2500 and -3500 < fy_mm < 1000):
+        SIMPLE_DBG["fail"] = "out of field bounds (%.0f, %.0f)" % (fx_mm, fy_mm)
+        return None  # same field bounds as the primary chain
+    SIMPLE_DBG["pick"] = {"bbox": [int(xs_c.min()), int(ys_c.min()),
+                                   int(xs_c.max()) + 1, int(ys_c.max()) + 1],
+                          "center_mm": [round(fx_mm), round(fy_mm)]}
+    return {"count": 1, "tot_area": best_area, "mean_blue": 0.0,
+            "center": (fx_mm, fy_mm), "src": "simple",
+            "latest": {"bbox": (int(xs_c.min()), int(ys_c.min()),
+                                int(xs_c.max()) + 1, int(ys_c.max()) + 1),
+                       "base": (bx, by)}}
 
 
 DS = 4                 # downsample factor for pixel-level clustering
@@ -610,6 +753,10 @@ def _locate_step(img):
               and -3500 < c["center"][1] < 1000]
     if robots:
         result["robot"] = max(robots, key=lambda c: c["tot_area"])
+    if result["robot"] is None:
+        # simple fallback (depth height-over-floor), independent of the
+        # dark-blob chain above; fires only when the primary finds nothing
+        result["robot"] = _simple_robot_detect(img)
     return result
 
 
@@ -651,19 +798,22 @@ def locate_overlay(img):
     xmm, ymm = robot["center"]
     latest = robot["latest"]
     x0, y0, x1, y1 = latest["bbox"]
+    simple = robot.get("src") in ("height", "simple")
+    box_color = (255, 255, 0) if simple else (0, 255, 0)  # cyan = fallback
+    label = "robot(simple)" if simple else "robot"
     LOC["x"], LOC["y"] = xmm, ymm
     LOC["area"], LOC["t"] = robot["tot_area"], time.time()
     LOC["box"] = {"x": x0, "y": y0, "w": x1 - x0, "h": y1 - y0}
     bx, by = latest["base"]
-    cv2.rectangle(out, (x0, y0), (x1, y1), (0, 255, 0), 2)
+    cv2.rectangle(out, (x0, y0), (x1, y1), box_color, 2)
     cv2.drawMarker(out, (int(bx), int(by)), (0, 0, 255),
                    cv2.MARKER_CROSS, 16, 2)
-    cv2.putText(out, f"robot x={xmm:.0f} y={ymm:.0f} mm",
+    cv2.putText(out, f"{label} x={xmm:.0f} y={ymm:.0f} mm",
                 (x0, max(20, y0 - 8)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
-                (0, 255, 0), 2)
+                box_color, 2)
     cv2.putText(out, f"box px ({x0},{y0}) {x1 - x0}x{y1 - y0}",
                 (x0, min(h - 8, y1 + 18)), cv2.FONT_HERSHEY_SIMPLEX,
-                0.5, (0, 255, 0), 1)
+                0.5, box_color, 1)
     return out
 
 
@@ -805,6 +955,29 @@ class Handler(BaseHTTPRequestHandler):
             vis = (img * 0.4).astype(np.uint8)
             vis[mat] = (vis[mat] * 0.5 + np.array([0, 127, 0])).astype(np.uint8)
             vis[dark] = (0, 0, 255)
+            ok, jpg = cv2.imencode(".jpg", vis)
+            self._send_bytes(jpg.tobytes(), "image/jpeg")
+        elif path == "/locate/debugimg2":
+            # simple-fallback mask visualization: green tint = field region,
+            # red = final dark blob mask, blue = cone seed pixels
+            hub = HUBS.get("color")
+            if hub is None or hub.jpeg is None or PLANE["n"] is None:
+                self.send_error(503, "no frame or no plane")
+                return
+            img = cv2.imdecode(np.frombuffer(hub.jpeg, np.uint8),
+                               cv2.IMREAD_COLOR)
+            _simple_robot_detect(img)
+            vis = (img * 0.35).astype(np.uint8)
+            m = SIMPLE_DBG.get("_mask_mat")
+            dk = SIMPLE_DBG.get("_mask_dark")
+            sd = SIMPLE_DBG.get("_mask_seed")
+            if m is not None:
+                vis[m] = (vis[m] * 0.5
+                          + np.array([0, 127, 0])).astype(np.uint8)
+            if sd is not None:
+                vis[sd.astype(bool)] = (255, 0, 0)
+            if dk is not None:
+                vis[dk.astype(bool)] = (0, 0, 255)
             ok, jpg = cv2.imencode(".jpg", vis)
             self._send_bytes(jpg.tobytes(), "image/jpeg")
         elif path == "/locate/debug":
