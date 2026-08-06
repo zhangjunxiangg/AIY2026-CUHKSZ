@@ -33,6 +33,14 @@ def main():
     if not cap.isOpened():
         print(f"[GRIPPER_CAM] cannot open {args.device}", file=sys.stderr)
         return 1
+    # Request MJPEG to cut USB isochronous bandwidth ~10x vs raw YUYV —
+    # the board's single USB2 bus is shared with the Astra camera, and the
+    # raw stream starved its bandwidth reservation (usb_submit_urb -28).
+    cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*"MJPG"))
+    fourcc = int(cap.get(cv2.CAP_PROP_FOURCC))
+    got = "".join(chr((fourcc >> (8 * i)) & 0xFF) for i in range(4))
+    if got != "MJPG":
+        print(f"[GRIPPER_CAM] WARNING: camera rejected MJPEG, got {got!r}", file=sys.stderr)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, args.width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, args.height)
     cap.set(cv2.CAP_PROP_FPS, args.fps)
