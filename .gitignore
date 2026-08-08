@@ -104,3 +104,6 @@ presentation/assets/jimeng/
 
 # ===== 队长个人卡片（私人内容，永不入库、永不推送）=====
 docs/队长卡片/
+
+# ===== Kimi 会话 prompt 存档（私人内容，永不入库、永不推送）=====
+docs/kimi-prompts/
