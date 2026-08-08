@@ -107,3 +107,11 @@ docs/队长卡片/
 
 # ===== Kimi 会话 prompt 存档（私人内容，永不入库、永不推送）=====
 docs/kimi-prompts/
+
+# ===== 隐私与个人内容（2026-08-09 全面豁免，永不入库、永不推送）=====
+docs/exp-mclaw-kimi-coding-plan.md
+prep/mclaw-install/M-Claw安装artifacts记录.md
+docs/队长个人卡片.md
+docs/项目里程碑全程回顾.md
+scripts/extract-kimi-prompts.py
+scripts/cards-to-docx.sh
