@@ -2,7 +2,11 @@
 
 > 队伍：CUHKSZ 代表队（5 人）  
 > 比赛时间：2026-08-04 至 2026-08-06  
-> 仓库用途：作品代码 + 赛前准备文档 + 现场调试记录
+> 作品：拾安 · Gauge —— 托育机构地面风险巡检机器人  
+> 仓库用途：作品代码 + 路演交付物 + 赛前准备文档 + 现场调试记录
+
+> ⚠️ **2026-08-09 历史重写通知**：仓库已做敏感数据清除并 force push，旧克隆作废。
+> 队员请先阅读 [分支同步与敏感数据清理指南](docs/分支同步与敏感数据清理指南.md) 再操作。
 
 ## 仓库结构
 
@@ -11,67 +15,74 @@
 │   ├── 官方材料/             # 赛方原始材料转录
 │   ├── 板端开发参考/          # 板端数据结构、踩坑、HDC排查、传感器规格
 │   ├── 技术选型报告/          # 算法与技术选型文档
-│   ├── 拾安/                 # M-Claw 行为准则（SOUL.md）
+│   ├── 拾安/                 # 拾安 · Gauge 行为准则（SOUL.md）
 │   ├── 新手快速入门手册/      # 入门指南
-│   ├── 选题方向与场景策略研究.md
+│   ├── 分支同步与敏感数据清理指南.md  # 全员必读的协作与清理规范
 │   ├── 0802会议材料-系统分层与场景定义.md
 │   └── ...
 ├── src/                      # 团队自研代码统一入口
-│   ├── grasping/             # 抓取控制脚本
-│   ├── teleop/               # 遥操作
-│   ├── yolo-pipeline/        # YOLO 训练与推理管线
-│   ├── gemini335-web/        # Gemini 335 相机 Web 流
-│   ├── perception/           # 相机与感知节点
-│   ├── robot-control/        # 机器人控制工作区（含 specs）
+│   ├── grasping/             # 夹爪相机像素伺服抓取 pipeline（gated pipeline，实测 PASS）
+│   ├── teleop/               # 键盘遥操作（方向键/A、D/S、X/J、L/W）
+│   ├── yolo-pipeline/        # YOLO 蓝色锥桶训练与推理管线（含 Astra 风格数据增强）
+│   ├── gemini335-web/        # Gemini 335 相机 Web 双流监视 + /locate 场地定位
+│   ├── perception/           # 相机与感知节点（含 MJPEG 带宽修复）
+│   ├── robot-control/        # 底盘运动控制工作区（运动原语、安全护栏，含 specs）
 │   └── mclaw-update/         # M-Claw 本地补丁与测试
 ├── vendor/                   # 官方/外部源码（只读）
 │   ├── kaihong-src/          # KaihongBoard 官方 SDK 与 ROS 工作区
 │   └── robot-folder/         # 官方 robot-folder 归档
-├── scripts/                  # 运维脚本（健康检查、控制就绪检查）
+├── presentation/             # 路演交付物
+│   ├── deck/                 # 拾安 Gauge 10 页路演 deck v4（HTML/PDF）
+│   ├── V3-路演口径基线.md     # 对外唯一口径（冻结）
+│   ├── 路演逐页文案.md        # 逐页口播稿
+│   └── 路演任务追踪.md
+├── scripts/                  # 运维脚本
 │   ├── healthcheck.sh        # 全链路健康检查
 │   ├── check-control-ready.sh # 控制前就绪检查
+│   ├── sshd-foreground.sh + sshd.cfg  # 板端 SSH 双端口自启
 │   └── README.md             # 控制前必须运行的脚本文档
 └── prep/                     # 赛前准备交付物（环境、工具包、选题、演练记录）
-    ├── mclaw-install/        # M-Claw 安装记录
-    ├── 环境验证.md
-    ├── 工具使用简介.md
-    └── ...
 ```
 
 说明：
-- `papers/`、`_audit-cache/` 为本地参考资料，已移出仓库。
-- `src/` 为团队自研代码统一入口；`vendor/` 为官方只读源码。
-- `AIY文件/` 为官方原始档案（docx/pdf），保持不动。
+- `src/` 为团队自研代码统一入口；`vendor/` 为官方只读源码；`AIY文件/` 为官方原始档案（docx/pdf），保持不动。
+- **敏感与个人内容不入库**：队长个人卡片、AI 会话存档、个人任务数据、含密钥的配置笔记、大体积素材等已移出版本控制并加入 `.gitignore`（原件保留在各自电脑上）。详见[清理指南](docs/分支同步与敏感数据清理指南.md)。
 
 ## 快速入口
 
+- [拾安 · Gauge 行为准则](docs/拾安/SOUL.md)
+- [路演口径基线 V3（冻结）](presentation/V3-路演口径基线.md)
+- [分支同步与敏感数据清理指南](docs/分支同步与敏感数据清理指南.md)
 - [比赛认知与评分策略](docs/AIY比赛认知.md)
 - [系统分层与场景定义](docs/0802会议材料-系统分层与场景定义.md)
 - [板端开发速查与踩坑手册](docs/板端开发参考/板端开发速查与踩坑手册.md)
 - [传感器数据规格手册](docs/板端开发参考/传感器数据规格手册.md)
-- [M-Robots 开发踩坑与参考库](docs/板端开发参考/M-Robots开发踩坑与参考库.md)
-- [HDC 连接中断排查记录](docs/板端开发参考/HDC连接中断排查记录.md)
 - [机器人健康检查脚本](scripts/healthcheck.sh)
 - [控制前必须运行的脚本](scripts/README.md)
 
 ## 技术栈
 
-- 板端系统：KaihongBoard-3588S-SBC + M-Robots OS 4.1
-- 机器人：驭系列移动机器人（麦轮底盘 + 5DOF 机械臂 + 夹爪）
+- 板端系统：KaihongBoard-3588S-SBC ×2 + KaihongOS / M-Robots OS 4.1（软总线双板协同）
+- 机器人：驭系列移动机器人（麦克纳姆全向底盘 + 5DOF 机械臂 + 夹爪）
 - 感知：Astra Pro Plus / Orbbec Gemini 335 深度相机 + 思岚 A1 雷达
-- 中间件：ROS1（noetic 兼容运行时）+ Dora 0.3.12 + M-Claw 智能体
-- 开发机：Windows 11 + HDC + VSCode
+- 智能：M-Claw 智能体（语义分级）+ HSV/模板/QR 轻量视觉
+- 中间件：ROS1（noetic 兼容运行时）+ 软总线 / M-DDS
+- 开发机：Windows 11 + HDC + SSH（密钥认证，端口 22/2223）
 
-## 当前状态
+## 最终状态（赛后）
 
-- 开发板：KaihongBoard-3588S-SBC 已拿到，镜像已预制 ROS/Python/Dora/M-Claw；当前正从网络 HDC 切回 USB HDC（板子需物理接入 USB 线并通电）。
-- 传感器：激光雷达、Astra 深度相机、里程计、IMU、电池、舵机状态、相机内参已上板实测并写入 `docs/传感器数据规格手册.md`。
-- 运行时：ROS1 兼容运行时、Python 3.12.7、Dora 0.3.12 已预装可用；运行 Python 节点需 `LD_PRELOAD=/data/local/release/usr/lib/libpython3.12.so.1.0`。
-- Demo：Dora Hello World + 5Hz sensor/filter 节点（`prep/demo代码/`）与 ROS1 talker/listener 均已在板端跑通，记录分别见 `prep/demo记录/dora样例记录.md` 和 `prep/demo记录/ros1样例记录.md`。
-- 执行器方案：底盘 `/cmd_vel`、机械臂与夹爪 `FollowJointTrajectoryAction`、M-Claw `robot_ops.py` 高层 JSON 命令链路已确认，见 `prep/机器人硬件方案.md`。
-- 选题与答疑：`prep/选题/候选方案.md` 与 `prep/老师确认记录.md` 已就位；最终选题待现场根据物料收敛。
-- 备份机制：`prep/deploy.sh` 一键推送脚本已验证可用；换板恢复简化为插拔换板。
-- 运维脚本：`scripts/healthcheck.sh` 全链路健康检查、`scripts/check-control-ready.sh` 控制前就绪检查，详见 `scripts/README.md`。
+- **抓取**：夹爪相机 eye-in-hand 像素伺服 pipeline 端到端跑通（红色圆柱实测 PASS，gated pipeline 八关全过）。
+- **定位**：Gemini335 辅助板 /locate 场地定位可视化（两级 DBSCAN + 兜底检测器）。
+- **感知**：YOLO 蓝色锥桶训练管线（Astra 成像风格 LUT 数据增强）；双相机 USB 带宽冲突已修复（夹爪相机改 MJPEG）。
+- **底盘**：运动原语 CLI + 硬限速 0.2m/s + 0.5s 超时看门狗 + 持久化急停。
+- **智能**：板端 M-Claw 切换至 Kimi 通路；安全逻辑全部写死在确定性代码。
+- **路演**：拾安 Gauge 10 页 deck v4 + AIGC 概念宣传片已合入 `presentation/`。
+
+## 协作规则（赛后版）
+
+- `main` 为唯一主线，功能一律经 PR 合入；只动自己的分支。
+- 个人文档、密钥、大文件一律不进仓库（见[清理指南](docs/分支同步与敏感数据清理指南.md)）。
+- Git 协作详见 `prep/git协作约定.md`。
 
 ## 现场支持
 

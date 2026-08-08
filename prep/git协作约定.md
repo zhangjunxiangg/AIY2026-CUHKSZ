@@ -2,12 +2,14 @@
 
 > 用途：5 人团队在 36 小时黑客松期间的代码协作规则  
 > 仓库：https://github.com/zhangjunxiangg/AIY2026-CUHKSZ.git（private）
+> ⚠️ 2026-08-09 起：仓库历史已重写（敏感数据清除），**请先阅读 [分支同步与敏感数据清理指南](../docs/分支同步与敏感数据清理指南.md) 再操作**。
 
-## 分支策略
+## 分支策略（实际执行）
 
-- `main`：稳定分支，仅合并已验证的功能，**比赛期间由队长控制合并**
-- `dev`：集成分支，各人功能分支合并到这里做联调
-- `feature/<姓名缩写>-<功能>`：个人开发分支，如 `feature/lyl-perception`
+- `main`：唯一主线，所有功能经 PR 合入，由队长 review + merge
+- 个人/功能分支：`junxiang`（底盘）、`feature/c-perception`（感知）、`Lynn`、`mary`、`agent/<功能>` 等
+- 新工作从最新 `main` 切出：`feature/<姓名>-<功能>`，完成后向 `main` 提 PR
+- 只动自己的分支；需要清理历史统一找队长，不自行 force push
 
 ## 提交规范
 

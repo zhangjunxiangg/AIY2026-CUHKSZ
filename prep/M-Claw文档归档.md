@@ -11,8 +11,8 @@
 
 ## 本地笔记
 
-- [M-Claw 接入 Kimi Coding Plan 配置指南](docs/exp-mclaw-kimi-coding-plan.md)
-- [M-Claw 英文语言修复记录](docs/mclaw-english-language-fix.md)
+- M-Claw 接入 Kimi Coding Plan 配置指南（`docs/exp-mclaw-kimi-coding-plan.md`）——含密钥信息，已移出版本控制，本地保留；需要请找队长索取
+- [M-Claw 英文语言修复记录](../docs/mclaw-english-language-fix.md)
 
 ## 注意事项
 

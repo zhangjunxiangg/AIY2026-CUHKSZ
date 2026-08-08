@@ -2,7 +2,7 @@
 
 > 日期：2026-08-05
 > 设备：辅助开发板 KaihongBoard-3588S（KaihongOS 4.1.2.11C12）+ Orbbec Gemini 335（SN CP0E1630003S，固件 1.4.60）
-> 本目录同时存在于：辅助板 `/data/gemini335-web/` ↔ 电脑 `J:\Hackthon-Art\MRobots-OS-AIY-hackthon\gemini335-web\`
+> 本目录同时存在于：辅助板 `/data/gemini335-web/` ↔ 电脑仓库 `src/gemini335-web/`
 > 两侧同名同内容，cksum 已逐一核对一致（见文末清单）。
 
 ## 快速启动（TL;DR）
