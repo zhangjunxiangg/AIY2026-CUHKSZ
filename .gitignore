@@ -101,3 +101,6 @@ presentation/素材/
 **/.__jianying_export_temp_folder_*/
 # 即梦生成的高清原图批次（过程素材，完整版留在 junxiang 分支）
 presentation/assets/jimeng/
+
+# ===== 队长个人卡片（私人内容，永不入库、永不推送）=====
+docs/队长卡片/
