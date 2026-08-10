@@ -1,0 +1,257 @@
+{
+  "hsv_colors": {
+    "red": [
+      [
+        [0, 92, 134],
+        [10, 212, 254]
+      ],
+      [
+        [170, 92, 134],
+        [180, 212, 254]
+      ]
+    ],
+    "green": [
+      [
+        [45, 68, 91],
+        [65, 188, 211]
+      ]
+    ],
+    "blue": [
+      [
+        [90, 80, 60],
+        [130, 255, 255]
+      ]
+    ],
+    "yellow": [
+      [
+        [16, 125, 151],
+        [36, 245, 255]
+      ]
+    ],
+    "cone_orange": [
+      [
+        [5, 120, 70],
+        [25, 255, 255]
+      ]
+    ],
+    "wood": [
+      [
+        [10, 60, 40],
+        [30, 220, 200]
+      ]
+    ],
+    "cone_blue": [
+      [
+        [107, 127, 4],
+        [127, 247, 124]
+      ]
+    ]
+  },
+  "color_detect": {
+    "enable": true,
+    "colors": [
+      "red",
+      "green",
+      "blue",
+      "yellow",
+      "wood"
+    ],
+    "min_area": 200,
+    "morph_open_ksize": 3,
+    "morph_close_ksize": 5,
+    "ball_fill_max": 0.9,
+    "square_aspect_tol": 0.15,
+    "cylinder_aspect_min": 1.8,
+    "ring_enable": false,
+    "ring_min_area": 300
+  },
+  "cone_detect": {
+    "enable": true,
+    "color": "cone_blue",
+    "min_area": 400,
+    "min_aspect": 1.2,
+    "morph_close_ksize": [
+      25,
+      9
+    ]
+  },
+  "template_detect": {
+    "enable": true,
+    "max_targets_per_template": 3,
+    "templates": [
+      {
+        "name": "human_board",
+        "path": "templates/human_board.png",
+        "threshold": 0.75,
+        "scales": [0.6, 0.8, 1.0, 1.2, 1.4]
+      },
+      {
+        "name": "letter_A",
+        "path": "templates/letter_A.png",
+        "threshold": 0.65,
+        "scales": [0.4, 0.6, 0.8, 1.0, 1.2]
+      },
+      {
+        "name": "letter_B",
+        "path": "templates/letter_B.png",
+        "threshold": 0.65,
+        "scales": [0.4, 0.6, 0.8, 1.0, 1.2]
+      },
+      {
+        "name": "letter_C",
+        "path": "templates/letter_C.png",
+        "threshold": 0.65,
+        "scales": [0.4, 0.6, 0.8, 1.0, 1.2]
+      },
+      {
+        "name": "letter_D",
+        "path": "templates/letter_D.png",
+        "threshold": 0.65,
+        "scales": [0.4, 0.6, 0.8, 1.0, 1.2]
+      }
+    ]
+  },
+  "qr_detect": {
+    "enable": true,
+    "scales": [
+      1.0,
+      2.0,
+      3.0
+    ]
+  },
+  "aruco_detect": {
+    "enable": true,
+    "dictionaries": ["DICT_APRILTAG_36h11", "DICT_6X6_250"],
+    "marker_length_m": 0.05
+  },
+  "yolo_detect": {
+    "enable": false,
+    "model_path": "models/best.onnx",
+    "backend": "onnx",
+    "conf_threshold": 0.5,
+    "nms_threshold": 0.45,
+    "input_size": 640,
+    "class_map": {
+      "red_block": 0,
+      "green_block": 1,
+      "blue_block": 2,
+      "yellow_block": 3,
+      "red_ball": 4,
+      "green_ball": 5,
+      "blue_ball": 6,
+      "yellow_ball": 7,
+      "cone": 8,
+      "human_board": 9,
+      "wood_cylinder": 10,
+      "letter_A": 11,
+      "letter_B": 12,
+      "letter_C": 13,
+      "letter_D": 14,
+      "apriltag": 15,
+      "aruco": 16
+    }
+  },
+  "preprocess": {
+    "enable": true,
+    "white_balance": true,
+    "gamma": 0.7,
+    "clahe_clip": 2.0,
+    "clahe_grid": 8
+  },
+  "roi": {
+    "enable": true,
+    "y_min": 150
+  },
+  "aux_camera": {
+    "enable": false,
+    "compressed_color_topic": "/aux_camera/color/image_raw/compressed",
+    "depth_topic": "/aux_camera/depth/image_raw"
+  },
+  "gripper_camera": {
+    "enable": false,
+    "device": "/dev/video20",
+    "rgb_topic": "/gripper_camera/image_raw",
+    "frame_id": "gripper_camera_optical_frame",
+    "width": 640,
+    "height": 480,
+    "fps": 15
+  },
+  "depth": {
+    "enable": false,
+    "min_valid_mm": 600,
+    "max_valid_mm": 8000,
+    "sample_fraction": 0.5,
+    "min_valid_pixels": 5
+  },
+  "camera": {
+    "astra": {
+      "intrinsics": {
+        "fx": 520.0,
+        "fy": 520.0,
+        "cx": 320.0,
+        "cy": 240.0,
+        "width": 640,
+        "height": 480
+      },
+      "extrinsics_json": "../AIY2026-CUHKSZ/AIY黑客松比赛资料 (深开鸿赛道)/source code/kaihong_adapter/robot-runtime/astra-arm-calibration/astra-to-base.json",
+      "camera_info_topic": "/astra_camera/rgb/camera_info",
+      "targets_topic": "/student/perception/targets",
+      "localized_topic": "/student/perception/targets_3d"
+    },
+    "aux": {
+      "intrinsics": {
+        "fx": 460.0,
+        "fy": 460.0,
+        "cx": 320.0,
+        "cy": 240.0,
+        "width": 640,
+        "height": 480
+      },
+      "extrinsics_json": "",
+      "camera_info_topic": "/aux_camera/color/camera_info",
+      "targets_topic": "/student/perception/targets_aux",
+      "localized_topic": "/student/perception/targets_3d_aux"
+    }
+  },
+  "fusion": {
+    "enable": true,
+    "radius_m": 0.12,
+    "prefer_aux_for_blind_spot": true,
+    "publish_topic": "/student/perception/targets_3d_fused",
+    "output_file": "/tmp/perception_targets_3d_fused.json"
+  },
+  "blind_spot": {
+    "enable": true,
+    "min_valid_mm": 600,
+    "max_valid_mm": 8000,
+    "horizon_y": 320,
+    "mono_size": {
+      "red_block": {"width_m": 0.05, "height_m": 0.05},
+      "green_block": {"width_m": 0.05, "height_m": 0.05},
+      "blue_block": {"width_m": 0.05, "height_m": 0.05},
+      "yellow_block": {"width_m": 0.05, "height_m": 0.05},
+      "red_ball": {"width_m": 0.05, "height_m": 0.05},
+      "green_ball": {"width_m": 0.05, "height_m": 0.05},
+      "blue_ball": {"width_m": 0.05, "height_m": 0.05},
+      "yellow_ball": {"width_m": 0.05, "height_m": 0.05},
+      "cone": {"width_m": 0.10, "height_m": 0.20},
+      "human_board": {"width_m": 0.10, "height_m": 0.14}
+    }
+  },
+  "localization": {
+    "publish_topic": "/student/perception/targets_3d",
+    "output_file": "/tmp/perception_targets_3d.json",
+    "use_tf": true,
+    "map_frame": "map",
+    "base_frame": "base_link"
+  },
+  "ros": {
+    "rgb_topic": "/astra_camera/rgb/image_raw",
+    "depth_topic": "/astra_camera/depth/image_raw",
+    "publish_topic": "/student/perception/targets",
+    "rate_hz": 2.0,
+    "msg_timeout_s": 5.0,
+    "freshness_s": 1.0,
+    "output_file": "/tmp/perception_targets.json"
+  }
+}
