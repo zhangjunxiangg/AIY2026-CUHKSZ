@@ -90,6 +90,9 @@ yolo训练集1.0.zip
 car_output/
 *.zip
 
+# 队友练习代码本地保留不入库（PR#3 误删豁免，2026-08-11 加回）
+practice/
+
 # ===== 路演媒体大文件（2026-08-06，presentation 合入时补）=====
 # 视频原件与成片单个动辄数百 MB，一律不入库；deck 里的视频是本地外挂播放，不依赖 git。
 *.mp4
@@ -109,8 +112,12 @@ docs/kimi-prompts/
 
 # ===== 隐私与个人内容（2026-08-09 全面豁免，永不入库、永不推送）=====
 docs/exp-mclaw-kimi-coding-plan.md
-mclaw-install/M-Claw安装artifacts记录.md
+prep/mclaw-install/M-Claw安装artifacts记录.md
 docs/队长个人卡片.md
 docs/项目里程碑全程回顾.md
+docs/项目里程碑全程回顾-AI对话总结.docx
 scripts/extract-kimi-prompts.py
 scripts/cards-to-docx.sh
+
+# ===== 社区贡献 issue 草稿库（私人工作稿，2026-08-11 豁免）=====
+docs/社区贡献issues/
