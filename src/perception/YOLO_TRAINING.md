@@ -59,6 +59,11 @@ labelImg ../datasets/aimaterials/images/train ../datasets/aimaterials/classes.tx
 
 ## 4. 训练 YOLOv8n
 
+> **协议提示（2026-08-11 起）**：ultralytics 为 AGPL-3.0，按 M-Robots 社区合规要求，
+> 训练管线（`src/yolo-pipeline/`）已移出本仓库主线，仅作团队内部开发工具保存。
+> 以下训练步骤请在仓库外的开发环境执行；**训练产物 `.onnx` 模型权重可安全分发**
+> （工具产出物不构成 AGPL 衍生作品）。推理侧只使用 onnxruntime（MIT）/ rknnlite2。
+
 ### 方式 A：笔记本本地（有 NVIDIA GPU）
 
 ```bash
@@ -134,7 +139,7 @@ model.export(format='onnx', imgsz=640, half=False)
 }
 ```
 
-`backend` 可选 `auto`/`ultralytics`/`onnx`/`rknn`。
+`backend` 可选 `auto`/`onnx`/`rknn`（`ultralytics` 后端已因 AGPL-3.0 合规要求移除）。
 
 ---
 

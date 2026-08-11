@@ -1,0 +1,41 @@
+NOTICE
+======
+
+拾安 Gauge（mrobots_app_shian_gauge）
+Copyright (c) 2026 拾安 Gauge 团队（CUHKSZ AIY Hackathon 2026）
+
+本项目以 Apache License 2.0 发布（见 LICENSE 文件）。
+
+第三方依赖声明
+--------------
+
+本项目在开发中使用了以下第三方开源软件，均为宽松协议（Apache-2.0 / BSD / MIT），
+与 Apache-2.0 兼容：
+
+运行时/开发依赖（Python）
+  - OpenCV (opencv-python)        — Apache-2.0
+  - NumPy                          — BSD-3-Clause
+  - ONNX Runtime (onnxruntime)     — MIT
+  - prompt_toolkit                 — BSD-3-Clause
+  - ROS Noetic（rospy、sensor_msgs、cv_bridge 等）— BSD-3-Clause
+  - M-CLAW（m-robots/mclaw，本地补丁见 src/mclaw-update/）— Apache-2.0
+
+硬件/平台参考源码（vendor/ 归档，来自 KaihongBoard 官方发布，仅作只读参考）
+  - OrbbecSDK_ROS1                 — Apache-2.0
+  - rplidar_ros / frontier_exploration / imu_calib / explore /
+    image_pipeline / mpu_6050_driver / sparse_bundle_adjustment /
+    vision_opencv                  — BSD
+  - rrt_exploration / ydlidar_ros_driver — MIT
+
+合规说明
+--------
+
+1. 本仓库**不包含** GPL / AGPL / LGPL 等 copyleft 协议的代码或依赖。
+2. 2026-08-11 合规整改（详见 docs/开源协议合规审计报告.md）：
+   - 移除 ultralytics（AGPL-3.0）推理后端，YOLO 推理仅保留 onnxruntime（MIT）
+     与 rknnlite2 后端；训练管线（src/yolo-pipeline/）移出主线，仅作团队内部
+     开发工具保存，不随社区仓库发布；训练产出的模型权重为工具产出物，可安全分发。
+   - 移除 vendor 归档中的 rf2o_laser_odometry（GPL-3.0）及 ldlidar、
+     ldlidar_driver、rviz_plugin、virtual_wall（上游未标注许可证）五个包；
+     均为官方源码归档的副本，本仓库代码不引用，上游公开发布处可获取。
+3. AI 生成素材：路演图片含即梦 AI 生成内容（process assets 不入库）。

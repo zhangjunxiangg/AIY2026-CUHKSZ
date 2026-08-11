@@ -1,16 +1,18 @@
-# YOLO 检测包装：支持 Ultralytics / ONNX / RKNN 三种后端。
+# YOLO 检测包装：支持 ONNX / RKNN 两种后端。
 # 如果模型不存在或后端不可用，检测器自动失效，不阻塞其它检测器。
-"""YOLO detector wrapper with fallback backends.
+# 注：ultralytics（AGPL-3.0）后端已于 2026-08-11 移除——M-Robots 社区（开放原子
+# 基金会法务审查）不允许包含/引用 copyleft 依赖。请先用训练管线把 .pt 导出为
+# .onnx（或 .rknn），推理侧只需 onnxruntime（MIT）。
+"""YOLO detector wrapper with permissive-license backends.
 
 Supported backends (in priority order):
-  - "ultralytics": YOLO model (`.pt`) via `pip install ultralytics`
-  - "onnx": ONNX model (`.onnx`) via `pip install onnxruntime`
+  - "onnx": ONNX model (`.onnx`) via `pip install onnxruntime` (MIT)
   - "rknn": RKNN model (`.rknn`) via board-side `rknnlite2`
 
 Config (config["yolo_detect"]):
   - enable: bool
-  - model_path: path to model file
-  - backend: "auto" | "ultralytics" | "onnx" | "rknn"
+  - model_path: path to model file (.onnx / .rknn; .pt is NOT supported)
+  - backend: "auto" | "onnx" | "rknn"
   - conf_threshold: float
   - nms_threshold: float
   - input_size: int
@@ -52,22 +54,24 @@ class YoloDetector:
     def _load_model(self, p: Path):
         if self.backend == "auto":
             suffix = p.suffix.lower()
-            if suffix == ".pt":
-                self.backend = "ultralytics"
-            elif suffix == ".onnx":
+            if suffix == ".onnx":
                 self.backend = "onnx"
             elif suffix == ".rknn":
                 self.backend = "rknn"
+            elif suffix == ".pt":
+                print("[YOLO] .pt requires ultralytics (AGPL-3.0) which is not allowed; "
+                      "export to .onnx first (model.export(format='onnx')), disabled")
+                return
             else:
                 print(f"[YOLO] unknown model suffix {suffix}, disabled")
                 return
+        if self.backend == "ultralytics":
+            print("[YOLO] backend 'ultralytics' removed (AGPL-3.0 not allowed); "
+                  "use backend='onnx' with an exported .onnx model, disabled")
+            return
 
         try:
-            if self.backend == "ultralytics":
-                from ultralytics import YOLO
-                self.model = YOLO(str(p))
-                self.backend_name = "ultralytics"
-            elif self.backend == "onnx":
+            if self.backend == "onnx":
                 import onnxruntime as ort
                 self.model = ort.InferenceSession(str(p), providers=["CPUExecutionProvider"])
                 self.backend_name = "onnx"
@@ -156,27 +160,6 @@ class YoloDetector:
     def detect(self, bgr: np.ndarray) -> list:
         if self.model is None:
             return []
-
-        if self.backend_name == "ultralytics":
-            try:
-                results_obj = self.model.predict(bgr, conf=self.conf, verbose=False)
-                out = []
-                for box in results_obj[0].boxes:
-                    cls_id = int(box.cls.item())
-                    cat = self.index_to_cat.get(cls_id)
-                    if cat is None:
-                        continue
-                    x1, y1, x2, y2 = box.xyxy[0].cpu().numpy().astype(int)
-                    out.append({
-                        "category": cat,
-                        "center": [int((x1 + x2) / 2), int((y1 + y2) / 2)],
-                        "confidence": round(float(box.conf.item()), 3),
-                        "bbox": [x1, y1, x2 - x1, y2 - y1],
-                    })
-                return out
-            except Exception as exc:
-                print(f"[YOLO] ultralytics inference failed: {exc}")
-                return []
 
         if self.backend_name in ("onnx", "rknn"):
             try:

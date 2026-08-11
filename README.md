@@ -23,7 +23,6 @@
 ├── src/                      # 团队自研代码统一入口
 │   ├── grasping/             # 夹爪相机像素伺服抓取 pipeline（gated pipeline，实测 PASS）
 │   ├── teleop/               # 键盘遥操作（方向键/A、D/S、X/J、L/W）
-│   ├── yolo-pipeline/        # YOLO 蓝色锥桶训练与推理管线（含 Astra 风格数据增强）
 │   ├── gemini335-web/        # Gemini 335 相机 Web 双流监视 + /locate 场地定位
 │   ├── perception/           # 相机与感知节点（含 MJPEG 带宽修复）
 │   ├── robot-control/        # 底盘运动控制工作区（运动原语、安全护栏，含 specs）
@@ -91,5 +90,11 @@
 - M-Robots OS → 嘉妤老师
 
 ---
+
+## 开源协议
+
+本项目以 **Apache License 2.0** 发布（见根目录 `LICENSE`），第三方依赖与合规说明见 `NOTICE`。
+按 M-Robots 社区（开放原子基金会法务审查）要求，本仓库不包含 GPL / AGPL / LGPL 代码或依赖；
+完整审计与整改记录见 `docs/开源协议合规审计报告.md`。
 
 *本仓库为 AIY Hackathon 2026 参赛作品代码与文档仓库。*
