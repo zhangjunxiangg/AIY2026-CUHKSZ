@@ -1,7 +1,7 @@
 # 夹爪相机（icSpring UVC）参数手册
 
 > 检查日期：2026-08-05
-> 检查方式：SSH 上板 → `rk3588s-vision` 容器内用 V4L2 ioctl 直接枚举（脚本：`icspring_query.py`，原始输出：`icspring_report.txt`，均在仓库根目录）
+> 检查方式：SSH 上板 → `rk3588s-vision` 容器内用 V4L2 ioctl 直接枚举（脚本：`src/perception/icspring_query.py`，原始输出：`docs/板端开发参考/icspring_report.txt`）
 > 检查过程只读，未修改相机属性、未重启服务、未移动机器人。
 
 ## 1. 设备身份
@@ -61,7 +61,7 @@
 | 位置 | 路径 |
 |---|---|
 | 板端（实际运行） | `/data/local/perception/gripper_camera_node.py` |
-| 仓库（本地副本） | 项目根目录 `gripper_camera_node.py` |
+| 仓库（本地副本） | `src/perception/gripper_camera_node.py` |
 
 ### 启动（SSH 上板后执行）
 
@@ -94,4 +94,4 @@ run python3 gripper_camera_node.py --device /dev/video20 --topic /gripper_camera
 - `icspring_video20.jpg`：打开后首帧，过曝近全白，底部可见夹爪两指阴影。
 - `icspring_settled.jpg`：连续读 20 帧后，曝光收敛，画面为近距离浅色平面 + 夹爪两指（画面底部约 27%、67% 宽度处）。
 
-两张样张与查询脚本均在仓库根目录。
+两张样张在 `docs/板端开发参考/` 本目录，查询脚本在 `src/perception/icspring_query.py`。

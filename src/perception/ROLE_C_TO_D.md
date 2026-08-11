@@ -105,20 +105,20 @@ Gemini335 RGB+depth ──► perception_node --ros (aux) ──┘
 **没有相机也能调试 D 的代码**：用 `mock_output_publisher.py` 把示例数据发到 `/student/perception/targets_3d_fused`：
 
 ```bash
-python3 perception/mock_output_publisher.py --ros --file perception/sample_targets_3d_fused.json --rate 2
+python3 src/perception/mock_output_publisher.py --ros --file src/perception/sample_targets_3d_fused.json --rate 2
 ```
 
 ---
 
 ## 5. 今晚 PC 已完成的工作
 
-代码都在 `perception/` 下，**本机 sim 测试已全部通过**：
+代码都在 `src/perception/` 下，**本机 sim 测试已全部通过**：
 
 - `geometry3d.py`：像素+深度 → 相机坐标 → base_link/map 的纯几何换算。
 - `blind_spot.py`：深度有效性判断、单目测深、盲区标记。
 - `target_3d_node.py`：把 perception_node 的 2D 目标转成 3D（支持 Astra / aux 两种相机）。
 - `fusion_node.py`：合并 Astra 和 Gemini335 的 3D 目标，盲区目标优先用辅助相机。
-- `test_geometry.py`：离线单元测试，跑 `python perception/test_geometry.py` 应输出 `ALL PASSED`。
+- `test_geometry.py`：离线单元测试，跑 `python src/perception/test_geometry.py` 应输出 `ALL PASSED`。
 
 ---
 
@@ -126,7 +126,7 @@ python3 perception/mock_output_publisher.py --ros --file perception/sample_targe
 
 1. **辅助相机外参标定**
    - 在板上跑 `/data/robot-host/student/calibration/auxiliary/aux-arm-handeye.py`，生成 `aux-to-base.json`。
-   - 把生成文件的路径填进 `perception/config.json` 的 `camera.aux.extrinsics_json`。
+   - 把生成文件的路径填进 `src/perception/config.json` 的 `camera.aux.extrinsics_json`。
    - Astra 外参用现成的 `astra-arm-calibration/astra-to-base.json`，已经填好。
 
 2. **确认 camera_info 话题**

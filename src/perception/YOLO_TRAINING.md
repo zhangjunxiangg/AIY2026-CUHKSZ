@@ -91,7 +91,7 @@ model = YOLO('runs/detect/train/weights/best.pt')
 model.export(format='onnx', imgsz=640, half=False)
 ```
 
-得到 `best.onnx`，拷贝到 `perception/models/`。
+得到 `best.onnx`，拷贝到 `src/perception/models/`。
 
 ### RKNN（RK3588 NPU，快，但转换链多一步）
 
@@ -116,7 +116,7 @@ model.export(format='onnx', imgsz=640, half=False)
 
 ## 6. 在感知管线里启用 YOLO
 
-把模型放到 `perception/models/`，修改 `config.json`：
+把模型放到 `src/perception/models/`，修改 `config.json`：
 
 ```json
 "yolo_detect": {

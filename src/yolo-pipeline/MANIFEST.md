@@ -8,7 +8,7 @@
 为 AIY 2026 深开鸿赛道训练一个 YOLOv8n 检测模型，在板端 Astra 相机（640×480）画面里
 **稳定检出蓝色路障锥桶**——HSV 路线已实测无法分离藏青锥与紫地毯/白布紫调褶皱
 （见 perception 调试记录），YOLO 是替代方案。模型最终以 ONNX 导出，接入
-`perception/` 感知包的 `yolo_detect` 后端。
+`src/perception/` 感知包的 `yolo_detect` 后端。
 
 ## 完成态（Goal State，逐条可验证）
 

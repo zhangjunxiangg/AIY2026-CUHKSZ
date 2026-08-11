@@ -1,4 +1,4 @@
-# perception/ — 学生感知节点包（角色C）
+# src/perception/ — 学生感知节点包（角色C）
 
 运行环境：本机调试用 Windows + Python 3.13 + opencv-python + numpy；
 板端目标为 KaihongBoard-3588S 的 `rk3588s-vision` Docker 容器（Python 3.11 + ROS1 Noetic + cv2 + numpy）。
