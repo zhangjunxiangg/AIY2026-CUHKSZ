@@ -20,7 +20,8 @@ Copyright (c) 2026 拾安 Gauge 团队（CUHKSZ AIY Hackathon 2026）
   - ROS Noetic（rospy、sensor_msgs、cv_bridge 等）— BSD-3-Clause
   - M-CLAW（m-robots/mclaw，本地补丁见 src/mclaw-update/）— Apache-2.0
 
-硬件/平台参考源码（vendor/ 归档，来自 KaihongBoard 官方发布，仅作只读参考）
+硬件/平台参考源码（KaihongBoard 官方发布；2026-08-11 起 vendor/ 归档不再入库，
+  本地保留只读副本，上游公开发布处可获取）
   - OrbbecSDK_ROS1                 — Apache-2.0
   - rplidar_ros / frontier_exploration / imu_calib / explore /
     image_pipeline / mpu_6050_driver / sparse_bundle_adjustment /

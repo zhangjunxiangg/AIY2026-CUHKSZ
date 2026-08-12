@@ -121,3 +121,10 @@ scripts/cards-to-docx.sh
 
 # ===== 社区贡献 issue 草稿库（私人工作稿，2026-08-11 豁免）=====
 docs/社区贡献issues/
+
+# ===== 官方/机器人自带内容（2026-08-11 豁免：不入库、不随社区仓库分发）=====
+# 均为赛事官方或板端预置内容，上游公开发布处可获取；本地保留原件
+vendor/                  # KaihongBoard 官方源码只读归档（含大体积 .engine/.onnx 模型二进制）
+AIY文件/                 # 赛事官方原始档案（docx/pdf 原件）
+docs/官方材料/           # 官方材料转录件
+presentation/deck/*.pdf  # 路演 deck 的 PDF 导出（HTML 源文件在库，可随时重新导出；GitCode 单文件限 10MiB）
