@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kimi Media Analyzer"
+  short_description: "Analyze local images and videos into validated JSON"
+  default_prompt: "Use $kimi-media-analyzer to analyze a local image or video and save validated JSON."
